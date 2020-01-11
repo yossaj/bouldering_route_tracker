@@ -1,67 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date"
-            android:padding="@dimen/activity_horizontal_margin"/>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Route Name"
-            android:padding="@dimen/activity_horizontal_margin"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Room"
-            android:padding="@dimen/activity_horizontal_margin"/>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wall"
-            android:padding="@dimen/activity_horizontal_margin"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Notes on Route | Where am I getting stuck?"
-            android:textColor="@color/white"
-            android:padding="@dimen/activity_horizontal_margin"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:inputType="text|textMultiLine"
-            android:gravity="top"
-            android:background="@color/colorPrimary"
-            android:padding="@dimen/activity_horizontal_margin"/>
-
-
-    </LinearLayout>
-
-
-    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
