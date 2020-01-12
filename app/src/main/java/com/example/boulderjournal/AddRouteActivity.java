@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
+
+//import static com.example.boulderjournal.data.RouteContract.RouteEntry.COLUMN_ROUTE_COLOUR;
 import static com.example.boulderjournal.data.RouteContract.RouteEntry.COLUMN_NOTE;
 import static com.example.boulderjournal.data.RouteContract.RouteEntry.COLUMN_ROOM;
 import static com.example.boulderjournal.data.RouteContract.RouteEntry.COLUMN_ROUTE_COLOUR;
@@ -39,7 +42,8 @@ public class AddRouteActivity extends AppCompatActivity {
          String mWall = ((EditText) findViewById(R.id.input_wall)).getText().toString();
          String mNotes = ((EditText) findViewById(R.id.route_note)).getText().toString();
 
-         if (mRouteName.length() == 0 || mRouteColor.length() == 0 || mRoom.length() == 0 || mWall.length() == 0 || mNotes.length() == 0 ) {
+         if (mRouteName.length() == 0 || mRouteColor.length() == 0 || mRoom.length() == 0 || mWall.length() == 0 || mNotes.length() == 0  ) {
+             Toast.makeText(getBaseContext(), "Please fill in all fields", Toast.LENGTH_LONG).show();
              return;
          }
 
@@ -56,7 +60,7 @@ public class AddRouteActivity extends AppCompatActivity {
              Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
          }
 
-         finish();
+//         finish();
 
     }
 

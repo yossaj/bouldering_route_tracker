@@ -5,9 +5,9 @@ import android.provider.BaseColumns;
 
 public class RouteContract
 {
-    public static final String AUTHORITY = "com.example.android.boulderjournal";
+    public static final String AUTHORITY = "com.example.boulderjournal";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-    public static final String PATH_ROUTES = "routes";
+    public static final String PATH_ROUTES = "route";
 
     public static final class RouteEntry implements BaseColumns {
 
@@ -15,7 +15,7 @@ public class RouteContract
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ROUTES).build();
 
 
-        public static final String TABLE_NAME = "routes";
+        public static final String TABLE_NAME = "route";
 
         //  Still need to add date column
         public static final String COLUMN_ROUTE_NAME = "route_name";
