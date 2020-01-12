@@ -25,7 +25,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
     @NonNull
     @Override
-    public CustomCursorAdapter.RouteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RouteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.route_input_layout, parent, false);
 
@@ -33,7 +33,8 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RouteViewHolder holder, int position) {
+    public void onBindViewHolder( RouteViewHolder holder, int position) {
+
         int idIndex = mCursor.getColumnIndex(RouteContract.RouteEntry._ID);
         int routeNameIndex = mCursor.getColumnIndex(COLUMN_ROUTE_NAME);
         mCursor.moveToPosition(position);
@@ -43,8 +44,9 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
         holder.itemView.setTag(id);
         holder.routeTitleMain.setText(routeName);
-
     }
+
+
 
 
     @Override
@@ -56,19 +58,21 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         return count;
     }
 
-    public Cursor swapCursor(Cursor c){
+
+    public Cursor swapCursor(Cursor c) {
+        // check if this cursor is the same as the previous cursor (mCursor)
         if (mCursor == c) {
-            return null;
+            return null; // bc nothing has changed
         }
         Cursor temp = mCursor;
-        this.mCursor = c;
+        this.mCursor = c; // new cursor value assigned
+
+        //check if this is a valid cursor, then update the cursor
         if (c != null) {
             this.notifyDataSetChanged();
         }
         return temp;
-
     }
-
 
 
 
@@ -76,7 +80,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
         TextView routeTitleMain;
 
-        public RouteViewHolder(@NonNull View itemView) {
+        public RouteViewHolder( View itemView) {
             super(itemView);
             routeTitleMain = (TextView)itemView.findViewById(R.id.route_name_main);
         }

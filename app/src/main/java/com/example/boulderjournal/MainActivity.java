@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.boulderjournal.data.RouteContract;
+
 import static com.example.boulderjournal.data.RouteContract.RouteEntry.COLUMN_ROUTE_NAME;
 import static com.example.boulderjournal.data.RouteContract.RouteEntry.CONTENT_URI;
 
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             null,
                             null,
                             null,
-                            null );
+                            RouteContract.RouteEntry._ID);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
 
     }
 }
