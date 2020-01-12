@@ -60,7 +60,7 @@ public class AddRouteActivity extends AppCompatActivity {
              Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
          }
 
-//         finish();
+         finish();
 
     }
 
