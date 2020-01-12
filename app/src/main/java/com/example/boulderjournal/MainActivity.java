@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -37,6 +39,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new CustomCursorAdapter(this);
         mRecycleView.setAdapter(mAdapter);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int id = (int) viewHolder.itemView.getTag();
+
+                String stringId = Integer.toString(id);
+                Uri uri = CONTENT_URI;
+                uri = uri.buildUpon().appendPath(stringId).build();
+                getContentResolver().delete(uri, null, null);
+
+            }
+        }).attachToRecyclerView(mRecycleView);
+
         getSupportLoaderManager().initLoader(ROUTE_LOADER_ID, null, this);
     }
 

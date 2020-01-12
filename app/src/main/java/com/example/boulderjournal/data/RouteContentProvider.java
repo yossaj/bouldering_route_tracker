@@ -101,7 +101,23 @@ public class RouteContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        final SQLiteDatabase db = mRouteDbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int tasksDeleted;
+
+        switch (match) {
+            case ROUTES_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                tasksDeleted = db.delete(TABLE_NAME, "_id=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (tasksDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return tasksDeleted;
     }
 
     @Override
