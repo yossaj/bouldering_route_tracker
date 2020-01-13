@@ -37,7 +37,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
 
         RouteEntry routeEntry = mRouteEntries.get(position);
         String routeName = routeEntry.getRouteName();
-
         holder.routeTitleMain.setText(routeName);
     }
 
@@ -58,6 +57,11 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
     public void setRoutes(List<RouteEntry> routeEntries){
         mRouteEntries = routeEntries;
         notifyDataSetChanged();
+    }
+
+    public List<RouteEntry> getRoutes(){
+        return mRouteEntries;
+
     }
 
 

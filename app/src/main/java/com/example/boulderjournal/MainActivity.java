@@ -2,10 +2,12 @@ package com.example.boulderjournal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,23 +35,27 @@ public class MainActivity extends AppCompatActivity {
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new RouteAdapter(this);
         mRecycleView.setAdapter(mAdapter);
-//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//            @Override
-//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-//                int id = (int) viewHolder.itemView.getTag();
-//
-//                String stringId = Integer.toString(id);
-//                Uri uri = CONTENT_URI;
-//                uri = uri.buildUpon().appendPath(stringId).build();
-//                getContentResolver().delete(uri, null, null);
-//
-//            }
-//        }).attachToRecyclerView(mRecycleView);
+
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            int position = viewHolder.getAdapterPosition();
+                            List<RouteEntry> routeEntries = mAdapter.getRoutes();
+                            mDb.routeDao().deleteRoute(routeEntries.get(position));
+                            retrieveRoutes();
+                        }
+                    });
+            }
+        }).attachToRecyclerView(mRecycleView);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
     }
@@ -57,19 +63,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-       AppExecutors.getInstance().diskIO().execute(new Runnable() {
-           @Override
-           public void run() {
-               final List<RouteEntry> routes = mDb.routeDao().loadAllRoutes();
+        retrieveRoutes();
+    }
 
-               runOnUiThread(new Runnable() {
-                   @Override
-                   public void run() {
-                       mAdapter.setRoutes(routes);
-                   }
-               });
-           }
-       });
+    private void retrieveRoutes() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                final List<RouteEntry> routes = mDb.routeDao().loadAllRoutes();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.setRoutes(routes);
+                    }
+                });
+            }
+        });
     }
 
     @Override
