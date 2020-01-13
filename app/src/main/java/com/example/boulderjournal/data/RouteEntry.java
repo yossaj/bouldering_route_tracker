@@ -1,19 +1,23 @@
 package com.example.boulderjournal.data;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
 @Entity(tableName = "route")
 public class RouteEntry {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String mRouteName;
     private String mRouteColour;
     private String mRoom;
     private String mWall;
     private String mNote;
+    @ColumnInfo(name ="updated_at")
     private Date updatedAt;
 
 

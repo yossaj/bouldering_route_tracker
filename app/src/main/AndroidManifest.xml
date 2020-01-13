@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.boulderjournal">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.boulderjournal"
+    android:supportsRtl="true"
+    tools:ignore="GoogleAppIndexingWarning">
 
     <application
         android:allowBackup="true"
@@ -20,12 +23,6 @@
             android:label="Add a New Route">
 
         </activity>
-
-        <provider
-            android:name="com.example.boulderjournal.data.RouteContentProvider"
-            android:authorities="com.example.boulderjournal"
-            android:enabled="true"
-            android:exported="false"/>
 
     </application>
 
