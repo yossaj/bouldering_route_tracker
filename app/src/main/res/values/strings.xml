@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Boulder Journal</string>
+
+    <string name="update">Update</string>
 </resources>

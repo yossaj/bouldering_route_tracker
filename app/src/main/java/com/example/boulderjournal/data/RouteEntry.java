@@ -70,6 +70,10 @@ public class RouteEntry {
         return mRoom;
     }
 
+    public void setRoom(String room){
+        this.mRoom = room;
+    }
+
     public String getWall() {
         return mWall;
     }

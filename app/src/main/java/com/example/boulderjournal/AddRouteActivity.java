@@ -38,6 +38,21 @@ public class AddRouteActivity extends AppCompatActivity {
     private TextView mWallTV;
     private TextView mNotesTV;
 
+    private String routeName;
+    private String routeColour;
+    private String room;
+    private String wall;
+    private String notes;
+    private Date date;
+
+    private boolean editMenuCheck = false;
+    private boolean readyUpdateCheck = false;
+
+    private MenuItem editMenuItem;
+    private MenuItem addMenuItem;
+
+    private RouteEntry route;
+
 
     private Button mUpdateButton;
 
@@ -60,6 +75,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
         Intent intent =  getIntent();
         if(intent != null & intent.hasExtra(EXTRA_ROUTE_ID)){
+            editMenuCheck = true;
             initStaticViews();
 
             final int routeID = intent.getIntExtra(EXTRA_ROUTE_ID, DEFAULT_ROUTE_ID) ;
@@ -67,46 +83,88 @@ public class AddRouteActivity extends AppCompatActivity {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    final RouteEntry route = mDb.routeDao().loadRouteById(routeID);
-                    populateUI(route);
+                     route = mDb.routeDao().loadRouteById(routeID);
+                    populateStaticUI(route);
                 }
             });
 
         }
     }
 
+    public void setValues(){
+        routeName = mRouteName.getText().toString();
+        routeColour = mRouteColour.getText().toString();
+        room = mRoom.getText().toString();
+        wall = mWall.getText().toString();
+        notes = mNotes.getText().toString();
+        if(date == null){  date = new Date();}
+
+
+        if (routeName.length() == 0 || routeColour.length() == 0 || room.length() == 0 || wall.length() == 0 || notes.length() == 0  ) {
+            Toast.makeText(getBaseContext(), "Please fill in all fields", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+       if(route == null){
+           route = new RouteEntry(routeName, routeColour, room, wall, notes, date);}
+       else{
+           route.setRouteName(routeName);
+           route.setRouteColour(routeColour);
+           route.setRoom(room);
+           route.setWall(wall);
+           route.setNote(notes);
+       }
+    }
+
      public void onAddRoute(){
 
-            String routeName = mRouteName.getText().toString();
-            String routeColour = mRouteColour.getText().toString();
-            String room = mRoom.getText().toString();
-            String wall = mWall.getText().toString();
-            String notes = mNotes.getText().toString();
-            Date date = new Date();
-
-
-         if (routeName.length() == 0 || routeColour.length() == 0 || room.length() == 0 || wall.length() == 0 || notes.length() == 0  ) {
-             Toast.makeText(getBaseContext(), "Please fill in all fields", Toast.LENGTH_LONG).show();
-             return;
-         }
-
-            final RouteEntry routeEntry = new RouteEntry(routeName, routeColour, room, wall, notes, date);
+         setValues();
 
          AppExecutors.getInstance().diskIO().execute(new Runnable() {
              @Override
              public void run() {
-                 mDb.routeDao().insertRoute(routeEntry);
+                 mDb.routeDao().insertRoute(route);
                  finish();
              }
          });
      }
 
+     public void onUpdateRoute(){
 
+        setValues();
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.routeDao().updateRoute(route);
+                finish();
+            }
+        });
+
+     }
+
+
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        editMenuItem = menu.findItem(R.id.edit_menu_item);
+        addMenuItem = menu.findItem(R.id.add);
+
+        if(editMenuCheck){
+        editMenuItem.setVisible(editMenuCheck);
+        addMenuItem.setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_route_menu_button, menu);
+
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -116,6 +174,11 @@ public class AddRouteActivity extends AppCompatActivity {
         if (id == R.id.add) {
             onAddRoute();
             return true;
+        }else if(id == R.id.edit_menu_item && editMenuCheck){
+            populateEditableUI(route);
+        }else if(id == R.id.edit_menu_item && readyUpdateCheck){
+            Toast.makeText(getBaseContext(), "Ready", Toast.LENGTH_LONG).show();
+            onUpdateRoute();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -137,9 +200,11 @@ public class AddRouteActivity extends AppCompatActivity {
         mWallTV = (TextView)findViewById(R.id.view_wall);
         mNotesTV = (TextView)findViewById(R.id.view_route_notes);
         mUpdateButton = (Button)findViewById(R.id.updateButton);
+
+
     }
 
-    public void populateUI(RouteEntry routeEntry){
+    public void populateStaticUI(RouteEntry routeEntry){
 
         mRouteNameTV.setText(routeEntry.getRouteName());
         mRouteNameTV.setVisibility(View.VISIBLE);
@@ -166,4 +231,36 @@ public class AddRouteActivity extends AppCompatActivity {
 
 
     }
+
+    public void populateEditableUI(RouteEntry routeEntry){
+
+        mRouteName.setText(routeEntry.getRouteName());
+        mRouteName.setVisibility(View.VISIBLE);
+        mRouteNameTV.setVisibility(View.GONE);
+
+        mRouteColourTV.setVisibility(View.GONE);
+        mRouteColour.setText(routeEntry.getRouteColour());
+        mRouteColour.setVisibility(View.VISIBLE);
+
+
+        mRoom.setText(routeEntry.getRoom());
+        mRoom.setVisibility(View.VISIBLE);
+        mRoomTV.setVisibility(View.GONE);
+
+
+        mWall.setText(routeEntry.getWall());
+        mWall.setVisibility(View.VISIBLE);
+        mWallTV.setVisibility(View.GONE);
+
+
+        mNotes.setText(routeEntry.getNote());
+        mNotes.setVisibility(View.VISIBLE);
+        mNotesTV.setVisibility(View.GONE);
+
+        editMenuCheck = false;
+        readyUpdateCheck = true;
+        editMenuItem.setTitle(R.string.update);
+    }
+
+
 ;}
