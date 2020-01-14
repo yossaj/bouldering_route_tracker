@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
@@ -19,7 +20,7 @@ import com.example.boulderjournal.data.RouteEntry;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RouteAdapter.ItemClickListener {
 
     private static final int ROUTE_LOADER_ID = 3;
 
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mRecycleView = (RecyclerView)findViewById(R.id.recyclerRoutesToDo);
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new RouteAdapter(this);
+        mAdapter = new RouteAdapter(this, this);
         mRecycleView.setAdapter(mAdapter);
 
 
@@ -100,4 +101,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onItemClickListener(int itemId) {
+        Toast.makeText(getBaseContext(), "oooOOh Clicked", Toast.LENGTH_LONG).show();
+
+    }
 }

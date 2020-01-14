@@ -18,10 +18,13 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
 
     private Context mContext;
     private List<RouteEntry> mRouteEntries;
+    final private ItemClickListener mItemClickListener;
 
-    public RouteAdapter(Context mContext) {
+    public RouteAdapter(Context mContext, ItemClickListener listener) {
         this.mContext = mContext;
+        mItemClickListener = listener;
     }
+
 
     @NonNull
     @Override
@@ -64,15 +67,26 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
 
     }
 
+    public interface ItemClickListener {
+        void onItemClickListener(int itemId);
+    }
 
 
-    class RouteViewHolder extends RecyclerView.ViewHolder {
+
+    class RouteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView routeTitleMain;
 
         public RouteViewHolder( View itemView) {
             super(itemView);
             routeTitleMain = (TextView)itemView.findViewById(R.id.route_name_main);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int elementId = mRouteEntries.get(getAdapterPosition()).getId();
+            mItemClickListener.onItemClickListener(elementId);
         }
     }
 
