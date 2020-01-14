@@ -7,12 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
@@ -104,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
     @Override
     public void onItemClickListener(int itemId) {
         Intent intent = new Intent(MainActivity.this, AddRouteActivity.class);
-        intent.putExtra(AddRouteActivity.EXTRA_TASK_ID, itemId);
+        intent.putExtra(AddRouteActivity.EXTRA_ROUTE_ID, itemId);
         startActivity(intent);
 
     }

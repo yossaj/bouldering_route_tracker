@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.boulderjournal.data.AppDatabase;
@@ -21,19 +22,26 @@ import java.util.Date;
 
 public class AddRouteActivity extends AppCompatActivity {
 
-    public static final String EXTRA_TASK_ID = "extraTaskId";
-    public static final String INSTANCE_TASK_ID = "instanceTaskId";
-    private static final int DEFAULT_TASK_ID = -1;
+    public static final String EXTRA_ROUTE_ID = "extraTaskId";
+    public static final String INSTANCE_ROUTE_ID = "instanceTaskId";
+    private static final int DEFAULT_ROUTE_ID = -1;
 
     private EditText mRouteName;
-    private EditText mRouteColor;
+    private EditText mRouteColour;
     private EditText mRoom;
     private EditText mWall;
     private EditText mNotes;
 
+    private TextView mRouteNameTV;
+    private TextView mRouteColourTV;
+    private TextView mRoomTV;
+    private TextView mWallTV;
+    private TextView mNotesTV;
+
+
     private Button mUpdateButton;
 
-    private int mRouteId = DEFAULT_TASK_ID;
+    private int mRouteId = DEFAULT_ROUTE_ID;
 
     private AppDatabase mDb;
 
@@ -45,14 +53,16 @@ public class AddRouteActivity extends AppCompatActivity {
         initViews();
         mDb = AppDatabase.getInstance(getApplicationContext());
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_TASK_ID)) {
-            mRouteId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
+        if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_ROUTE_ID)) {
+            mRouteId = savedInstanceState.getInt(INSTANCE_ROUTE_ID, DEFAULT_ROUTE_ID);
+
         }
 
         Intent intent =  getIntent();
-        if(intent != null & intent.hasExtra(EXTRA_TASK_ID )){
+        if(intent != null & intent.hasExtra(EXTRA_ROUTE_ID)){
+            initStaticViews();
 
-            final int routeID = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID) ;
+            final int routeID = intent.getIntExtra(EXTRA_ROUTE_ID, DEFAULT_ROUTE_ID) ;
 
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
@@ -68,7 +78,7 @@ public class AddRouteActivity extends AppCompatActivity {
      public void onAddRoute(){
 
             String routeName = mRouteName.getText().toString();
-            String routeColour = mRouteColor.getText().toString();
+            String routeColour = mRouteColour.getText().toString();
             String room = mRoom.getText().toString();
             String wall = mWall.getText().toString();
             String notes = mNotes.getText().toString();
@@ -112,21 +122,48 @@ public class AddRouteActivity extends AppCompatActivity {
 
     public void initViews(){
         mRouteName = (EditText) findViewById(R.id.input_route_name);
-        mRouteColor = (EditText)findViewById(R.id.input_route_colour);
+        mRouteColour = (EditText)findViewById(R.id.input_route_colour);
         mRoom = (EditText)findViewById(R.id.input_room);
         mWall = (EditText)findViewById(R.id.input_wall);
         mNotes = (EditText)findViewById(R.id.route_note);
+    }
 
+    public void initStaticViews(){
+
+
+        mRouteNameTV = (TextView)findViewById(R.id.view_route_name);
+        mRouteColourTV = (TextView)findViewById(R.id.view_route_colour);
+        mRoomTV = (TextView)findViewById(R.id.view_room);
+        mWallTV = (TextView)findViewById(R.id.view_wall);
+        mNotesTV = (TextView)findViewById(R.id.view_route_notes);
         mUpdateButton = (Button)findViewById(R.id.updateButton);
-
     }
 
     public void populateUI(RouteEntry routeEntry){
-        mRouteName.setText(routeEntry.getRouteName());
-        mRouteColor.setText(routeEntry.getRouteColour());
-        mRoom.setText(routeEntry.getRoom());
-        mWall.setText(routeEntry.getWall());
-        mNotes.setText(routeEntry.getNote());
-        mUpdateButton.setVisibility(View.VISIBLE);
+
+        mRouteNameTV.setText(routeEntry.getRouteName());
+        mRouteNameTV.setVisibility(View.VISIBLE);
+        mRouteName.setVisibility(View.GONE);
+
+        mRouteColourTV.setVisibility(View.VISIBLE);
+        mRouteColourTV.setText(routeEntry.getRouteColour());
+        mRouteColour.setVisibility(View.GONE);
+
+
+        mRoomTV.setText(routeEntry.getRoom());
+        mRoomTV.setVisibility(View.VISIBLE);
+        mRoom.setVisibility(View.GONE);
+
+
+        mWallTV.setText(routeEntry.getWall());
+        mWallTV.setVisibility(View.VISIBLE);
+        mWall.setVisibility(View.GONE);
+
+
+        mNotesTV.setText(routeEntry.getNote());
+        mNotesTV.setVisibility(View.VISIBLE);
+        mNotes.setVisibility(View.GONE);
+
+
     }
 ;}

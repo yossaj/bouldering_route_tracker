@@ -3,6 +3,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark"
     android:fillViewport="false">
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,6 +42,16 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
 
         <TextView
+            android:id="@+id/view_route_name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:visibility="gone"
+            />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Route Colour"
@@ -53,6 +64,16 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
 
         <TextView
+            android:id="@+id/view_route_colour"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:visibility="gone"
+            />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Room"
@@ -63,6 +84,16 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+
+        <TextView
+            android:id="@+id/view_room"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:visibility="gone"
+            />
 
 
         <TextView
@@ -77,6 +108,17 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
 
+        <TextView
+            android:id="@+id/view_wall"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:visibility="gone"
+            />
+
     </LinearLayout>
 
     <LinearLayout
@@ -84,12 +126,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Notes on Route | Where am I getting stuck?"
             android:textColor="@color/white"
             android:padding="@dimen/activity_horizontal_margin"/>
+
+
+
 
         <EditText
             android:id="@+id/route_note"
@@ -100,6 +147,19 @@
             android:background="@color/colorPrimary"
             android:textColor="@color/white"
             android:padding="@dimen/activity_horizontal_margin"/>
+
+        <TextView
+            android:id="@+id/view_route_notes"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@color/colorPrimary"
+            android:gravity="top"
+            android:padding="16dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            />
+
 
         <Button
             android:id="@+id/updateButton"
