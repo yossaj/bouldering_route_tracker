@@ -103,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
 
     @Override
     public void onItemClickListener(int itemId) {
-        Toast.makeText(getBaseContext(), "oooOOh Clicked", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(MainActivity.this, AddRouteActivity.class);
+        intent.putExtra(AddRouteActivity.EXTRA_TASK_ID, itemId);
+        startActivity(intent);
 
     }
 }

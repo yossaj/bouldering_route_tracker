@@ -24,6 +24,9 @@ public interface RouteDao {
     @Delete
     void deleteRoute(RouteEntry routeEntry);
 
+    @Query("SELECT * FROM route WHERE id = :id")
+    RouteEntry loadRouteById(int id);
+
 
 
 }

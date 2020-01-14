@@ -3,10 +3,13 @@ package com.example.boulderjournal;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,11 +21,19 @@ import java.util.Date;
 
 public class AddRouteActivity extends AppCompatActivity {
 
+    public static final String EXTRA_TASK_ID = "extraTaskId";
+    public static final String INSTANCE_TASK_ID = "instanceTaskId";
+    private static final int DEFAULT_TASK_ID = -1;
+
     private EditText mRouteName;
     private EditText mRouteColor;
     private EditText mRoom;
     private EditText mWall;
     private EditText mNotes;
+
+    private Button mUpdateButton;
+
+    private int mRouteId = DEFAULT_TASK_ID;
 
     private AppDatabase mDb;
 
@@ -33,6 +44,25 @@ public class AddRouteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_route);
         initViews();
         mDb = AppDatabase.getInstance(getApplicationContext());
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_TASK_ID)) {
+            mRouteId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
+        }
+
+        Intent intent =  getIntent();
+        if(intent != null & intent.hasExtra(EXTRA_TASK_ID )){
+
+            final int routeID = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID) ;
+
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    final RouteEntry route = mDb.routeDao().loadRouteById(routeID);
+                    populateUI(route);
+                }
+            });
+
+        }
     }
 
      public void onAddRoute(){
@@ -86,5 +116,17 @@ public class AddRouteActivity extends AppCompatActivity {
         mRoom = (EditText)findViewById(R.id.input_room);
         mWall = (EditText)findViewById(R.id.input_wall);
         mNotes = (EditText)findViewById(R.id.route_note);
+
+        mUpdateButton = (Button)findViewById(R.id.updateButton);
+
+    }
+
+    public void populateUI(RouteEntry routeEntry){
+        mRouteName.setText(routeEntry.getRouteName());
+        mRouteColor.setText(routeEntry.getRouteColour());
+        mRoom.setText(routeEntry.getRoom());
+        mWall.setText(routeEntry.getWall());
+        mNotes.setText(routeEntry.getNote());
+        mUpdateButton.setVisibility(View.VISIBLE);
     }
 ;}
