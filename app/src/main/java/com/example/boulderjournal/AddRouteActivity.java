@@ -17,7 +17,9 @@ import android.widget.Toast;
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class AddRouteActivity extends AppCompatActivity {
@@ -26,12 +28,17 @@ public class AddRouteActivity extends AppCompatActivity {
     public static final String INSTANCE_ROUTE_ID = "instanceTaskId";
     private static final int DEFAULT_ROUTE_ID = -1;
 
+    private static final String DATE_FORMAT = "dd/MM/yyy";
+    private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+
+
     private EditText mRouteName;
     private EditText mRouteColour;
     private EditText mRoom;
     private EditText mWall;
     private EditText mNotes;
 
+    private TextView mDateTV;
     private TextView mRouteNameTV;
     private TextView mRouteColourTV;
     private TextView mRoomTV;
@@ -184,6 +191,11 @@ public class AddRouteActivity extends AppCompatActivity {
     }
 
     public void initViews(){
+
+        String newFormattedDate = dateFormat.format(new Date());
+        mDateTV  = (TextView)findViewById(R.id.date_added);
+        mDateTV.setText(newFormattedDate);
+
         mRouteName = (EditText) findViewById(R.id.input_route_name);
         mRouteColour = (EditText)findViewById(R.id.input_route_colour);
         mRoom = (EditText)findViewById(R.id.input_room);
@@ -192,7 +204,6 @@ public class AddRouteActivity extends AppCompatActivity {
     }
 
     public void initStaticViews(){
-
 
         mRouteNameTV = (TextView)findViewById(R.id.view_route_name);
         mRouteColourTV = (TextView)findViewById(R.id.view_route_colour);
@@ -205,6 +216,9 @@ public class AddRouteActivity extends AppCompatActivity {
     }
 
     public void populateStaticUI(RouteEntry routeEntry){
+
+        String formattedDate = dateFormat.format(routeEntry.getUpdatedAt());
+        mDateTV.setText(formattedDate);
 
         mRouteNameTV.setText(routeEntry.getRouteName());
         mRouteNameTV.setVisibility(View.VISIBLE);
