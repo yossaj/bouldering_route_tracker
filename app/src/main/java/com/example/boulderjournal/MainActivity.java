@@ -23,17 +23,22 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
     private static final int ROUTE_LOADER_ID = 3;
 
     private RouteAdapter mAdapter;
-    private RecyclerView mRecycleView;
+    private RecyclerView mRecycleViewToDo;
+    private RecyclerView mRecycleViewDone;
     private AppDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mRecycleView = (RecyclerView)findViewById(R.id.recyclerRoutesToDo);
-        mRecycleView.setLayoutManager(new LinearLayoutManager(this));
+        mRecycleViewToDo = (RecyclerView)findViewById(R.id.recyclerRoutesToDo);
+        mRecycleViewToDo.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new RouteAdapter(this, this);
-        mRecycleView.setAdapter(mAdapter);
+        mRecycleViewToDo.setAdapter(mAdapter);
+
+//        mRecycleViewDone = (RecyclerView)findViewById(R.id.recyclerRoutesDone);
+//        mRecycleViewDone.setLayoutManager(new LinearLayoutManager(this));
+//        mRecycleViewDone.setAdapter(mAdapter);
 
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
                         }
                     });
             }
-        }).attachToRecyclerView(mRecycleView);
+        }).attachToRecyclerView(mRecycleViewToDo);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
     }
