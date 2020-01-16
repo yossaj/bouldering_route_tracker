@@ -56,6 +56,8 @@ public class AddRouteActivity extends AppCompatActivity {
     private boolean editMenuCheck = false;
     private boolean readyUpdateCheck = false;
 
+    private boolean readyAddDb = false;
+
     private MenuItem editMenuItem;
     private MenuItem addMenuItem;
 
@@ -112,16 +114,18 @@ public class AddRouteActivity extends AppCompatActivity {
         if (routeName.length() == 0 || routeColour.length() == 0 || room.length() == 0 || wall.length() == 0 || notes.length() == 0  ) {
             Toast.makeText(getBaseContext(), "Please fill in all fields", Toast.LENGTH_LONG).show();
             return;
+        }else if(route == null){
+           route = new RouteEntry(routeName, routeColour, room, wall, notes, completedStr, date);
+           readyAddDb = true;
         }
 
-       if(route == null){
-           route = new RouteEntry(routeName, routeColour, room, wall, notes, completedStr, date);}
        else{
            route.setRouteName(routeName);
            route.setRouteColour(routeColour);
            route.setRoom(room);
            route.setWall(wall);
            route.setNote(notes);
+           readyAddDb = true;
        }
     }
 
@@ -129,13 +133,15 @@ public class AddRouteActivity extends AppCompatActivity {
 
          setValues();
 
-         AppExecutors.getInstance().diskIO().execute(new Runnable() {
-             @Override
-             public void run() {
-                 mDb.routeDao().insertRoute(route);
-                 finish();
-             }
-         });
+         if(readyAddDb) {
+             AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                 @Override
+                 public void run() {
+                     mDb.routeDao().insertRoute(route);
+                     finish();
+                 }
+             });
+         }
      }
 
      public void onUpdateRoute(){
