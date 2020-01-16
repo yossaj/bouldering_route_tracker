@@ -27,6 +27,14 @@ public interface RouteDao {
     @Query("SELECT * FROM route WHERE id = :id")
     RouteEntry loadRouteById(int id);
 
+    @Query("SELECT * FROM route WHERE complete = 'false'")
+    List<RouteEntry> loadUnfinishedRoutes();
+
+    @Query("SELECT * FROM route WHERE complete = 'true'")
+    List<RouteEntry> loadFinishedRoutes();
+
+    @Query("SELECT * FROM route WHERE mRouteColour = 'pink' ")
+    List<RouteEntry> loadPinkRoutes();
 
 
 }

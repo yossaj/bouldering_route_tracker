@@ -51,6 +51,7 @@ public class AddRouteActivity extends AppCompatActivity {
     private String wall;
     private String notes;
     private Date date;
+    private Boolean completed = false;
 
     private boolean editMenuCheck = false;
     private boolean readyUpdateCheck = false;
@@ -104,6 +105,7 @@ public class AddRouteActivity extends AppCompatActivity {
         room = mRoom.getText().toString();
         wall = mWall.getText().toString();
         notes = mNotes.getText().toString();
+        String completedStr = completed.toString();
         if(date == null){  date = new Date();}
 
 
@@ -113,7 +115,7 @@ public class AddRouteActivity extends AppCompatActivity {
         }
 
        if(route == null){
-           route = new RouteEntry(routeName, routeColour, room, wall, notes, date);}
+           route = new RouteEntry(routeName, routeColour, room, wall, notes, completedStr, date);}
        else{
            route.setRouteName(routeName);
            route.setRouteColour(routeColour);

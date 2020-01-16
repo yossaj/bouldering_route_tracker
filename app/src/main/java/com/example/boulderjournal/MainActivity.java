@@ -22,8 +22,10 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
 
     private static final int ROUTE_LOADER_ID = 3;
 
-    private RouteAdapter mAdapter;
+    private RouteAdapter mUnfinishedAdapter;
     private RecyclerView mRecycleViewToDo;
+
+    private RouteAdapter mFinishedAdapter;
     private RecyclerView mRecycleViewDone;
     private AppDatabase mDb;
 
@@ -33,33 +35,16 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
         setContentView(R.layout.activity_main);
         mRecycleViewToDo = (RecyclerView)findViewById(R.id.recyclerRoutesToDo);
         mRecycleViewToDo.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new RouteAdapter(this, this);
-        mRecycleViewToDo.setAdapter(mAdapter);
+        mUnfinishedAdapter = new RouteAdapter(this, this);
+        mRecycleViewToDo.setAdapter(mUnfinishedAdapter);
 
-//        mRecycleViewDone = (RecyclerView)findViewById(R.id.recyclerRoutesDone);
-//        mRecycleViewDone.setLayoutManager(new LinearLayoutManager(this));
-//        mRecycleViewDone.setAdapter(mAdapter);
+        mRecycleViewDone = (RecyclerView)findViewById(R.id.recyclerRoutesDone);
+        mFinishedAdapter = new RouteAdapter(this,this);
+        mRecycleViewDone.setLayoutManager(new LinearLayoutManager(this));
+        mRecycleViewDone.setAdapter(mFinishedAdapter);
 
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            int position = viewHolder.getAdapterPosition();
-                            List<RouteEntry> routeEntries = mAdapter.getRoutes();
-                            mDb.routeDao().deleteRoute(routeEntries.get(position));
-                            retrieveRoutes();
-                        }
-                    });
-            }
-        }).attachToRecyclerView(mRecycleViewToDo);
+        moveToDoneWhenSwiped(mRecycleViewToDo, mUnfinishedAdapter);
+        deleteWhenSwiped(mRecycleViewDone, mFinishedAdapter);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
     }
@@ -67,24 +52,42 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
     @Override
     protected void onResume() {
         super.onResume();
-        retrieveRoutes();
+        retrieveUnfinishedRoutes();
+        retrieveFinishedRoutes();
     }
 
-    private void retrieveRoutes() {
+    private void retrieveUnfinishedRoutes() {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                final List<RouteEntry> routes = mDb.routeDao().loadAllRoutes();
+                final List<RouteEntry> unfinishedRoutes = mDb.routeDao().loadUnfinishedRoutes();
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mAdapter.setRoutes(routes);
+                        mUnfinishedAdapter.setRoutes(unfinishedRoutes);
                     }
                 });
             }
         });
     }
+
+    private void retrieveFinishedRoutes() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                final List<RouteEntry> finishedRoutes = mDb.routeDao().loadFinishedRoutes();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                            mFinishedAdapter.setRoutes(finishedRoutes);
+                    }
+                });
+            }
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,5 +113,60 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
         intent.putExtra(AddRouteActivity.EXTRA_ROUTE_ID, itemId);
         startActivity(intent);
 
+    }
+
+    public void moveToDoneWhenSwiped(RecyclerView recyclerView, final RouteAdapter adapter){
+
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(final RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        int position = viewHolder.getAdapterPosition();
+                        List<RouteEntry> routeEntries = adapter.getRoutes();
+                        RouteEntry route = routeEntries.get(position);
+                        String status = "true";
+                        route.setmComplete(status);
+                        mDb.routeDao().updateRoute(route);
+                        retrieveUnfinishedRoutes();
+                        retrieveFinishedRoutes();
+                    }
+                });
+
+            }
+        }).attachToRecyclerView(recyclerView);
+    }
+
+    public void deleteWhenSwiped(RecyclerView recyclerView, final RouteAdapter adapter){
+
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(final RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        int position = viewHolder.getAdapterPosition();
+                        List<RouteEntry> routeEntries = adapter.getRoutes();
+                        RouteEntry route = routeEntries.get(position);
+                        mDb.routeDao().deleteRoute(route);
+                        retrieveFinishedRoutes();
+                    }
+                });
+
+            }
+        }).attachToRecyclerView(recyclerView);
     }
 }

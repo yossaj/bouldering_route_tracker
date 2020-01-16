@@ -17,27 +17,31 @@ public class RouteEntry {
     private String mRoom;
     private String mWall;
     private String mNote;
+    @ColumnInfo(name ="complete")
+    protected String mComplete;
     @ColumnInfo(name ="updated_at")
     private Date updatedAt;
 
 
     @Ignore
-    public RouteEntry(String routeName, String routeColour, String room, String wall, String note , Date updatedAt){
+    public RouteEntry(String routeName, String routeColour, String room, String wall, String note , String complete, Date updatedAt){
         this.mRouteName = routeName;
         this.mRouteColour = routeColour;
         this.mRoom = room;
         this.mWall = wall;
         this.mNote = note;
+        this.mComplete = complete;
         this.updatedAt = updatedAt;
     }
 
-    public RouteEntry(int id, String routeName, String routeColour, String room, String wall, String note , Date updatedAt){
+    public RouteEntry(int id, String routeName, String routeColour, String room, String wall, String note , String complete, Date updatedAt){
         this.id = id;
         this.mRouteName = routeName;
         this.mRouteColour = routeColour;
         this.mRoom = room;
         this.mWall = wall;
         this.mNote = note;
+        this.mComplete = complete;
         this.updatedAt = updatedAt;
     }
 
@@ -90,6 +94,10 @@ public class RouteEntry {
         this.mNote = note;
     }
 
+    public String getmComplete(){ return mComplete;}
+
+    public void setmComplete(String completed){ this.mComplete = completed;}
+
     public Date getUpdatedAt() {
         return updatedAt;
     }
@@ -97,6 +105,8 @@ public class RouteEntry {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+
 
 
 }
