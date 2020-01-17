@@ -74,6 +74,7 @@ public class AddRouteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_add_route);
         initViews();
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -82,6 +83,8 @@ public class AddRouteActivity extends AppCompatActivity {
             mRouteId = savedInstanceState.getInt(INSTANCE_ROUTE_ID, DEFAULT_ROUTE_ID);
 
         }
+
+
 
         Intent intent =  getIntent();
         if(intent != null & intent.hasExtra(EXTRA_ROUTE_ID)){
@@ -99,6 +102,8 @@ public class AddRouteActivity extends AppCompatActivity {
             });
 
         }
+
+
     }
 
     public void setValues(){
@@ -132,7 +137,6 @@ public class AddRouteActivity extends AppCompatActivity {
      public void onAddRoute(){
 
          setValues();
-
          if(readyAddDb) {
              AppExecutors.getInstance().diskIO().execute(new Runnable() {
                  @Override
@@ -145,9 +149,7 @@ public class AddRouteActivity extends AppCompatActivity {
      }
 
      public void onUpdateRoute(){
-
         setValues();
-
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
