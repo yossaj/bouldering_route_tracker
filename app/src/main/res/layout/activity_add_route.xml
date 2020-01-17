@@ -81,7 +81,6 @@
                 android:background="@color/routeBlue"
                 android:textColor="@color/white"
                 android:checked="false"
-                android:theme="@style/WhiteRadioButton"
                 />
 
             <RadioButton

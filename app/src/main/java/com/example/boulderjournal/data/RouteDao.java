@@ -1,5 +1,6 @@
 package com.example.boulderjournal.data;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface RouteDao {
 
     @Query("SELECT * FROM route")
-    List<RouteEntry> loadAllRoutes();
+    LiveData<List<RouteEntry>> loadAllRoutes();
 
     @Insert
     void insertRoute(RouteEntry routeEntry);
@@ -28,9 +29,9 @@ public interface RouteDao {
     RouteEntry loadRouteById(int id);
 
     @Query("SELECT * FROM route WHERE complete = 'false'")
-    List<RouteEntry> loadUnfinishedRoutes();
+    LiveData<List<RouteEntry>> loadUnfinishedRoutes();
 
     @Query("SELECT * FROM route WHERE complete = 'true'")
-    List<RouteEntry> loadFinishedRoutes();
+    LiveData<List<RouteEntry>> loadFinishedRoutes();
 
 }

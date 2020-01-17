@@ -2,6 +2,8 @@ package com.example.boulderjournal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,45 +49,33 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
         deleteWhenSwiped(mRecycleViewDone, mFinishedAdapter);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         retrieveUnfinishedRoutes();
         retrieveFinishedRoutes();
     }
 
-    private void retrieveUnfinishedRoutes() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                final List<RouteEntry> unfinishedRoutes = mDb.routeDao().loadUnfinishedRoutes();
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mUnfinishedAdapter.setRoutes(unfinishedRoutes);
-                    }
-                });
+    private void retrieveUnfinishedRoutes() {
+
+        final LiveData<List<RouteEntry>> unfinishedRoutes = mDb.routeDao().loadUnfinishedRoutes();
+        unfinishedRoutes.observe(this, new Observer<List<RouteEntry>>() {
+            @Override
+            public void onChanged(List<RouteEntry> routeEntries) {
+                mUnfinishedAdapter.setRoutes(routeEntries);
             }
         });
+
     }
 
     private void retrieveFinishedRoutes() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                final List<RouteEntry> finishedRoutes = mDb.routeDao().loadFinishedRoutes();
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                            mFinishedAdapter.setRoutes(finishedRoutes);
-                    }
-                });
+        final LiveData<List<RouteEntry>> unfinishedRoutes = mDb.routeDao().loadFinishedRoutes();
+        unfinishedRoutes.observe(this, new Observer<List<RouteEntry>>() {
+            @Override
+            public void onChanged(List<RouteEntry> routeEntries) {
+                mFinishedAdapter.setRoutes(routeEntries);
             }
         });
+
     }
 
 
@@ -135,8 +125,6 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
                         String status = "true";
                         route.setmComplete(status);
                         mDb.routeDao().updateRoute(route);
-                        retrieveUnfinishedRoutes();
-                        retrieveFinishedRoutes();
                     }
                 });
 
@@ -162,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
                         List<RouteEntry> routeEntries = adapter.getRoutes();
                         RouteEntry route = routeEntries.get(position);
                         mDb.routeDao().deleteRoute(route);
-                        retrieveFinishedRoutes();
                     }
                 });
 
