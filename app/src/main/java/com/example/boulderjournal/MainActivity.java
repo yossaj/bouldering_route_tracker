@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +16,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
     private RouteAdapter mFinishedAdapter;
     private RecyclerView mRecycleViewDone;
     private AppDatabase mDb;
+
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +55,15 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
         deleteWhenSwiped(mRecycleViewDone, mFinishedAdapter);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
         retrieveUnfinishedRoutes();
         retrieveFinishedRoutes();
     }
 
 
     private void retrieveUnfinishedRoutes() {
-
-        final LiveData<List<RouteEntry>> unfinishedRoutes = mDb.routeDao().loadUnfinishedRoutes();
-        unfinishedRoutes.observe(this, new Observer<List<RouteEntry>>() {
+        viewModel.getUnFinishedRoutes().observe(this, new Observer<List<RouteEntry>>() {
             @Override
             public void onChanged(List<RouteEntry> routeEntries) {
                 mUnfinishedAdapter.setRoutes(routeEntries);
@@ -67,9 +73,7 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
     }
 
     private void retrieveFinishedRoutes() {
-
-        final LiveData<List<RouteEntry>> unfinishedRoutes = mDb.routeDao().loadFinishedRoutes();
-        unfinishedRoutes.observe(this, new Observer<List<RouteEntry>>() {
+        viewModel.getFinishedRoutes().observe(this, new Observer<List<RouteEntry>>() {
             @Override
             public void onChanged(List<RouteEntry> routeEntries) {
                 mFinishedAdapter.setRoutes(routeEntries);
