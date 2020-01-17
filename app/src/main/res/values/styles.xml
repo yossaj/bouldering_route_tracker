@@ -12,4 +12,9 @@
         <item name="android:windowBackground">@drawable/rock_bg</item>
     </style>
 
+    <style name="WhiteRadioButton" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+    </style>
+
 </resources>

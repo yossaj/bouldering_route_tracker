@@ -312,6 +312,10 @@ public class AddRouteActivity extends AppCompatActivity {
             colourInt = ContextCompat.getColor(this, R.color.routePink);
         }else if(newColor.equals("blue")){
             colourInt = ContextCompat.getColor(this, R.color.routeBlue);
+        }else if(newColor.equals("orange")){
+            colourInt = ContextCompat.getColor(this, R.color.routeOrange);
+        }else if(newColor.equals("yellow")){
+            colourInt = ContextCompat.getColor(this, R.color.routeYellow);
         }else{
             colourInt = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         }

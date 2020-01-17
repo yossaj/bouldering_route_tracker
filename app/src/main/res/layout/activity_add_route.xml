@@ -68,22 +68,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/route_colour_group"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             >
 
             <RadioButton
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:text="Blue"
                 android:id="@+id/blueButton"
+                android:background="@color/routeBlue"
+                android:textColor="@color/white"
                 android:checked="false"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+                android:theme="@style/WhiteRadioButton"
+                />
 
             <RadioButton
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:text="Pink"
                 android:id="@+id/pinkButton2"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+                android:background="@color/routePink"
+                android:textColor="@color/white"
+                android:theme="@style/WhiteRadioButton"
+                />
+
+            <RadioButton
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Orange"
+                android:id="@+id/orangeButton"
+                android:background="@color/routeOrange"
+                android:textColor="@color/white"
+                android:theme="@style/WhiteRadioButton"/>
+
+            <RadioButton
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Yellow"
+                android:id="@+id/yellowButton"
+                android:background="@color/routeYellow"
+                android:textColor="@color/white"
+                android:theme="@style/WhiteRadioButton"
+                />
 
         </RadioGroup>
 
