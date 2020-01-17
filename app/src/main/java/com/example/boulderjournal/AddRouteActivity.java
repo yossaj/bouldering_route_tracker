@@ -2,7 +2,9 @@ package com.example.boulderjournal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,6 +31,7 @@ public class AddRouteActivity extends AppCompatActivity {
     public static final String EXTRA_ROUTE_ID = "extraTaskId";
     public static final String INSTANCE_ROUTE_ID = "instanceTaskId";
     private static final int DEFAULT_ROUTE_ID = -1;
+    private Context mContext;
 
     private static final String DATE_FORMAT = "dd/MM/yyy";
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
@@ -41,6 +44,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
     private RadioGroup mRouteColourGroup;
     private RadioButton mRouteColourButtom;
+    private View mColorSwatch;
 
     private TextView mDateTV;
     private TextView mRouteNameTV;
@@ -223,6 +227,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
         mRouteNameTV = (TextView)findViewById(R.id.view_route_name);
         mRouteColourTV = (TextView)findViewById(R.id.view_route_colour);
+        mColorSwatch = (View) findViewById(R.id.color_swatch);
         mRoomTV = (TextView)findViewById(R.id.view_room);
         mWallTV = (TextView)findViewById(R.id.view_wall);
         mNotesTV = (TextView)findViewById(R.id.view_route_notes);
@@ -240,9 +245,14 @@ public class AddRouteActivity extends AppCompatActivity {
         mRouteNameTV.setVisibility(View.VISIBLE);
         mRouteName.setVisibility(View.GONE);
 
+        String setRouteColor = routeEntry.getRouteColour();
         mRouteColourTV.setVisibility(View.VISIBLE);
-        mRouteColourTV.setText(routeEntry.getRouteColour());
+        mRouteColourTV.setText(setRouteColor);
         mRouteColourGroup.setVisibility(View.GONE);
+        mColorSwatch.setVisibility(View.VISIBLE);
+        int getRouteColourInt = getColor(setRouteColor);
+        mColorSwatch.setBackgroundColor(getRouteColourInt);
+
 
 
         mRoomTV.setText(routeEntry.getRoom());
@@ -289,6 +299,21 @@ public class AddRouteActivity extends AppCompatActivity {
         editMenuCheck = false;
         readyUpdateCheck = true;
         editMenuItem.setTitle(R.string.update);
+    }
+
+    public int getColor(String color){
+        String newColor = color.toLowerCase();
+
+        int colourInt;
+        if(newColor.equals("pink")){
+            colourInt = ContextCompat.getColor(this, R.color.routePink);
+        }else if(newColor.equals("blue")){
+            colourInt = ContextCompat.getColor(this, R.color.routeBlue);
+        }else{
+            colourInt = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        }
+        return colourInt;
+
     }
 
 
