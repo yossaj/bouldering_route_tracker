@@ -118,7 +118,9 @@ public class AddRouteActivity extends AppCompatActivity {
         routeName = mRouteName.getText().toString();
         int selectedId = mRouteColourGroup.getCheckedRadioButtonId();
         mRouteColourButtom = (RadioButton)findViewById(selectedId);
-        routeColour = mRouteColourButtom.getText().toString();
+        if(mRouteColourButtom != null) {
+            routeColour = mRouteColourButtom.getText().toString();
+        }
         room = mRoom.getText().toString();
         wall = mWall.getText().toString();
         notes = mNotes.getText().toString();
@@ -280,6 +282,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
         mRouteColourTV.setVisibility(View.GONE);
         mRouteColourGroup.setVisibility(View.VISIBLE);
+        mColorSwatch.setVisibility(View.GONE);
 
 
         mRoom.setText(routeEntry.getRoom());
