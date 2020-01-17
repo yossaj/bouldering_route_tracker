@@ -283,6 +283,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
         mRouteColourTV.setVisibility(View.GONE);
         mRouteColourGroup.setVisibility(View.VISIBLE);
+        getRadioBox(routeEntry.getRouteColour());
         mColorSwatch.setVisibility(View.GONE);
 
 
@@ -303,6 +304,23 @@ public class AddRouteActivity extends AppCompatActivity {
         editMenuCheck = false;
         readyUpdateCheck = true;
         editMenuItem.setTitle(R.string.update);
+    }
+
+    public void getRadioBox(String color){
+        String newColourStr = color.toLowerCase();
+        switch (newColourStr) {
+            case "blue":
+                ((RadioGroup) findViewById(R.id.route_colour_group)).check(R.id.blueButton);
+                break;
+            case "pink":
+                ((RadioGroup) findViewById(R.id.route_colour_group)).check(R.id.pinkButton);
+                break;
+            case "orange":
+                ((RadioGroup) findViewById(R.id.route_colour_group)).check(R.id.orangeButton);
+                break;
+            case "yellow":
+                ((RadioGroup) findViewById(R.id.route_colour_group)).check(R.id.yellowButton);
+        }
     }
 
 

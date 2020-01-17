@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="Pink"
-                android:id="@+id/pinkButton2"
+                android:id="@+id/pinkButton"
                 android:background="@color/routePink"
                 android:textColor="@color/white"
                 android:theme="@style/WhiteRadioButton"
