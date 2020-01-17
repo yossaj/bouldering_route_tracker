@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.boulderjournal.Utils.Utilities;
 import com.example.boulderjournal.data.RouteEntry;
 
 import java.util.List;
@@ -41,6 +42,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
         RouteEntry routeEntry = mRouteEntries.get(position);
         String routeName = routeEntry.getRouteName();
         holder.routeTitleMain.setText(routeName);
+        String routeColor = routeEntry.getRouteColour();
+        int routeColourInt = Utilities.getColor(routeColor, mContext);
+        holder.routeColourSwatch.setBackgroundColor(routeColourInt);
+
     }
 
 
@@ -76,10 +81,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
     class RouteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView routeTitleMain;
+        View routeColourSwatch;
 
         public RouteViewHolder( View itemView) {
             super(itemView);
             routeTitleMain = (TextView)itemView.findViewById(R.id.route_name_main);
+            routeColourSwatch = (View)itemView.findViewById(R.id.color_swatch_main);
             itemView.setOnClickListener(this);
         }
 

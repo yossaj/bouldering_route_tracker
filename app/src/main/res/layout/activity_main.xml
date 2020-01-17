@@ -50,14 +50,20 @@
         android:background="@color/colorPrimary"
     android:layout_weight="2">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:textColor="@color/main_list_items_light"
+            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="60dp"/>
+
         <FrameLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerRoutesDone"

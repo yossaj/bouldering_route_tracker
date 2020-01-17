@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.boulderjournal.Utils.Utilities;
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
 
@@ -31,7 +32,7 @@ public class AddRouteActivity extends AppCompatActivity {
     public static final String EXTRA_ROUTE_ID = "extraTaskId";
     public static final String INSTANCE_ROUTE_ID = "instanceTaskId";
     private static final int DEFAULT_ROUTE_ID = -1;
-    private Context mContext;
+
 
     private static final String DATE_FORMAT = "dd/MM/yyy";
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
@@ -252,7 +253,7 @@ public class AddRouteActivity extends AppCompatActivity {
         mRouteColourTV.setText(setRouteColor);
         mRouteColourGroup.setVisibility(View.GONE);
         mColorSwatch.setVisibility(View.VISIBLE);
-        int getRouteColourInt = getColor(setRouteColor);
+        int getRouteColourInt = Utilities.getColor(setRouteColor, this);
         mColorSwatch.setBackgroundColor(getRouteColourInt);
 
 
@@ -304,24 +305,7 @@ public class AddRouteActivity extends AppCompatActivity {
         editMenuItem.setTitle(R.string.update);
     }
 
-    public int getColor(String color){
-        String newColor = color.toLowerCase();
 
-        int colourInt;
-        if(newColor.equals("pink")){
-            colourInt = ContextCompat.getColor(this, R.color.routePink);
-        }else if(newColor.equals("blue")){
-            colourInt = ContextCompat.getColor(this, R.color.routeBlue);
-        }else if(newColor.equals("orange")){
-            colourInt = ContextCompat.getColor(this, R.color.routeOrange);
-        }else if(newColor.equals("yellow")){
-            colourInt = ContextCompat.getColor(this, R.color.routeYellow);
-        }else{
-            colourInt = ContextCompat.getColor(this, R.color.colorPrimaryDark);
-        }
-        return colourInt;
-
-    }
 
 
 ;}
