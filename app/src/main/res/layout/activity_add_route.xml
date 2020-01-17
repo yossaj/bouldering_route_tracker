@@ -63,24 +63,18 @@
             android:text="Route Colour"
             android:padding="@dimen/activity_horizontal_margin"/>
 
-        <EditText
-            android:id="@+id/input_route_colour"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
-
 
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/radioGroup"
+            android:id="@+id/route_colour_group"
             >
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Blue"
-                android:id="@+id/radioButton"
+                android:id="@+id/blueButton"
                 android:checked="false"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
 
@@ -88,8 +82,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pink"
-                android:id="@+id/radioButton2"
+                android:id="@+id/pinkButton2"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+
         </RadioGroup>
 
 

@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,10 +35,12 @@ public class AddRouteActivity extends AppCompatActivity {
 
 
     private EditText mRouteName;
-    private EditText mRouteColour;
     private EditText mRoom;
     private EditText mWall;
     private EditText mNotes;
+
+    private RadioGroup mRouteColourGroup;
+    private RadioButton mRouteColourButtom;
 
     private TextView mDateTV;
     private TextView mRouteNameTV;
@@ -108,7 +112,9 @@ public class AddRouteActivity extends AppCompatActivity {
 
     public void setValues(){
         routeName = mRouteName.getText().toString();
-        routeColour = mRouteColour.getText().toString();
+        int selectedId = mRouteColourGroup.getCheckedRadioButtonId();
+        mRouteColourButtom = (RadioButton)findViewById(selectedId);
+        routeColour = mRouteColourButtom.getText().toString();
         room = mRoom.getText().toString();
         wall = mWall.getText().toString();
         notes = mNotes.getText().toString();
@@ -207,7 +213,7 @@ public class AddRouteActivity extends AppCompatActivity {
         mDateTV.setText(newFormattedDate);
 
         mRouteName = (EditText) findViewById(R.id.input_route_name);
-        mRouteColour = (EditText)findViewById(R.id.input_route_colour);
+        mRouteColourGroup = (RadioGroup)findViewById(R.id.route_colour_group);
         mRoom = (EditText)findViewById(R.id.input_room);
         mWall = (EditText)findViewById(R.id.input_wall);
         mNotes = (EditText)findViewById(R.id.route_note);
@@ -236,7 +242,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
         mRouteColourTV.setVisibility(View.VISIBLE);
         mRouteColourTV.setText(routeEntry.getRouteColour());
-        mRouteColour.setVisibility(View.GONE);
+        mRouteColourGroup.setVisibility(View.GONE);
 
 
         mRoomTV.setText(routeEntry.getRoom());
@@ -263,8 +269,7 @@ public class AddRouteActivity extends AppCompatActivity {
         mRouteNameTV.setVisibility(View.GONE);
 
         mRouteColourTV.setVisibility(View.GONE);
-        mRouteColour.setText(routeEntry.getRouteColour());
-        mRouteColour.setVisibility(View.VISIBLE);
+        mRouteColourGroup.setVisibility(View.VISIBLE);
 
 
         mRoom.setText(routeEntry.getRoom());
