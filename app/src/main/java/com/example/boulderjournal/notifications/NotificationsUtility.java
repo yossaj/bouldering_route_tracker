@@ -37,7 +37,7 @@ public class NotificationsUtility {
                     .setContentTitle(context.getString(R.string.reminder_title))
                     .setContentText(context.getString(R.string.reminder_content))
                     .setSmallIcon(R.drawable.stone)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.reminder_title)))
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.reminder_content)))
                     .setDefaults(Notification.DEFAULT_VIBRATE)
                     .setContentIntent(contentIntent(context))
                     .setDefaults(Notification.DEFAULT_VIBRATE)

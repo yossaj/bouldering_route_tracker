@@ -20,6 +20,8 @@ import android.view.View;
 
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
+import com.example.boulderjournal.notifications.NotificationsUtility;
+import com.example.boulderjournal.notifications.ScheduleReminderUtil;
 
 import java.util.List;
 
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ScheduleReminderUtil.scheduleReminder(this);
+
         mRecycleViewToDo = (RecyclerView)findViewById(R.id.recyclerRoutesToDo);
         mRecycleViewToDo.setLayoutManager(new LinearLayoutManager(this));
         mUnfinishedAdapter = new RouteAdapter(this, this);
@@ -192,4 +196,5 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
         }).attachToRecyclerView(recyclerView);
 
     }
+
 }

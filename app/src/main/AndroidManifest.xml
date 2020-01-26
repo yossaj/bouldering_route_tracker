@@ -23,6 +23,14 @@
             android:label="Add a New Route">
         </activity>
 
+
+        <service
+            android:name=".notifications.BouderFirebaseJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
