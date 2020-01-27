@@ -4,7 +4,7 @@
     <string name="update">Update</string>
 
 
-<!--Notifications Strings -->
+    <!--Notifications Strings -->
     <string name="main_notification_channel_name">Primary</string>
     <string name="reminder_title">Remember to be consistent</string>
     <string name="reminder_content">You went bouldering last week but you haven\'t made any notes. Were there no routes you go stuck on?</string>
