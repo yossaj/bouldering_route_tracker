@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
             Intent addNewRoute = new Intent(MainActivity.this, AddRouteActivity.class);
             startActivity(addNewRoute);
             return true;
+        }else if(id == R.id.preferences) {
+            Intent launchPreferences = new Intent(MainActivity.this, AppPreferences.class);
+            startActivity(launchPreferences);
         }
         return super.onOptionsItemSelected(item);
     }

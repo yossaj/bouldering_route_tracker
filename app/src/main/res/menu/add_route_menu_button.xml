@@ -10,10 +10,18 @@
         android:visible="false"/>
 
     <item
+        android:id="@+id/preferences"
+        android:title="preferences"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
         android:id="@+id/add"
         android:title="+"
         android:orderInCategory="2"
         app:showAsAction="always" />
+
+
 
 
 </menu>
