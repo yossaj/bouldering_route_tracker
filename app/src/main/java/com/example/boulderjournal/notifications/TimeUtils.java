@@ -12,72 +12,78 @@ import java.util.Date;
 
 public class TimeUtils extends AppCompatActivity {
 
-    Context context;
 
 
-    public Date getTodaysDate(){
+    public static Date getTodaysDate(){
         Date today = new Date();
         return today;
     }
 
-    public String GetClimbDay( ){
-        context = getApplicationContext();
+    public static String getClimbDay(Context context, String sharedPrefKey, String climbDayKey){ ;
         SharedPreferences sharedPreferences = context.getSharedPreferences(
-                getString(R.string.shared_preference_key), Context.MODE_PRIVATE);
+                sharedPrefKey, Context.MODE_PRIVATE);
         String defaultValue = "MONDAY";
-        String preferedDay = sharedPreferences.getString(getString(R.string.climb_day_key), defaultValue);
+        String preferedDay = sharedPreferences.getString(climbDayKey, defaultValue);
         return preferedDay;
 
     }
 
-    public int converClimbDayToInt(){
+    public static int converClimbDayToInt(Context context, String sharedPrefKey, String climbDayKey){
+        String day = getClimbDay(context, sharedPrefKey, climbDayKey);
+        int dayNumber;
 
-        switch (month) {
-            case "JAN":
-                monthNumber = 1;
+        switch (day) {
+            case "MONDAY":
+                dayNumber = 1;
                 break;
-            case "FEB":
-                monthNumber = 2;
+            case "TUESDAY":
+                dayNumber = 2;
                 break;
-            case "MAR":
-                monthNumber = 3;
+            case "WEDNESDAY":
+                dayNumber = 3;
                 break;
-            case "APR":
-                monthNumber = 4;
+            case "THURSDAY":
+                dayNumber = 4;
                 break;
-            case "MAY":
-                monthNumber = 5;
+            case "FRIDAY":
+                dayNumber = 5;
                 break;
-            case "JUN":
-                monthNumber = 6;
+            case "SATURDAY":
+                dayNumber = 6;
                 break;
-            case "JUL":
-                monthNumber = 7;
-                break;
-            case "AUG":
-                monthNumber = 8;
-                break;
-            case "SEP":
-                monthNumber = 9;
-                break;
-            case "OCT":
-                monthNumber = 10;
-                break;
-            case "NOV":
-                monthNumber = 11;
-                break;
-            case "DEC":
-                monthNumber = 12;
+            case "SUNDAY":
+                dayNumber = 7;
                 break;
             default:
-                return null;
+                return 1;
         }
+
+        return dayNumber;
 
     }
 
-    public void calculateNextClimbDay(){
+    public static Date calculateNextClimbDay(Context context, String sharedPrefKey, String climbDayKey){
         Calendar calendar = Calendar.getInstance();
-        calendar.getFirstDayOfWeek();
+        Date date;
+        int climbday = converClimbDayToInt(context, sharedPrefKey, climbDayKey);
+        Date today = getTodaysDate();
+        int todayint = today.getDay();
+        int daysUntilClimbDay;
+        if(climbday > todayint){
+            daysUntilClimbDay = climbday - todayint;
+            calendar.add(Calendar.DATE, daysUntilClimbDay);
+            date = calendar.getTime();
+            return date;
+        }else if(todayint > climbday){
+            daysUntilClimbDay = (7 - todayint) + climbday;
+            calendar.add(Calendar.DATE, daysUntilClimbDay);
+            date = calendar.getTime();
+            return date;
+
+
+        }else {
+            return date = new Date();
+        }
     }
 
 }

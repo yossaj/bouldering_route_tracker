@@ -22,6 +22,7 @@ import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
 import com.example.boulderjournal.notifications.NotificationsUtility;
 import com.example.boulderjournal.notifications.ScheduleReminderUtil;
+import com.example.boulderjournal.notifications.TimeUtils;
 
 import java.util.List;
 
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
 
         retrieveUnfinishedRoutes();
         retrieveFinishedRoutes();
+        TimeUtils.converClimbDayToInt(getApplicationContext(), getString(R.string.shared_preference_key), getString(R.string.climb_day_key));
+        TimeUtils.calculateNextClimbDay(getApplicationContext(), getString(R.string.shared_preference_key), getString(R.string.climb_day_key));
     }
 
 
