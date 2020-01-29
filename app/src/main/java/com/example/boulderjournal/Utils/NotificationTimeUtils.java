@@ -10,7 +10,7 @@ import com.example.boulderjournal.R;
 import java.util.Calendar;
 import java.util.Date;
 
-public final class TimeUtils {
+public final class NotificationTimeUtils {
 
 
 

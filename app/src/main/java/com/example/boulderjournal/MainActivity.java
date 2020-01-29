@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ScheduleReminderUtil.scheduleReminder(this);
+        ScheduleReminderUtil.scheduleReminder(this, getString(R.string.shared_preference_key), getString(R.string.climb_day_key));
 
         mRecycleViewToDo = (RecyclerView)findViewById(R.id.recyclerRoutesToDo);
         mRecycleViewToDo.setLayoutManager(new LinearLayoutManager(this));
