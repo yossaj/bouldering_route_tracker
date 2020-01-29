@@ -1,4 +1,4 @@
-package com.example.boulderjournal.notifications;
+package com.example.boulderjournal.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,7 +10,7 @@ import com.example.boulderjournal.R;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TimeUtils extends AppCompatActivity {
+public final class TimeUtils {
 
 
 
@@ -84,6 +84,12 @@ public class TimeUtils extends AppCompatActivity {
         }else {
             return date = new Date();
         }
+    }
+
+    public static long calculateDelay(Context context, String sharedPrefKey, String climbDayKey){
+        Date nextClimbDate = calculateNextClimbDay(context, sharedPrefKey, climbDayKey);
+        Date today = getTodaysDate();
+        return nextClimbDate.getTime() - today.getTime();
     }
 
 }

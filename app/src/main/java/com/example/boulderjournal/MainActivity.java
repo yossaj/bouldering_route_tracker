@@ -2,10 +2,7 @@ package com.example.boulderjournal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,13 +13,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
-import com.example.boulderjournal.notifications.NotificationsUtility;
 import com.example.boulderjournal.notifications.ScheduleReminderUtil;
-import com.example.boulderjournal.notifications.TimeUtils;
 
 import java.util.List;
 
@@ -65,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
 
         retrieveUnfinishedRoutes();
         retrieveFinishedRoutes();
-        TimeUtils.converClimbDayToInt(getApplicationContext(), getString(R.string.shared_preference_key), getString(R.string.climb_day_key));
-        TimeUtils.calculateNextClimbDay(getApplicationContext(), getString(R.string.shared_preference_key), getString(R.string.climb_day_key));
     }
 
 
