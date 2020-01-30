@@ -2,8 +2,8 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:fillViewport="false">
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -202,7 +202,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/colorPrimary">
 
 
 
@@ -219,7 +220,7 @@
         <EditText
             android:id="@+id/route_note"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="300dp"
             android:inputType="text|textMultiLine"
             android:gravity="top"
             android:background="@color/colorPrimary"
@@ -250,6 +251,12 @@
             android:text="Take Photo"
             android:textColor="@android:color/primary_text_dark"
             android:onClick="dispatchTakePictureIntent"/>
+
+        <ImageView
+            android:id="@+id/capturedPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
 
     </LinearLayout>

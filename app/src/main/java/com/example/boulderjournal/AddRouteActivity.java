@@ -1,10 +1,13 @@
 package com.example.boulderjournal;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -21,6 +25,8 @@ import com.example.boulderjournal.Utils.Utilities;
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -52,6 +58,7 @@ public class AddRouteActivity extends AppCompatActivity {
     private TextView mRoomTV;
     private TextView mWallTV;
     private TextView mNotesTV;
+    private ImageView wallPhotoImageView;
 
     private String routeName;
     private String routeColour;
@@ -74,6 +81,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
     private Button mPhotoIntentButton;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private String currentPhotoPath;
 
     private int mRouteId = DEFAULT_ROUTE_ID;
 
@@ -112,11 +120,13 @@ public class AddRouteActivity extends AppCompatActivity {
 
         }
 
+        wallPhotoImageView = (ImageView)findViewById(R.id.capturedPhoto);
         mPhotoIntentButton = (Button)findViewById(R.id.updateButton);
         mPhotoIntentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dispatchTakePictureIntent();
+
             }
         });
 
@@ -340,7 +350,15 @@ public class AddRouteActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            wallPhotoImageView.setImageBitmap(imageBitmap);
+        }
+    }
 
 
 }
