@@ -3,9 +3,11 @@ package com.example.boulderjournal;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,12 +26,15 @@ import android.widget.Toast;
 import com.example.boulderjournal.Utils.Utilities;
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class AddRouteActivity extends AppCompatActivity {
@@ -82,6 +87,7 @@ public class AddRouteActivity extends AppCompatActivity {
     private Button mPhotoIntentButton;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private String currentPhotoPath;
+    private Uri climbWallUri;
 
     private int mRouteId = DEFAULT_ROUTE_ID;
 
@@ -343,25 +349,48 @@ public class AddRouteActivity extends AppCompatActivity {
 
 
 
+
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+              return;
+            }
+            if (photoFile != null) {
+                Toast.makeText(this,"haha", Toast.LENGTH_SHORT);
+                Uri photoURI = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()),
+                        BuildConfig.APPLICATION_ID + ".fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                climbWallUri = photoURI;
+
+
+
+            }
         }
     }
 
 
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            wallPhotoImageView.setImageBitmap(imageBitmap);
+            if(climbWallUri != null) {
+                Picasso.get().load(climbWallUri).into(wallPhotoImageView);
+            }else{
+                String url = "https://p2.piqsels.com/preview/385/249/229/rock-climber-rope-mounatin.jpg";
+                Picasso.get().load(url).into(wallPhotoImageView);
+            }
         }
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     private File createImageFile() throws IOException {
