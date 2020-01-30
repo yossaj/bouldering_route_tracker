@@ -2,11 +2,10 @@ package com.example.boulderjournal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -73,7 +72,8 @@ public class AddRouteActivity extends AppCompatActivity {
     private RouteEntry route;
 
 
-    private Button mUpdateButton;
+    private Button mPhotoIntentButton;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private int mRouteId = DEFAULT_ROUTE_ID;
 
@@ -111,6 +111,14 @@ public class AddRouteActivity extends AppCompatActivity {
             });
 
         }
+
+        mPhotoIntentButton = (Button)findViewById(R.id.updateButton);
+        mPhotoIntentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+        });
 
 
     }
@@ -234,7 +242,7 @@ public class AddRouteActivity extends AppCompatActivity {
         mRoomTV = (TextView)findViewById(R.id.view_room);
         mWallTV = (TextView)findViewById(R.id.view_wall);
         mNotesTV = (TextView)findViewById(R.id.view_route_notes);
-        mUpdateButton = (Button)findViewById(R.id.updateButton);
+
 
 
     }
@@ -325,5 +333,14 @@ public class AddRouteActivity extends AppCompatActivity {
 
 
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
 
-;}
+
+
+
+}
