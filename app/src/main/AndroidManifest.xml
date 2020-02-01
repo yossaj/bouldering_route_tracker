@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher">
-        <activity android:name=".AppPreferences"></activity>
+        <activity android:name=".AppPreferences"
+            android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +26,8 @@
         </activity>
         <activity
             android:name=".AddRouteActivity"
-            android:label="Add a New Route"></activity>
+            android:label="Add a New Route"
+            android:parentActivityName=".MainActivity"></activity>
 
         <service
             android:name=".notifications.BouderFirebaseJobService"

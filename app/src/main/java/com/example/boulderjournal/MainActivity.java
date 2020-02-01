@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
 
         retrieveUnfinishedRoutes();
         retrieveFinishedRoutes();
+
     }
 
 

@@ -134,6 +134,8 @@ public class AddRouteActivity extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 

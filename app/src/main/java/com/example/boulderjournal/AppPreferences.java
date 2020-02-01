@@ -38,9 +38,7 @@ public class AppPreferences extends AppCompatActivity {
         dayPicker.setDaySelectionChangedListener(new MaterialDayPicker.DaySelectionChangedListener() {
             @Override
             public void onDaySelectionChanged(List<MaterialDayPicker.Weekday> selectedDay) {
-
                  climbDay = selectedDay.get(0).toString() ;
-
                  editor.putString(getString(R.string.climb_day_key),climbDay);
                  editor.commit();
             }
