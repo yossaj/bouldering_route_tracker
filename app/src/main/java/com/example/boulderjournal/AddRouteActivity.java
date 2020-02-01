@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,7 +29,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -230,9 +228,8 @@ public class AddRouteActivity extends AppCompatActivity {
         }else if(id == R.id.edit_menu_item && editMenuCheck){
             populateEditableUI(route);
         }else if(id == R.id.edit_menu_item && readyUpdateCheck){
-            Toast.makeText(getBaseContext(), "Ready", Toast.LENGTH_LONG).show();
             onUpdateRoute();
-            populateStaticUI(route);
+            refactorUIonUpdateRoute();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -296,7 +293,6 @@ public class AddRouteActivity extends AppCompatActivity {
         mNotesTV.setVisibility(View.VISIBLE);
         mNotes.setVisibility(View.GONE);
 
-
     }
 
     public void populateEditableUI(RouteEntry routeEntry){
@@ -329,6 +325,16 @@ public class AddRouteActivity extends AppCompatActivity {
         readyUpdateCheck = true;
         editMenuItem.setTitle(R.string.update);
     }
+
+    public void refactorUIonUpdateRoute(){
+        Toast.makeText(getBaseContext(), "Your note has been updated", Toast.LENGTH_LONG).show();
+        populateStaticUI(route);
+        editMenuItem.setTitle("Edit");
+        editMenuCheck = true;
+        readyUpdateCheck = false;
+    }
+
+
 
     public void getRadioBox(String color){
         String newColourStr = color.toLowerCase();
