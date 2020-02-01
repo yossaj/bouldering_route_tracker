@@ -191,7 +191,6 @@ public class AddRouteActivity extends AppCompatActivity {
             @Override
             public void run() {
                 mDb.routeDao().updateRoute(route);
-                finish();
             }
         });
 
@@ -233,6 +232,7 @@ public class AddRouteActivity extends AppCompatActivity {
         }else if(id == R.id.edit_menu_item && readyUpdateCheck){
             Toast.makeText(getBaseContext(), "Ready", Toast.LENGTH_LONG).show();
             onUpdateRoute();
+            populateStaticUI(route);
         }
         return super.onOptionsItemSelected(item);
     }
