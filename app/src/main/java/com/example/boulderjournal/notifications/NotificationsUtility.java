@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.boulderjournal.AppPreferences;
+import com.example.boulderjournal.LoginActivty;
 import com.example.boulderjournal.R;
 
 public class NotificationsUtility {
@@ -50,7 +51,7 @@ public class NotificationsUtility {
     }
 
     private static PendingIntent contentIntent(Context context) {
-        Intent startActivityIntent = new Intent(context, AppPreferences.class);
+        Intent startActivityIntent = new Intent(context, LoginActivty.class);
         return PendingIntent.getActivity(
                 context,
                 NOTES_REMINDER_PENDING_INTENT_ID,

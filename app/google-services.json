@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "682257759689",
+    "firebase_url": "https://boulder-journal.firebaseio.com",
+    "project_id": "boulder-journal",
+    "storage_bucket": "boulder-journal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682257759689:android:5fbc5f702f946e666cfc18",
+        "android_client_info": {
+          "package_name": "com.example.boulderjournal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682257759689-astgn7h8c84gelm4hfea6nfasnn42gdr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.boulderjournal",
+            "certificate_hash": "8648e1c0d8f62b887df868ccd279bfa27dddf76a"
+          }
+        },
+        {
+          "client_id": "682257759689-hsb2no063k1pq1aiapbpk65q1cppmke9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj3B9OGmd831A0h6_VLLkBUanwtl0-QeQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682257759689-hsb2no063k1pq1aiapbpk65q1cppmke9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
