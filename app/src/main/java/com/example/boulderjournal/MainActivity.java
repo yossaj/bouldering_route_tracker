@@ -13,10 +13,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
 import com.example.boulderjournal.notifications.ScheduleReminderUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -34,11 +37,19 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
 
     private MainViewModel viewModel;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ScheduleReminderUtil.scheduleReminder(this, getString(R.string.shared_preference_key), getString(R.string.climb_day_key));
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        userName = currentUser.getDisplayName();
 
         mRecycleViewToDo = (RecyclerView)findViewById(R.id.recyclerRoutesToDo);
         mRecycleViewToDo.setLayoutManager(new LinearLayoutManager(this));
@@ -101,7 +112,10 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
         }else if(id == R.id.preferences) {
             Intent launchPreferences = new Intent(MainActivity.this, AppPreferences.class);
             startActivity(launchPreferences);
+        }else if(id == R.id.sign_out_menu){
+            signOut();
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -193,6 +207,18 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
 
             }
         }).attachToRecyclerView(recyclerView);
+
+    }
+
+    public void signOut() {
+        if (mAuth.getCurrentUser() != null) {
+            Toast.makeText(getBaseContext(),  userName + " : Signed Out", Toast.LENGTH_LONG).show();
+            mAuth.signOut();
+            Intent returnToSignIn = new Intent(MainActivity.this, LoginActivty.class);
+            startActivity(returnToSignIn);
+        } else {
+            Toast.makeText(getBaseContext(), "Already signed out", Toast.LENGTH_LONG).show();
+        }
 
     }
 

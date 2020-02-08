@@ -35,7 +35,6 @@ public class LoginActivty extends AppCompatActivity {
     private GoogleSignInOptions gso;
 
     private SignInButton mSignInButton;
-    private Button mSignOutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +50,6 @@ public class LoginActivty extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signIn();
-            }
-        });
-
-        mSignOutButton = (Button)findViewById(R.id.sign_out);
-        mSignOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
             }
         });
 
@@ -88,6 +79,7 @@ public class LoginActivty extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
@@ -110,12 +102,12 @@ public class LoginActivty extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getBaseContext(), "Logged in", Toast.LENGTH_LONG).show();
-//                            updateUI(user);
+                            Intent mainActivitySignIn = new Intent(getBaseContext() ,MainActivity.class);
+                            startActivity(mainActivitySignIn);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getBaseContext(), "Authentication Failed.", Toast.LENGTH_LONG).show();
-//                            updateUI(null);
+                            Toast.makeText(getBaseContext(), "Authentication Failed. ", Toast.LENGTH_LONG).show();
                         }
 
                         // ...
@@ -126,22 +118,14 @@ public class LoginActivty extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 //        TODO: Write a function that updates the ui with current users info
 //        updateUI(currentUser);
     }
 
 
-    public void signOut(){
-        if(mAuth.getCurrentUser() != null) {
-            String userNamer = mAuth.getCurrentUser().toString();
-            Toast.makeText(getBaseContext(),  userNamer + ": Signed Out", Toast.LENGTH_LONG).show();
-            mAuth.signOut();
-        }else{
-            Toast.makeText(getBaseContext(),  "Couldn't sign out", Toast.LENGTH_LONG).show();
-        }
 
 
 
-    }
+
+
 }

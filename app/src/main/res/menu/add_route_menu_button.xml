@@ -21,6 +21,12 @@
         android:orderInCategory="2"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/sign_out_menu"
+        android:title="Sign Out"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"/>
+
 
 
 
