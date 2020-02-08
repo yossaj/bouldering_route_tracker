@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -34,6 +35,7 @@ public class LoginActivty extends AppCompatActivity {
     private GoogleSignInOptions gso;
 
     private SignInButton mSignInButton;
+    private Button mSignOutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,13 @@ public class LoginActivty extends AppCompatActivity {
             }
         });
 
-
+        mSignOutButton = (Button)findViewById(R.id.sign_out);
+        mSignOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
 
     }
 
@@ -83,6 +91,7 @@ public class LoginActivty extends AppCompatActivity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
+                Toast.makeText(getBaseContext(),  "Google sign in failed :" +  e, Toast.LENGTH_LONG).show();
                 // ...
             }
         }
@@ -124,6 +133,15 @@ public class LoginActivty extends AppCompatActivity {
 
 
     public void signOut(){
-        mAuth.signOut();
+        if(mAuth.getCurrentUser() != null) {
+            String userNamer = mAuth.getCurrentUser().toString();
+            Toast.makeText(getBaseContext(),  userNamer + ": Signed Out", Toast.LENGTH_LONG).show();
+            mAuth.signOut();
+        }else{
+            Toast.makeText(getBaseContext(),  "Couldn't sign out", Toast.LENGTH_LONG).show();
+        }
+
+
+
     }
 }

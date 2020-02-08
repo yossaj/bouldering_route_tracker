@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "682257759689-cq7ba2tfnnrigg1rcto4t5nqa1p8o88h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.boulderjournal",
+            "certificate_hash": "a8b27482462a81d8b6132de167900a062b6e4e22"
+          }
+        },
+        {
           "client_id": "682257759689-astgn7h8c84gelm4hfea6nfasnn42gdr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
