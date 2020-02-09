@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 
 public class AddRouteActivity extends AppCompatActivity {
@@ -68,6 +69,7 @@ public class AddRouteActivity extends AppCompatActivity {
     private String room;
     private String wall;
     private String notes;
+    private String imageURIstr;
     private Date date;
     private Boolean completed = false;
 
@@ -102,30 +104,29 @@ public class AddRouteActivity extends AppCompatActivity {
 
         if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_ROUTE_ID)) {
             mRouteId = savedInstanceState.getInt(INSTANCE_ROUTE_ID, DEFAULT_ROUTE_ID);
-
         }
-
 
 
         Intent intent =  getIntent();
         if(intent != null & intent.hasExtra(EXTRA_ROUTE_ID)){
             editMenuCheck = true;
             initStaticViews();
-
             final int routeID = intent.getIntExtra(EXTRA_ROUTE_ID, DEFAULT_ROUTE_ID) ;
 
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                     route = mDb.routeDao().loadRouteById(routeID);
+                    route = mDb.routeDao().loadRouteById(routeID);
                     populateStaticUI(route);
                 }
             });
 
+            delaySetImage();
+
+
         }
 
-        wallPhotoImageView = (ImageView)findViewById(R.id.capturedPhoto);
-        mPhotoIntentButton = (Button)findViewById(R.id.updateButton);
+
         mPhotoIntentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,6 +136,8 @@ public class AddRouteActivity extends AppCompatActivity {
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
 
     }
@@ -150,6 +153,9 @@ public class AddRouteActivity extends AppCompatActivity {
         wall = mWall.getText().toString();
         notes = mNotes.getText().toString();
         String completedStr = completed.toString();
+        if(climbWallUri != null) {
+            imageURIstr = climbWallUri.toString();
+        }
         if(date == null){  date = new Date();}
 
 
@@ -157,7 +163,7 @@ public class AddRouteActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "Please fill in all fields", Toast.LENGTH_LONG).show();
             return;
         }else if(route == null){
-           route = new RouteEntry(routeName, routeColour, room, wall, notes, completedStr, date);
+           route = new RouteEntry(routeName, routeColour, room, wall, notes, imageURIstr,completedStr, date);
            readyAddDb = true;
         }
 
@@ -167,6 +173,7 @@ public class AddRouteActivity extends AppCompatActivity {
            route.setRoom(room);
            route.setWall(wall);
            route.setNote(notes);
+           route.setmImageLocation(imageURIstr);
            readyAddDb = true;
        }
     }
@@ -247,6 +254,8 @@ public class AddRouteActivity extends AppCompatActivity {
         mRoom = (EditText)findViewById(R.id.input_room);
         mWall = (EditText)findViewById(R.id.input_wall);
         mNotes = (EditText)findViewById(R.id.route_note);
+        wallPhotoImageView = (ImageView)findViewById(R.id.capturedPhoto);
+        mPhotoIntentButton = (Button)findViewById(R.id.updateButton);
     }
 
     public void initStaticViews(){
@@ -257,6 +266,8 @@ public class AddRouteActivity extends AppCompatActivity {
         mRoomTV = (TextView)findViewById(R.id.view_room);
         mWallTV = (TextView)findViewById(R.id.view_wall);
         mNotesTV = (TextView)findViewById(R.id.view_route_notes);
+
+
 
 
 
@@ -279,22 +290,20 @@ public class AddRouteActivity extends AppCompatActivity {
         int getRouteColourInt = Utilities.getColor(setRouteColor, this);
         mColorSwatch.setBackgroundColor(getRouteColourInt);
 
-
-
         mRoomTV.setText(routeEntry.getRoom());
         mRoomTV.setVisibility(View.VISIBLE);
         mRoom.setVisibility(View.GONE);
-
 
         mWallTV.setText(routeEntry.getWall());
         mWallTV.setVisibility(View.VISIBLE);
         mWall.setVisibility(View.GONE);
 
-
         mNotesTV.setText(routeEntry.getNote());
         mNotesTV.setVisibility(View.VISIBLE);
         mNotes.setVisibility(View.GONE);
 
+        mPhotoIntentButton.setVisibility(View.GONE);
+        setSavedImageIfPresent();
     }
 
     public void populateEditableUI(RouteEntry routeEntry){
@@ -326,6 +335,8 @@ public class AddRouteActivity extends AppCompatActivity {
         editMenuCheck = false;
         readyUpdateCheck = true;
         editMenuItem.setTitle(R.string.update);
+
+        mPhotoIntentButton.setVisibility(View.VISIBLE);
     }
 
     public void refactorUIonUpdateRoute(){
@@ -335,7 +346,6 @@ public class AddRouteActivity extends AppCompatActivity {
         editMenuCheck = true;
         readyUpdateCheck = false;
     }
-
 
 
     public void getRadioBox(String color){
@@ -355,10 +365,6 @@ public class AddRouteActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -371,38 +377,50 @@ public class AddRouteActivity extends AppCompatActivity {
               return;
             }
             if (photoFile != null) {
-                Toast.makeText(this,"haha", Toast.LENGTH_SHORT);
                 Uri photoURI = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()),
                         BuildConfig.APPLICATION_ID + ".fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 climbWallUri = photoURI;
-
-
-
             }
         }
     }
 
+    private void setSavedImageIfPresent(){
+        if(route.getmImageLocation() != null){
+            climbWallUri = Uri.parse(route.getmImageLocation());
+        }
+    }
 
+    private void setImage(){
+        if(climbWallUri != null) {
+            Picasso.get().load(climbWallUri).into(wallPhotoImageView);
+        }else{
+            String url = "https://p2.piqsels.com/preview/385/249/229/rock-climber-rope-mounatin.jpg";
+            Picasso.get().load(url).into(wallPhotoImageView);
+        }
+    }
+
+    private void delaySetImage(){
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            setImage();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            if(climbWallUri != null) {
-                Picasso.get().load(climbWallUri).into(wallPhotoImageView);
-            }else{
-                String url = "https://p2.piqsels.com/preview/385/249/229/rock-climber-rope-mounatin.jpg";
-                Picasso.get().load(url).into(wallPhotoImageView);
-            }
+            setImage();
         }
         super.onActivityResult(requestCode, resultCode, data);
 
     }
 
     private File createImageFile() throws IOException {
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -412,7 +430,6 @@ public class AddRouteActivity extends AppCompatActivity {
                 storageDir      /* directory */
         );
 
-        // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }

@@ -240,6 +240,13 @@
             />
 
 
+        <ImageView
+            android:id="@+id/capturedPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            />
+
         <Button
             android:id="@+id/updateButton"
             style="@style/TextAppearance.AppCompat.Large"
@@ -252,12 +259,6 @@
             android:textColor="@android:color/primary_text_dark"
             android:onClick="dispatchTakePictureIntent"/>
 
-        <ImageView
-            android:id="@+id/capturedPhoto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            />
 
 
     </LinearLayout>

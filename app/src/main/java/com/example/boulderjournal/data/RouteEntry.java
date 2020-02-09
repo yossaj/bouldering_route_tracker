@@ -17,6 +17,7 @@ public class RouteEntry {
     private String mRoom;
     private String mWall;
     private String mNote;
+    protected String mImageLocation;
     @ColumnInfo(name ="complete")
     protected String mComplete;
     @ColumnInfo(name ="updated_at")
@@ -24,23 +25,27 @@ public class RouteEntry {
 
 
     @Ignore
-    public RouteEntry(String routeName, String routeColour, String room, String wall, String note , String complete, Date updatedAt){
+    public RouteEntry(String routeName, String routeColour, String room, String wall, String note , String imageLocation,String complete, Date updatedAt){
         this.mRouteName = routeName;
         this.mRouteColour = routeColour;
         this.mRoom = room;
         this.mWall = wall;
         this.mNote = note;
+        this.mImageLocation = imageLocation;
         this.mComplete = complete;
         this.updatedAt = updatedAt;
     }
 
-    public RouteEntry(int id, String routeName, String routeColour, String room, String wall, String note , String complete, Date updatedAt){
+
+
+    public RouteEntry(int id, String routeName, String routeColour, String room, String wall, String note , String imageLocation, String complete, Date updatedAt){
         this.id = id;
         this.mRouteName = routeName;
         this.mRouteColour = routeColour;
         this.mRoom = room;
         this.mWall = wall;
         this.mNote = note;
+        this.mImageLocation = imageLocation;
         this.mComplete = complete;
         this.updatedAt = updatedAt;
     }
@@ -92,6 +97,14 @@ public class RouteEntry {
 
     public void setNote(String note){
         this.mNote = note;
+    }
+
+    public String getmImageLocation() {
+        return mImageLocation;
+    }
+
+    public void setmImageLocation(String imageLocation) {
+        this.mImageLocation = imageLocation;
     }
 
     public String getmComplete(){ return mComplete;}
