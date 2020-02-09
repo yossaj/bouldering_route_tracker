@@ -31,8 +31,6 @@ public class MainActivityTests {
             = new ActivityTestRule<>(MainActivity.class);
 
 
-
-
     @Test
     public void checkRouteNoteCanBeMovedToDone(){
 
@@ -50,9 +48,8 @@ public class MainActivityTests {
         onView(withId(R.id.preferences))
                 .perform(click());
 
-
         onView(withId(R.id.day_picker)).check(matches(isCompletelyDisplayed())).perform(pressBack());
-
     }
+
 
 }
