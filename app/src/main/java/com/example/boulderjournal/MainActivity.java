@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
     }
 
     public void signOut() {
-        if (mAuth.getCurrentUser() != null) {
+        if (currentUser != null) {
             Toast.makeText(getBaseContext(),  userName + " : Signed Out", Toast.LENGTH_LONG).show();
             mAuth.signOut();
             Intent returnToSignIn = new Intent(MainActivity.this, LoginActivty.class);
