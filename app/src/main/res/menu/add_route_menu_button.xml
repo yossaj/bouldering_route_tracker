@@ -9,11 +9,7 @@
         app:showAsAction="always"
         android:visible="false"/>
 
-    <item
-        android:id="@+id/preferences"
-        android:title="preferences"
-        app:showAsAction="ifRoom"
-        />
+
 
     <item
         android:id="@+id/add"
@@ -22,10 +18,17 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/preferences"
+        android:title="Preferences"
+        android:orderInCategory="99"
+        app:showAsAction="never"
+        />
+
+    <item
         android:id="@+id/sign_out_menu"
         android:title="Sign Out"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
 
 
 

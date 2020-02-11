@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
         setContentView(R.layout.activity_main);
         ScheduleReminderUtil.scheduleReminder(this, getString(R.string.shared_preference_key), getString(R.string.climb_day_key));
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        userName = currentUser.getDisplayName();
+//        mAuth = FirebaseAuth.getInstance();
+//        currentUser = mAuth.getCurrentUser();
+//        userName = currentUser.getDisplayName();
 
         mRecycleViewToDo = (RecyclerView)findViewById(R.id.recyclerRoutesToDo);
         mRecycleViewToDo.setLayoutManager(new LinearLayoutManager(this));
