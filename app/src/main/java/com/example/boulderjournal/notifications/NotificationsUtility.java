@@ -10,8 +10,6 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-
-import com.example.boulderjournal.AppPreferences;
 import com.example.boulderjournal.LoginActivty;
 import com.example.boulderjournal.R;
 

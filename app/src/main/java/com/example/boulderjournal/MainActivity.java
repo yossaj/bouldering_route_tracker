@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.boulderjournal.apppreferences.AppPreferencesFragment;
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
 import com.example.boulderjournal.notifications.ScheduleReminderUtil;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
             startActivity(addNewRoute);
             return true;
         }else if(id == R.id.preferences) {
-            Intent launchPreferences = new Intent(MainActivity.this, AppPreferences.class);
+            Intent launchPreferences = new Intent(MainActivity.this, AppPreferencesFragment.class);
             startActivity(launchPreferences);
         }else if(id == R.id.sign_out_menu){
             signOut();
