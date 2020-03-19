@@ -17,40 +17,24 @@ import com.example.boulderjournal.databinding.FragmentAppPreferencesBinding
 
 class AppPreferencesFragment :  Fragment() {
 
+    private  var dayPicker: MaterialDayPicker? = null
+    private var climbDay: String? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        var dayPicker: MaterialDayPicker? = null
-        var sharedPreferences: SharedPreferences? = null
-        var climbDay: String? = null
-        var editor: SharedPreferences.Editor? = null
-        var context: Context? = null
-
+        var context = getContext();
+        var sharedPreferences = context?.getSharedPreferences(getString(R.string.shared_preference_key), Context.MODE_PRIVATE)
+        var editor = sharedPreferences!!.edit()
 
         val binding : FragmentAppPreferencesBinding   = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_app_preferences , container, false)
 
         val application = requireNotNull(this.activity).application
 
-
-        return binding.root
-    }
-
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_app_preferences)
-        context = applicationContext
-        sharedPreferences = context!!.getSharedPreferences(
-                getString(R.string.shared_preference_key), Context.MODE_PRIVATE
-        )
-        editor = sharedPreferences!!.edit()
-
-        dayPicker = findViewById(R.id.day_picker)
         getClimbDayPreference()
         setDayPickerListener()
+
+        return binding.root
     }
 
     fun setDayPickerListener() {
