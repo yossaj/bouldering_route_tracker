@@ -19,18 +19,18 @@ class AppPreferencesFragment :  Fragment() {
 
     private  var dayPicker: MaterialDayPicker? = null
     private var climbDay: String? = null
+    private var editor: SharedPreferences.Editor? = null
+    private var sharedPreferences: SharedPreferences? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var context = getContext();
-        var sharedPreferences = context?.getSharedPreferences(getString(R.string.shared_preference_key), Context.MODE_PRIVATE)
-        var editor = sharedPreferences!!.edit()
+        sharedPreferences = context?.getSharedPreferences(getString(R.string.shared_preference_key), Context.MODE_PRIVATE)
+        editor = sharedPreferences!!.edit()
 
         val binding : FragmentAppPreferencesBinding   = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_app_preferences , container, false)
-
-        val application = requireNotNull(this.activity).application
-
+        binding.setLifecycleOwner(this)
         getClimbDayPreference()
         setDayPickerListener()
 
