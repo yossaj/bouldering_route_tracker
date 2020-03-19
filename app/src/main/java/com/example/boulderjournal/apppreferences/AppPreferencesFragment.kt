@@ -17,7 +17,16 @@ import com.example.boulderjournal.databinding.FragmentAppPreferencesBinding
 
 class AppPreferencesFragment :  Fragment() {
 
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        var dayPicker: MaterialDayPicker? = null
+        var sharedPreferences: SharedPreferences? = null
+        var climbDay: String? = null
+        var editor: SharedPreferences.Editor? = null
+        var context: Context? = null
+
 
         val binding : FragmentAppPreferencesBinding   = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_app_preferences , container, false)
