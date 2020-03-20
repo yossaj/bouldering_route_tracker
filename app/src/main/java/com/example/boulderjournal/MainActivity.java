@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
         deleteWhenSwiped(mRecycleViewDone, mFinishedAdapter);
         returnToWorkingOn(mRecycleViewDone, mFinishedAdapter);
 
-        mDb = AppDatabase.getInstance(getApplicationContext());
+        mDb = AppDatabase.Companion.getInstance(getApplicationContext());
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         retrieveUnfinishedRoutes();
@@ -75,22 +75,26 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
 
 
     private void retrieveUnfinishedRoutes() {
-        viewModel.getUnFinishedRoutes().observe(this, new Observer<List<RouteEntry>>() {
-            @Override
-            public void onChanged(List<RouteEntry> routeEntries) {
-                mUnfinishedAdapter.setRoutes(routeEntries);
-            }
-        });
+        if(viewModel.getUnFinishedRoutes() != null) {
+            viewModel.getUnFinishedRoutes().observe(this, new Observer<List<RouteEntry>>() {
+                @Override
+                public void onChanged(List<RouteEntry> routeEntries) {
+                    mUnfinishedAdapter.setRoutes(routeEntries);
+                }
+            });
+        }
 
     }
 
     private void retrieveFinishedRoutes() {
-        viewModel.getFinishedRoutes().observe(this, new Observer<List<RouteEntry>>() {
-            @Override
-            public void onChanged(List<RouteEntry> routeEntries) {
-                mFinishedAdapter.setRoutes(routeEntries);
-            }
-        });
+        if(viewModel.getFinishedRoutes() != null) {
+            viewModel.getFinishedRoutes().observe(this, new Observer<List<RouteEntry>>() {
+                @Override
+                public void onChanged(List<RouteEntry> routeEntries) {
+                    mFinishedAdapter.setRoutes(routeEntries);
+                }
+            });
+        }
 
     }
 
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
     @Override
     public void onItemClickListener(int itemId) {
         Intent intent = new Intent(MainActivity.this, AddRouteActivity.class);
-        intent.putExtra(AddRouteActivity.EXTRA_ROUTE_ID, itemId);
+        intent.putExtra(AddRouteActivity.Companion.getEXTRA_ROUTE_ID(), itemId);
         startActivity(intent);
 
     }
