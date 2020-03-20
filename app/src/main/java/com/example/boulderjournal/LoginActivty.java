@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -19,7 +18,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,7 +100,7 @@ public class LoginActivty extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getBaseContext(), "Logged in", Toast.LENGTH_LONG).show();
-                            Intent mainActivitySignIn = new Intent(getBaseContext() ,MainActivity.class);
+                            Intent mainActivitySignIn = new Intent(getBaseContext() , MainActivity.class);
                             startActivity(mainActivitySignIn);
                         } else {
                             // If sign in fails, display a message to the user.

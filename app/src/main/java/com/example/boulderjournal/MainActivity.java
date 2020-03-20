@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,7 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.boulderjournal.apppreferences.AppPreferencesFragment;
+import com.example.boulderjournal.addRoute.AddRouteActivity;
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
 import com.example.boulderjournal.notifications.ScheduleReminderUtil;
@@ -111,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements RouteAdapter.Item
             startActivity(addNewRoute);
             return true;
         }else if(id == R.id.preferences) {
-            Intent launchPreferences = new Intent(MainActivity.this, AppPreferencesFragment.class);
-            startActivity(launchPreferences);
+//            Intent launchPreferences = new Intent(MainActivity.this, AppPreferencesFragment.class);
+//            startActivity(launchPreferences);
         }else if(id == R.id.sign_out_menu){
             signOut();
         }
