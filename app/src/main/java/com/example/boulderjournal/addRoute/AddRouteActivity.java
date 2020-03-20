@@ -1,4 +1,4 @@
-package com.example.boulderjournal;
+package com.example.boulderjournal.addRoute;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +22,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.boulderjournal.AppExecutors;
+import com.example.boulderjournal.BuildConfig;
+import com.example.boulderjournal.R;
 import com.example.boulderjournal.Utils.Utilities;
 import com.example.boulderjournal.data.AppDatabase;
 import com.example.boulderjournal.data.RouteEntry;
