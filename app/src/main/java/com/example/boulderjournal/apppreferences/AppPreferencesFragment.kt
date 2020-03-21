@@ -31,8 +31,8 @@ class AppPreferencesFragment :  Fragment() {
         val binding : FragmentAppPreferencesBinding   = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_app_preferences , container, false)
         binding.setLifecycleOwner(this)
-        getClimbDayPreference()
-        setDayPickerListener()
+//        getClimbDayPreference()
+//        setDayPickerListener()
 
         return binding.root
     }

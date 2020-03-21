@@ -1,79 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/to_section_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorPrimary">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <LinearLayout
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:background="@color/colorPrimaryDark">
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/navigation" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/working_on"
-            android:textColor="@color/white"
-            android:paddingTop="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="60dp"/>
-
-        <FrameLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerRoutesToDo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-
-
-        </FrameLayout>
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-        android:background="@color/colorPrimary"
-    android:layout_weight="2">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/done"
-            android:textColor="@color/main_list_items_light"
-            android:paddingTop="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="60dp"/>
-
-        <FrameLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerRoutesDone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-
-
-        </FrameLayout>
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</merge>

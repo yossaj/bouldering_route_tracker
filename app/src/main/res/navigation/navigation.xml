@@ -3,11 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/appPreferencesFragment">
+    app:startDestination="@id/homeActivity2">
 
     <fragment
         android:id="@+id/appPreferencesFragment"
         android:name="com.example.boulderjournal.apppreferences.AppPreferencesFragment"
-        android:label="activity_app_preferences"
-        tools:layout="@layout/fragment_app_preferences" />
+        android:label="activity_app_preferences"/>
+    <activity
+        android:id="@+id/homeActivity2"
+        android:name="com.example.boulderjournal.routesHome.HomeActivity"
+        android:label="HomeActivity" />
 </navigation>
