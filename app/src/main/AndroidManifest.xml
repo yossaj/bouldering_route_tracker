@@ -32,6 +32,11 @@
             android:label="Add a New Route"
             android:parentActivityName=".MainActivity" />
 
+        <activity
+            android:name=".routesHome.HomeActivity"
+            android:parentActivityName=".MainActivity"
+            />
+
         <service
             android:name=".notifications.BouderFirebaseJobService"
             android:exported="false">
