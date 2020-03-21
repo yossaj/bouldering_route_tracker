@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 
-class MainActivity : AppCompatActivity(), RouteAdapter.ItemClickListener {
+class MainActivity : AppCompatActivity() , RouteAdapter.ItemClickListener {
 
     private var mUnfinishedAdapter: RouteAdapter? = null
     private var mRecycleViewToDo: RecyclerView? = null
@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity(), RouteAdapter.ItemClickListener {
 
         retrieveUnfinishedRoutes()
         retrieveFinishedRoutes()
-
     }
 
 
@@ -110,7 +109,6 @@ class MainActivity : AppCompatActivity(), RouteAdapter.ItemClickListener {
 
     fun moveToDoneWhenSwiped(recyclerView: RecyclerView?, adapter: RouteAdapter?) {
 
-
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 return false
@@ -131,7 +129,6 @@ class MainActivity : AppCompatActivity(), RouteAdapter.ItemClickListener {
     }
 
     fun deleteWhenSwiped(recyclerView: RecyclerView?, adapter: RouteAdapter?) {
-
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -188,7 +185,6 @@ class MainActivity : AppCompatActivity(), RouteAdapter.ItemClickListener {
     }
 
     companion object {
-
         private val ROUTE_LOADER_ID = 3
     }
 
