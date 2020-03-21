@@ -103,7 +103,7 @@ public class AddRouteActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_add_route);
         initViews();
-        mDb = AppDatabase.getInstance(getApplicationContext());
+        mDb = AppDatabase.Companion.getInstance(getApplicationContext());
 
         if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_ROUTE_ID)) {
             mRouteId = savedInstanceState.getInt(INSTANCE_ROUTE_ID, DEFAULT_ROUTE_ID);
@@ -166,7 +166,7 @@ public class AddRouteActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "Please fill in all fields", Toast.LENGTH_LONG).show();
             return;
         }else if(route == null){
-           route = new RouteEntry(routeName, routeColour, room, wall, notes, imageURIstr,completedStr, date);
+           route = new RouteEntry(0, routeName, routeColour, room, wall, notes, imageURIstr,completedStr, date);
            readyAddDb = true;
         }
 

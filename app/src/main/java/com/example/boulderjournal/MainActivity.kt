@@ -69,12 +69,12 @@ class MainActivity : AppCompatActivity(), RouteAdapter.ItemClickListener {
 
 
     private fun retrieveUnfinishedRoutes() {
-        viewModel!!.unFinishedRoutes.observe(this, Observer { routeEntries -> mUnfinishedAdapter!!.routes = routeEntries })
+        viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> mUnfinishedAdapter!!.routes = routeEntries })
 
     }
 
     private fun retrieveFinishedRoutes() {
-        viewModel!!.finishedRoutes.observe(this, Observer { routeEntries -> mFinishedAdapter!!.routes = routeEntries })
+        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> mFinishedAdapter!!.routes = routeEntries })
 
     }
 
