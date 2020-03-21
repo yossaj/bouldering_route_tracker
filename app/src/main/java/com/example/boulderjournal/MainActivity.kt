@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity(), RouteAdapter.ItemClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-                AppExecutors.getInstance().diskIO().execute {
+                AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
                     val routeEntries = adapter!!.routes
                     val route = routeEntries[position]
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity(), RouteAdapter.ItemClickListener {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
 
 
-                AppExecutors.getInstance().diskIO().execute {
+                AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
                     val routeEntries = adapter!!.routes
                     val route = routeEntries[position]
@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity(), RouteAdapter.ItemClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-                AppExecutors.getInstance().diskIO().execute {
+                AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
                     val routeEntries = adapter!!.routes
                     val route = routeEntries[position]
