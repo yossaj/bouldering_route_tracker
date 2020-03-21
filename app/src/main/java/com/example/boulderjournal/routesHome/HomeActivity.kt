@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.boulderjournal.*
 import com.example.boulderjournal.addRoute.AddRouteActivity
 import com.example.boulderjournal.data.AppDatabase
-import com.example.boulderjournal.notifications.ScheduleReminderUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
