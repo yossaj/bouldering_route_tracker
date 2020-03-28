@@ -28,16 +28,9 @@ class RouteAdapter(private val mContext: Context, private val mItemClickListener
 
     override fun onBindViewHolder(holder: RouteViewHolder, position: Int) {
         val routeEntry = routes!![position]
-        bindRoute(routeEntry, holder)
+        holder.bindRoute(routeEntry)
     }
 
-    private fun bindRoute(routeEntry: RouteEntry, holder: RouteViewHolder) {
-        val routeName = routeEntry.routeName
-        holder.routeTitleMain.text = routeName
-        val routeColor = routeEntry.routeColour
-        val routeColourInt = Utilities.getColor(routeColor!!, mContext)
-        holder.routeColourSwatch.setBackgroundColor(routeColourInt)
-    }
 
 
     override fun getItemCount(): Int = routes.size
@@ -62,7 +55,18 @@ class RouteAdapter(private val mContext: Context, private val mItemClickListener
             val elementId = routes!![adapterPosition].id
             mItemClickListener.onItemClickListener(elementId)
         }
+
+        fun bindRoute(routeEntry: RouteEntry) {
+            val routeName = routeEntry.routeName
+            routeTitleMain.text = routeName
+            val routeColor = routeEntry.routeColour
+            val routeColourInt = Utilities.getColor(routeColor!!, mContext)
+            routeColourSwatch.setBackgroundColor(routeColourInt)
+        }
     }
+
+
+
 
 
 }
