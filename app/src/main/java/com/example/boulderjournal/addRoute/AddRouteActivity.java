@@ -116,7 +116,7 @@ public class AddRouteActivity extends AppCompatActivity {
             initStaticViews();
             final int routeID = intent.getIntExtra(EXTRA_ROUTE_ID, DEFAULT_ROUTE_ID) ;
 
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            AppExecutors.Companion.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     route = mDb.routeDao().loadRouteById(routeID);
@@ -185,7 +185,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
          setValues();
          if(readyAddDb) {
-             AppExecutors.getInstance().diskIO().execute(new Runnable() {
+             AppExecutors.Companion.getInstance().diskIO().execute(new Runnable() {
                  @Override
                  public void run() {
                      mDb.routeDao().insertRoute(route);
@@ -197,7 +197,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
      public void onUpdateRoute(){
         setValues();
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+        AppExecutors.Companion.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 mDb.routeDao().updateRoute(route);
