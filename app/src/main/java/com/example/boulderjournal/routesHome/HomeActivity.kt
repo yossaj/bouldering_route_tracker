@@ -59,7 +59,6 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
 
         retrieveUnfinishedRoutes()
         retrieveFinishedRoutes()
-
     }
 
 
@@ -112,10 +111,9 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
-                    val routeEntries = adapter!!.routes
+                    val routeEntries = adapter!!.routes!!
                     val route = routeEntries[position]
                     val status = "true"
                     route.setmComplete(status)
@@ -135,11 +133,9 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-
-
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
-                    val routeEntries = adapter!!.routes
+                    val routeEntries = adapter!!.routes!!
                     val route = routeEntries[position]
                     mDb!!.routeDao().deleteRoute(route)
                 }
@@ -159,7 +155,7 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
-                    val routeEntries = adapter!!.routes
+                    val routeEntries = adapter!!.routes!!
                     val route = routeEntries[position]
                     val status = "false"
                     route.setmComplete(status)
