@@ -30,7 +30,7 @@ ListAdapter<RouteAdapter, RouteAdapter.RouteViewHolder>(RouteDiffCallBack()){
     }
 
     override fun onBindViewHolder(holder: RouteViewHolder, position: Int) {
-        val routeEntry =
+        val routeEntry = routes!![position]
         holder.bindRoute(routeEntry)
     }
 
