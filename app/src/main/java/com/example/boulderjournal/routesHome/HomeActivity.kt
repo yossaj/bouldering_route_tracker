@@ -42,11 +42,11 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
 
         mRecycleViewToDo = findViewById(R.id.recyclerRoutesToDo)
         mRecycleViewToDo!!.layoutManager = LinearLayoutManager(this)
-        mUnfinishedAdapter = RouteAdapter(this, this)
+        mUnfinishedAdapter = RouteAdapter(this)
         mRecycleViewToDo!!.adapter = mUnfinishedAdapter
 
         mRecycleViewDone = findViewById(R.id.recyclerRoutesDone)
-        mFinishedAdapter = RouteAdapter(this, this)
+        mFinishedAdapter = RouteAdapter(this)
         mRecycleViewDone!!.layoutManager = LinearLayoutManager(this)
         mRecycleViewDone!!.adapter = mFinishedAdapter
 
