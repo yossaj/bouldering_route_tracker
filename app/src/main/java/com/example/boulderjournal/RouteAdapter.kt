@@ -30,7 +30,7 @@ ListAdapter<RouteAdapter, RouteAdapter.RouteViewHolder>(RouteDiffCallBack()){
     }
 
     override fun onBindViewHolder(holder: RouteViewHolder, position: Int) {
-        val routeEntry = routes!![position]
+        val routeEntry = getItem(position)
         holder.bindRoute(routeEntry)
     }
 
@@ -59,10 +59,10 @@ ListAdapter<RouteAdapter, RouteAdapter.RouteViewHolder>(RouteDiffCallBack()){
             mItemClickListener.onItemClickListener(elementId)
         }
 
-        fun bindRoute(routeEntry: RouteEntry) {
-            val routeName = routeEntry.routeName
+        fun bindRoute(routeEntry: RouteEntry?) {
+            val routeName = routeEntry?.routeName
             routeTitleMain.text = routeName
-            val routeColor = routeEntry.routeColour
+            val routeColor = routeEntry?.routeColour
             val routeColourInt = Utilities.getColor(routeColor!!, mContext)
             routeColourSwatch.setBackgroundColor(routeColourInt)
         }
@@ -78,7 +78,7 @@ ListAdapter<RouteAdapter, RouteAdapter.RouteViewHolder>(RouteDiffCallBack()){
             return newItem.id == oldItem.id
         }
     }
-    }
+
 
 
 
