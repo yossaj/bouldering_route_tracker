@@ -30,7 +30,7 @@ ListAdapter<RouteAdapter, RouteAdapter.RouteViewHolder>(RouteDiffCallBack()){
     }
 
     override fun onBindViewHolder(holder: RouteViewHolder, position: Int) {
-        val routeEntry = getItem(position)
+        val routeEntry =
         holder.bindRoute(routeEntry)
     }
 
@@ -67,21 +67,5 @@ ListAdapter<RouteAdapter, RouteAdapter.RouteViewHolder>(RouteDiffCallBack()){
             routeColourSwatch.setBackgroundColor(routeColourInt)
         }
     }
-
-    class RouteDiffCallBack:
-            DiffUtil.ItemCallback<RouteEntry>() {
-        override fun areContentsTheSame(oldItem: RouteEntry, newItem: RouteEntry): Boolean {
-            return newItem == oldItem
-        }
-
-        override fun areItemsTheSame(oldItem: RouteEntry, newItem: RouteEntry): Boolean {
-            return newItem.id == oldItem.id
-        }
-    }
-
-
-
-
-
 
 }
