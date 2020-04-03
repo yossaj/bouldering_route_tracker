@@ -18,10 +18,10 @@ interface RouteDao {
     fun insertRoute(routeEntry: RouteEntry)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateRoute(routeEntry: RouteEntry)
+    fun updateRoute(routeEntry: RouteEntry?)
 
     @Delete
-    fun deleteRoute(routeEntry: RouteEntry)
+    fun deleteRoute(routeEntry: RouteEntry?)
 
     @Query("SELECT * FROM route WHERE id = :id")
     fun loadRouteById(id: Int): RouteEntry

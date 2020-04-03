@@ -63,12 +63,12 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
 
 
     private fun retrieveUnfinishedRoutes() {
-        viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> mUnfinishedAdapter!!.routes = routeEntries })
+        viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> mUnfinishedAdapter!!.submitList(routeEntries) })
 
     }
 
     private fun retrieveFinishedRoutes() {
-        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> mFinishedAdapter!!.routes = routeEntries })
+        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> mFinishedAdapter!!.submitList(routeEntries)})
 
     }
 
@@ -113,10 +113,9 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
-                    val routeEntries = adapter!!.routes!!
-                    val route = routeEntries[position]
+                    val route = adapter?.getRouteByPosition(position)
                     val status = "true"
-                    route.setmComplete(status)
+                    route?.setmComplete(status)
                     mDb!!.routeDao().updateRoute(route)
                 }
 
@@ -135,8 +134,7 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
-                    val routeEntries = adapter!!.routes!!
-                    val route = routeEntries[position]
+                    val route = adapter?.getRouteByPosition(position)
                     mDb!!.routeDao().deleteRoute(route)
                 }
 
@@ -155,10 +153,9 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
-                    val routeEntries = adapter!!.routes!!
-                    val route = routeEntries[position]
+                    val route = adapter?.getRouteByPosition(position)
                     val status = "false"
-                    route.setmComplete(status)
+                    route?.setmComplete(status)
                     mDb!!.routeDao().updateRoute(route)
                 }
 

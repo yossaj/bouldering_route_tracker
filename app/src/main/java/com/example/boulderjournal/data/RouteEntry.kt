@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(tableName = "route")
-class RouteEntry(
+data class RouteEntry(
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
@@ -31,7 +31,6 @@ class RouteEntry(
 
     fun setmComplete(state : String?){
         mComplete = state;
-
     }
 
     fun setmImageLocation(location: String?){
