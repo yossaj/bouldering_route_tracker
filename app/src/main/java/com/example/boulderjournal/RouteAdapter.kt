@@ -14,12 +14,6 @@ import com.example.boulderjournal.databinding.RouteInputLayoutBinding
 
 
 class RouteAdapter(private val mItemClickListener: ItemClickListener) :  ListAdapter<RouteEntry, RouteAdapter.RouteViewHolder>(RouteEntryDiffCallBack()){
-    var routes = listOf<RouteEntry>()
-        set(routeEntries) {
-            field = routeEntries
-            notifyDataSetChanged()
-        }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -28,13 +22,14 @@ class RouteAdapter(private val mItemClickListener: ItemClickListener) :  ListAda
         return RouteViewHolder(binding, parent.context)
     }
 
-    override fun onBindViewHolder(holder: RouteViewHolder, position: Int) {
-        val routeEntry = routes[position]
-        holder.bindRoute(routeEntry)
+    fun getRouteByPosition(position: Int) : RouteEntry{
+        return getItem(position)
     }
 
-
-    override fun getItemCount(): Int = routes.size
+    override fun onBindViewHolder(holder: RouteViewHolder, position: Int) {
+        val routeEntry = getItem(position)
+        holder.bindRoute(routeEntry)
+    }
 
     interface ItemClickListener {
         fun onItemClickListener(itemId: Int)
@@ -47,7 +42,7 @@ class RouteAdapter(private val mItemClickListener: ItemClickListener) :  ListAda
         }
 
         override fun onClick(view: View) {
-            val elementId = routes[adapterPosition].id
+            val elementId = getItem(adapterPosition).id
             mItemClickListener.onItemClickListener(elementId)
         }
 

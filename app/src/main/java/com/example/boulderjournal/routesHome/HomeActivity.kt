@@ -40,6 +40,9 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
         //        currentUser = mAuth.getCurrentUser();
         //        userName = currentUser.getDisplayName();
 
+        mDb = AppDatabase.getInstance(applicationContext)
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
         mRecycleViewToDo = findViewById(R.id.recyclerRoutesToDo)
         mRecycleViewToDo!!.layoutManager = LinearLayoutManager(this)
         mUnfinishedAdapter = RouteAdapter(this)
@@ -54,22 +57,17 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
         deleteWhenSwiped(mRecycleViewDone, mFinishedAdapter)
         returnToWorkingOn(mRecycleViewDone, mFinishedAdapter)
 
-        mDb = AppDatabase.getInstance(applicationContext)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-
         retrieveUnfinishedRoutes()
         retrieveFinishedRoutes()
     }
 
 
     private fun retrieveUnfinishedRoutes() {
-        viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> mUnfinishedAdapter!!.routes = routeEntries })
-
+        viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> mUnfinishedAdapter!!.submitList(routeEntries) })
     }
 
     private fun retrieveFinishedRoutes() {
-        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> mFinishedAdapter!!.routes = routeEntries })
-
+        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> mFinishedAdapter!!.submitList(routeEntries)})
     }
 
 
@@ -91,7 +89,6 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
         } else if (id == R.id.sign_out_menu) {
             signOut()
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -99,11 +96,9 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
         val intent = Intent(this@HomeActivity, AddRouteActivity::class.java)
         intent.putExtra(AddRouteActivity.EXTRA_ROUTE_ID, itemId)
         startActivity(intent)
-
     }
 
     fun moveToDoneWhenSwiped(recyclerView: RecyclerView?, adapter: RouteAdapter?) {
-
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -113,19 +108,16 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
-                    val routeEntries = adapter!!.routes!!
-                    val route = routeEntries[position]
+                    val route = adapter!!.getRouteByPosition(position)
                     val status = "true"
                     route.setmComplete(status)
                     mDb!!.routeDao().updateRoute(route)
                 }
-
             }
         }).attachToRecyclerView(recyclerView)
     }
 
     fun deleteWhenSwiped(recyclerView: RecyclerView?, adapter: RouteAdapter?) {
-
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -135,15 +127,12 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
-                    val routeEntries = adapter!!.routes!!
-                    val route = routeEntries[position]
+                    val route = adapter!!.getRouteByPosition(position)
                     mDb!!.routeDao().deleteRoute(route)
                 }
-
             }
         }).attachToRecyclerView(recyclerView)
     }
-
 
     fun returnToWorkingOn(recyclerView: RecyclerView?, adapter: RouteAdapter?) {
 
@@ -155,16 +144,13 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
-                    val routeEntries = adapter!!.routes!!
-                    val route = routeEntries[position]
+                    val route = adapter!!.getRouteByPosition(position)
                     val status = "false"
                     route.setmComplete(status)
                     mDb!!.routeDao().updateRoute(route)
                 }
-
             }
         }).attachToRecyclerView(recyclerView)
-
     }
 
     fun signOut() {
@@ -176,13 +162,6 @@ class HomeActivity :  AppCompatActivity(), RouteAdapter.ItemClickListener{
         } else {
             Toast.makeText(baseContext, "Already signed out", Toast.LENGTH_LONG).show()
         }
-
     }
-
-    companion object {
-
-        private val ROUTE_LOADER_ID = 3
-    }
-
 
 }
