@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boulderjournal.Utils.Utilities
 import com.example.boulderjournal.data.RouteEntry
 import com.example.boulderjournal.databinding.RouteInputLayoutBinding
 
 
-class RouteAdapter(private val mItemClickListener: ItemClickListener) :  RecyclerView.Adapter<RouteAdapter.RouteViewHolder>(){
+class RouteAdapter(private val mItemClickListener: ItemClickListener) :  ListAdapter<RouteEntry, RouteAdapter.RouteViewHolder>(RouteEntryDiffCallBack()){
     var routes = listOf<RouteEntry>()
         set(routeEntries) {
             field = routeEntries
@@ -55,6 +57,17 @@ class RouteAdapter(private val mItemClickListener: ItemClickListener) :  Recycle
             val routeColor = routeEntry.routeColour
             val routeColourInt = Utilities.getColor(routeColor, context)
             binding.colorSwatchMain.setBackgroundColor(routeColourInt)
+        }
+    }
+
+    class RouteEntryDiffCallBack() :
+            DiffUtil.ItemCallback<RouteEntry>(){
+        override fun areItemsTheSame(oldItem: RouteEntry, newItem: RouteEntry): Boolean {
+            return  oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: RouteEntry, newItem: RouteEntry): Boolean {
+            return oldItem.equals(newItem)
         }
     }
 
