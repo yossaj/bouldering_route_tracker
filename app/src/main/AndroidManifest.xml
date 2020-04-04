@@ -33,7 +33,7 @@
             android:parentActivityName=".MainActivity" />
 
         <activity
-            android:name=".routesHome.HomeActivity"
+            android:name=".routeshome.HomeFragment"
             android:parentActivityName=".MainActivity"
             />
 

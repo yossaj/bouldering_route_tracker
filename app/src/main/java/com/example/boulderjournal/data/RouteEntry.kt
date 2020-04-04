@@ -31,7 +31,6 @@ class RouteEntry(
 
     fun setmComplete(state : String?){
         mComplete = state;
-
     }
 
     fun setmImageLocation(location: String?){
