@@ -23,11 +23,9 @@ import com.google.firebase.auth.FirebaseUser
 
 class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
 
-    private var mUnfinishedAdapter: RouteAdapter? = null
-    private var mRecycleViewToDo: RecyclerView? = null
+    private var unfinishedAdapter: RouteAdapter? = null
 
-    private var mFinishedAdapter: RouteAdapter? = null
-    private var mRecycleViewDone: RecyclerView? = null
+    private var finishedAdapter: RouteAdapter? = null
     private var mDb: RouteDao? = null
 
     private var viewModel: MainViewModel? = null
@@ -48,26 +46,23 @@ class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
 
         val application = requireNotNull(this.activity).application
 
-//        mDb = AppDatabase.getInstance(application).routeDao()
+        mDb = AppDatabase.getInstance(application)?.routeDao()
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-//        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-//
-//        mRecycleViewToDo = findViewById(R.id.recyclerRoutesToDo)
-//        mRecycleViewToDo!!.layoutManager = LinearLayoutManager(this)
-//        mUnfinishedAdapter = RouteAdapter(this)
-//        mRecycleViewToDo!!.adapter = mUnfinishedAdapter
-//
-//        mRecycleViewDone = findViewById(R.id.recyclerRoutesDone)
-//        mFinishedAdapter = RouteAdapter(this)
-//        mRecycleViewDone!!.layoutManager = LinearLayoutManager(this)
-//        mRecycleViewDone!!.adapter = mFinishedAdapter
-//
+        binding.recyclerRoutesToDo.layoutManager = LinearLayoutManager(context)
+        unfinishedAdapter = RouteAdapter(this)
+        binding.recyclerRoutesToDo.adapter = unfinishedAdapter
+
+        binding.recyclerRoutesDone.layoutManager = LinearLayoutManager(context)
+        finishedAdapter = RouteAdapter(this)
+        binding.recyclerRoutesDone.adapter = finishedAdapter
+
 //        moveToDoneWhenSwiped(mRecycleViewToDo, mUnfinishedAdapter)
 //        deleteWhenSwiped(mRecycleViewDone, mFinishedAdapter)
 //        returnToWorkingOn(mRecycleViewDone, mFinishedAdapter)
 //
-//        retrieveUnfinishedRoutes()
-//        retrieveFinishedRoutes()
+        retrieveUnfinishedRoutes()
+        retrieveFinishedRoutes()
 
         return binding.root
 
@@ -104,22 +99,17 @@ class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
         return super.onOptionsItemSelected(item)
     }
 
+        private fun retrieveUnfinishedRoutes() {
+        viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> unfinishedAdapter!!.submitList(routeEntries) })
+    }
+
+
+    private fun retrieveFinishedRoutes() {
+        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries)})
+    }
+
 
 }
-
-
-//    private fun retrieveUnfinishedRoutes() {
-//        viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> mUnfinishedAdapter!!.submitList(routeEntries) })
-//    }
-//
-//    private fun retrieveFinishedRoutes() {
-//        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> mFinishedAdapter!!.submitList(routeEntries)})
-//    }
-//
-//
-
-//
-
 
 //
 //    fun moveToDoneWhenSwiped(recyclerView: RecyclerView?, adapter: RouteAdapter?) {
