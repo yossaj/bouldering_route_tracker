@@ -3,17 +3,15 @@ package com.example.boulderjournal.routeshome
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boulderjournal.*
-import com.example.boulderjournal.addRoute.AddRouteActivity
+import com.example.boulderjournal.addroute.AddRouteActivity
 import com.example.boulderjournal.data.AppDatabase
 import com.example.boulderjournal.data.RouteDao
 import com.example.boulderjournal.databinding.FragmentHomeBinding
@@ -21,22 +19,15 @@ import com.example.boulderjournal.notifications.ScheduleReminderUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
+class HomeFragment : Fragment(), RouteAdapter.ItemClickListener {
 
     private var unfinishedAdapter: RouteAdapter? = null
-
     private var finishedAdapter: RouteAdapter? = null
     private var mDb: RouteDao? = null
-
     private var viewModel: HomeViewModel? = null
-
-    private val mAuth: FirebaseAuth? = null
-    private val currentUser: FirebaseUser? = null
-    private val userName: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         ScheduleReminderUtil.scheduleReminder(context, getString(R.string.shared_preference_key), getString(R.string.climb_day_key))
-
         //        mAuth = FirebaseAuth.getInstance();
         //        currentUser = mAuth.getCurrentUser();
         //        userName = currentUser.getDisplayName();
@@ -67,7 +58,7 @@ class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
     }
 
     override fun onItemClickListener(itemId: Int) {
-        val intent = Intent(getActivity() , AddRouteActivity::class.java)
+        val intent = Intent(getActivity(), AddRouteActivity::class.java)
         intent.putExtra(AddRouteActivity.EXTRA_ROUTE_ID, itemId)
         startActivity(intent)
     }
@@ -77,8 +68,7 @@ class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.add) {
             val addNewRoute = Intent(activity, AddRouteActivity::class.java)
@@ -89,18 +79,17 @@ class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
                     HomeFragmentDirections.actionHomeFragmentToAppPreferencesFragment()
             )
         } else if (id == R.id.sign_out_menu) {
-//            signOut()
         }
         return super.onOptionsItemSelected(item)
     }
 
-        private fun retrieveUnfinishedRoutes() {
+    private fun retrieveUnfinishedRoutes() {
         viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> unfinishedAdapter!!.submitList(routeEntries) })
     }
 
 
     private fun retrieveFinishedRoutes() {
-        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries)})
+        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries) })
     }
 
 
@@ -160,9 +149,7 @@ class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
     }
 
 
-
 }
-
 
 //    fun signOut() {
 //        if (mAuth!!.currentUser != null) {

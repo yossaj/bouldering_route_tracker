@@ -1,4 +1,4 @@
-package com.example.boulderjournal.addRoute;
+package com.example.boulderjournal.addroute;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
