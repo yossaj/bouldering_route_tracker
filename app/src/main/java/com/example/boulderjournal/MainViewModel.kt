@@ -16,7 +16,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val routesDb = AppDatabase.getInstance(this.getApplication())
         unFinishedRoutes = routesDb!!.routeDao().loadUnfinishedRoutes()
         finishedRoutes = routesDb!!.routeDao().loadFinishedRoutes()
-
     }
 
 }

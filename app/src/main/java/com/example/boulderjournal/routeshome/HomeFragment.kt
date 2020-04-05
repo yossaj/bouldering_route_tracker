@@ -28,7 +28,7 @@ class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
     private var finishedAdapter: RouteAdapter? = null
     private var mDb: RouteDao? = null
 
-    private var viewModel: MainViewModel? = null
+    private var viewModel: HomeViewModel? = null
 
     private val mAuth: FirebaseAuth? = null
     private val currentUser: FirebaseUser? = null
@@ -47,13 +47,12 @@ class HomeFragment :  Fragment(), RouteAdapter.ItemClickListener {
         val application = requireNotNull(this.activity).application
 
         mDb = AppDatabase.getInstance(application)?.routeDao()
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        val viewModelFactory = HomeViewModelFactory(mDb, application)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
 
-        binding.recyclerRoutesToDo.layoutManager = LinearLayoutManager(context)
         unfinishedAdapter = RouteAdapter(this)
         binding.recyclerRoutesToDo.adapter = unfinishedAdapter
 
-        binding.recyclerRoutesDone.layoutManager = LinearLayoutManager(context)
         finishedAdapter = RouteAdapter(this)
         binding.recyclerRoutesDone.adapter = finishedAdapter
 
