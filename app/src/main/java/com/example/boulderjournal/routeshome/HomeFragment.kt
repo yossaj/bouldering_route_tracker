@@ -3,6 +3,7 @@ package com.example.boulderjournal.routeshome
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,7 +18,7 @@ import com.example.boulderjournal.data.RouteDao
 import com.example.boulderjournal.databinding.FragmentHomeBinding
 import com.example.boulderjournal.notifications.ScheduleReminderUtil
 
-class HomeFragment : Fragment(), RouteAdapter.ItemClickListener {
+class HomeFragment : Fragment(){
 
     private var unfinishedAdapter: RouteAdapter? = null
     private var finishedAdapter: RouteAdapter? = null
@@ -39,10 +40,19 @@ class HomeFragment : Fragment(), RouteAdapter.ItemClickListener {
         val viewModelFactory = HomeViewModelFactory(mDb, application)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
 
-        unfinishedAdapter = RouteAdapter(this)
+        binding.homeViewModel = viewModel
+
+        unfinishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener{
+            routeId ->
+            navigateToRoute(routeId)
+        })
         binding.recyclerRoutesToDo.adapter = unfinishedAdapter
 
-        finishedAdapter = RouteAdapter(this)
+
+        finishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener{
+            routeId ->
+            navigateToRoute(routeId)
+        })
         binding.recyclerRoutesDone.adapter = finishedAdapter
 
         moveToDoneWhenSwiped(binding.recyclerRoutesToDo, unfinishedAdapter)
@@ -55,9 +65,9 @@ class HomeFragment : Fragment(), RouteAdapter.ItemClickListener {
         return binding.root
     }
 
-    override fun onItemClickListener(itemId: Int) {
+    private fun navigateToRoute(routeId: Int) {
         val intent = Intent(getActivity(), AddRouteActivity::class.java)
-        intent.putExtra(AddRouteActivity.EXTRA_ROUTE_ID, itemId)
+        intent.putExtra(AddRouteActivity.EXTRA_ROUTE_ID, routeId)
         startActivity(intent)
     }
 

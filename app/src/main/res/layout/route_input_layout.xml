@@ -7,6 +7,10 @@
             name="route"
             type="com.example.boulderjournal.data.RouteEntry" />
 
+        <variable
+            name="clickListener"
+            type="com.example.boulderjournal.RouteAdapter.ItemClickListener" />
+
     </data>
 
     <LinearLayout
@@ -15,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        tools:context="com.example.boulderjournal.MainActivity">
+        tools:context="com.example.boulderjournal.MainActivity"
+        android:onClick="@{()->clickListener.onItemClick(route)}">
 
         <LinearLayout
             android:layout_width="match_parent"
