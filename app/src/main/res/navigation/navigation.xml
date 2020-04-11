@@ -23,5 +23,9 @@
     <fragment
         android:id="@+id/addRouteFragment"
         android:name="com.example.boulderjournal.addRoute.AddRouteFragment"
-        android:label="AddRouteFragment" />
+        android:label="AddRouteFragment" >
+        <argument
+            android:name="RouteEntryKey"
+            app:argType="integer" />
+    </fragment>
 </navigation>

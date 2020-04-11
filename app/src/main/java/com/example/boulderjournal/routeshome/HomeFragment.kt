@@ -67,7 +67,7 @@ class HomeFragment : Fragment(){
 //        intent.putExtra(AddRouteFragment.EXTRA_ROUTE_ID, routeId)
 //        startActivity(intent)
         this.findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToAddRouteFragment()
+                HomeFragmentDirections.actionHomeFragmentToAddRouteFragment(routeId)
         )
     }
 
@@ -83,7 +83,7 @@ class HomeFragment : Fragment(){
 //            startActivity(addNewRoute)
 //            return true
             this.findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToAddRouteFragment())
+                    HomeFragmentDirections.actionHomeFragmentToAddRouteFragment(0))
         } else if (id == R.id.preferences) {
             this.findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToAppPreferencesFragment()

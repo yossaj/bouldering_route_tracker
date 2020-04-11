@@ -1,30 +1,17 @@
 package com.example.boulderjournal.addRoute
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.*
 import android.widget.*
-import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.example.boulderjournal.AppExecutors.Companion.instance
-import com.example.boulderjournal.BuildConfig
 import com.example.boulderjournal.R
-import com.example.boulderjournal.Utils.Utilities
 import com.example.boulderjournal.data.AppDatabase
 import com.example.boulderjournal.data.AppDatabase.Companion.getInstance
 import com.example.boulderjournal.data.RouteEntry
 import com.example.boulderjournal.databinding.FragmentAddRouteBinding
-import com.squareup.picasso.Picasso
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class AddRouteFragment : Fragment() {
 //    private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
@@ -59,7 +46,6 @@ class AddRouteFragment : Fragment() {
     private var mPhotoIntentButton: Button? = null
     private var currentPhotoPath: String? = null
     private var climbWallUri: Uri? = null
-//    private var mRouteId = DEFAULT_ROUTE_ID
     private var mDb: AppDatabase? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -69,25 +55,20 @@ class AddRouteFragment : Fragment() {
                 inflater, R.layout.fragment_add_route, container, false)
 //        initViews()
         val application = requireNotNull(this.activity).application
-        val arguments =
+        val arguments = AddRouteFragmentArgs.fromBundle(arguments!!)
 
-//        mDb = getInstance(application)
-//        if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_ROUTE_ID)) {
-//            mRouteId = savedInstanceState.getInt(INSTANCE_ROUTE_ID, DEFAULT_ROUTE_ID)
-//        }
-//
-//
-//        val intent = intent
-//        if (intent.hasExtra(EXTRA_ROUTE_ID) and (intent != null)) {
-//            editMenuCheck = true
-//            initStaticViews()
-//            val routeID = intent.getIntExtra(EXTRA_ROUTE_ID, DEFAULT_ROUTE_ID)
+        mDb = getInstance(application)
+
+        val routeId = arguments.routeEntryKey
+        if (routeId != 0) {
+            editMenuCheck = true
+            initStaticViews(binding)
 //            instance!!.diskIO().execute {
 //                route = mDb!!.routeDao().loadRouteById(routeID)
 //                populateStaticUI(route)
 //            }
 //            delaySetImage()
-//        }
+        }
 //        mPhotoIntentButton!!.setOnClickListener { dispatchTakePictureIntent() }
 //        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         return binding.root
@@ -185,14 +166,14 @@ class AddRouteFragment : Fragment() {
 //        mPhotoIntentButton = findViewById<View>(R.id.updateButton) as Button
 //    }
 //
-//    fun initStaticViews() {
-//        mRouteNameTV = findViewById<View>(R.id.view_route_name) as TextView
-//        mRouteColourTV = findViewById<View>(R.id.view_route_colour) as TextView
-//        mColorSwatch = findViewById(R.id.color_swatch) as View
-//        mRoomTV = findViewById<View>(R.id.view_room) as TextView
-//        mWallTV = findViewById<View>(R.id.view_wall) as TextView
-//        mNotesTV = findViewById<View>(R.id.view_route_notes) as TextView
-//    }
+    fun initStaticViews(binding: FragmentAddRouteBinding) {
+        mRouteNameTV = binding.viewRouteName
+        mRouteColourTV = binding.viewRouteColour
+        mColorSwatch = binding.colorSwatch
+        mRoomTV = binding.viewRoom
+        mWallTV = binding.viewWall
+        mNotesTV = binding.viewRouteNotes
+    }
 //
 //    fun populateStaticUI(routeEntry: RouteEntry?) {
 //        val formattedDate = dateFormat.format(routeEntry!!.updatedAt)
