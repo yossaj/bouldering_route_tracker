@@ -131,7 +131,6 @@ class HomeFragment : Fragment(){
         }).attachToRecyclerView(recyclerView)
     }
 
-
 }
 
 //    fun signOut() {

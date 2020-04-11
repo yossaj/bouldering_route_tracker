@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.view.*
 import android.widget.*
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.boulderjournal.AppExecutors
@@ -29,6 +30,7 @@ class AddRouteFragment : Fragment() {
     private var imageURIstr: String? = null
     private var date: Date? = null
     private val completed = false
+    private lateinit var bind : FragmentAddRouteBinding
     private var editMenuCheck = false
     private var readyUpdateCheck = false
     private var readyAddDb = false
@@ -45,10 +47,12 @@ class AddRouteFragment : Fragment() {
         setHasOptionsMenu(true);
         val binding: FragmentAddRouteBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_add_route, container, false)
+        bind = binding
         val application = requireNotNull(this.activity).application
         val arguments = AddRouteFragmentArgs.fromBundle(arguments!!)
 
         mDb = getInstance(application)
+
 
         val routeId = arguments.routeEntryKey
         if (routeId != 0) {
@@ -68,12 +72,13 @@ class AddRouteFragment : Fragment() {
     }
 
     //
-//    fun setValues() {
-//        routeName = mRouteName!!.text.toString()
-//        val selectedId = mRouteColourGroup!!.checkedRadioButtonId
-//        mRouteColourButtom = findViewById<View>(selectedId) as RadioButton
+    fun setValues(binding: FragmentAddRouteBinding) {
+        routeName = binding.inputRouteName.text.toString()
+        val selectedId = binding.routeColourGroup.checkedRadioButtonId
+
+        val mRouteColourButtom = binding.routeColourGroup
 //        if (mRouteColourButtom != null) {
-//            routeColour = mRouteColourButtom!!.text.toString()
+//            routeColour = mRouteColourButtom.toString()
 //        }
 //        room = mRoom!!.text.toString()
 //        wall = mWall!!.text.toString()
@@ -100,52 +105,52 @@ class AddRouteFragment : Fragment() {
 //            route!!.setmImageLocation(imageURIstr)
 //            readyAddDb = true
 //        }
-//    }
+    }
 //
-//    fun onAddRoute() {
-//        setValues()
+    fun onAddRoute() {
+        setValues(bind)
 //        if (readyAddDb) {
 //            instance!!.diskIO().execute {
 //                mDb!!.routeDao().insertRoute(route!!)
 //                finish()
 //            }
 //        }
-//    }
-//
-//    fun onUpdateRoute() {
-//        setValues()
-//        instance!!.diskIO().execute { mDb!!.routeDao().updateRoute(route!!) }
-//    }
-//
-//    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-//        editMenuItem = menu.findItem(R.id.edit_menu_item)
-//        addMenuItem = menu.findItem(R.id.add)
-//        if (editMenuCheck) {
-//            editMenuItem?.setVisible(editMenuCheck)
-//            addMenuItem?.setVisible(false)
-//        }
-//        return super.onPrepareOptionsMenu(menu)
-//    }
-//
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.add_route_menu_button, menu)
-        return super.onCreateOptionsMenu(menu)
     }
 //
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val id = item.itemId
-//        if (id == R.id.add) {
-//            onAddRoute()
-//            return true
-//        } else if (id == R.id.edit_menu_item && editMenuCheck) {
-//            populateEditableUI(route)
-//        } else if (id == R.id.edit_menu_item && readyUpdateCheck) {
+    fun onUpdateRoute() {
+        setValues(bind)
+//        instance!!.diskIO().execute { mDb!!.routeDao().updateRoute(route!!) }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu){
+        editMenuItem = menu.findItem(R.id.edit_menu_item)
+        addMenuItem = menu.findItem(R.id.add)
+        if (editMenuCheck) {
+            editMenuItem?.setVisible(editMenuCheck)
+            addMenuItem?.setVisible(false)
+        }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.add_route_menu_button, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+//
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val id = item.itemId
+        if (id == R.id.add) {
+            onAddRoute()
+            return true
+        } else if (id == R.id.edit_menu_item && editMenuCheck) {
+            populateEditableUI(bind ,route)
+        } else if (id == R.id.edit_menu_item && readyUpdateCheck) {
 //            onUpdateRoute()
-//            refactorUIonUpdateRoute()
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
+            refactorUIonUpdateRoute()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 //
     fun setDate(binding: FragmentAddRouteBinding) {
         binding.dateAdded.text = dateFormat.format(Date())
@@ -179,47 +184,46 @@ class AddRouteFragment : Fragment() {
 ////        setSavedImageIfPresent()
     }
 
-    //
-//    fun populateEditableUI(routeEntry: RouteEntry?) {
-//        mRouteName!!.setText(routeEntry!!.routeName)
-//        mRouteName!!.visibility = View.VISIBLE
-//        mRouteNameTV!!.visibility = View.GONE
-//        mRouteColourTV!!.visibility = View.GONE
-//        mRouteColourGroup!!.visibility = View.VISIBLE
-//        getRadioBox(routeEntry.routeColour)
-//        mColorSwatch!!.visibility = View.GONE
-//        mRoom!!.setText(routeEntry.room)
-//        mRoom!!.visibility = View.VISIBLE
-//        mRoomTV!!.visibility = View.GONE
-//        mWall!!.setText(routeEntry.wall)
-//        mWall!!.visibility = View.VISIBLE
-//        mWallTV!!.visibility = View.GONE
-//        mNotes!!.setText(routeEntry.note)
-//        mNotes!!.visibility = View.VISIBLE
-//        mNotesTV!!.visibility = View.GONE
-//        editMenuCheck = false
-//        readyUpdateCheck = true
-//        editMenuItem!!.setTitle(R.string.update)
+    fun populateEditableUI(binding: FragmentAddRouteBinding, routeEntry: RouteEntry?) {
+        binding.inputRouteName.setText(routeEntry!!.routeName)
+        binding.inputRouteName.visibility = View.VISIBLE
+        binding.viewRouteName.visibility = View.GONE
+        binding.routeColourGroup.visibility = View.VISIBLE
+        binding.viewRouteColour.visibility = View.GONE
+        binding.colorSwatch.visibility = View.GONE
+        getRadioBox(binding.routeColourGroup ,routeEntry.routeColour)
+        binding.inputRoom.setText(routeEntry.room)
+        binding.inputRoom.visibility = View.VISIBLE
+        binding.viewRoom.visibility = View.GONE
+        binding.inputWall.setText(routeEntry.wall)
+        binding.inputWall.visibility = View.VISIBLE
+        binding.viewWall.visibility = View.GONE
+        binding.routeNote.setText(routeEntry.note)
+        binding.routeNote.visibility = View.VISIBLE
+        binding.viewRouteNotes.visibility = View.GONE
+        editMenuCheck = false
+        readyUpdateCheck = true
+        editMenuItem!!.setTitle(R.string.update)
 //        mPhotoIntentButton!!.visibility = View.VISIBLE
-//    }
+    }
 //
-//    fun refactorUIonUpdateRoute() {
-//        Toast.makeText(baseContext, "Your note has been updated", Toast.LENGTH_LONG).show()
-//        populateStaticUI(route)
-//        editMenuItem!!.title = "Edit"
-//        editMenuCheck = true
-//        readyUpdateCheck = false
-//    }
+    fun refactorUIonUpdateRoute() {
+        Toast.makeText(context, "Your note has been updated", Toast.LENGTH_LONG).show()
+        populateStaticUI(bind ,route)
+        editMenuItem!!.title = "Edit"
+        editMenuCheck = true
+        readyUpdateCheck = false
+    }
 //
-//    fun getRadioBox(color: String?) {
-//        val newColourStr = color!!.toLowerCase()
-//        when (newColourStr) {
-//            "blue" -> (findViewById<View>(R.id.route_colour_group) as RadioGroup).check(R.id.blueButton)
-//            "pink" -> (findViewById<View>(R.id.route_colour_group) as RadioGroup).check(R.id.pinkButton)
-//            "orange" -> (findViewById<View>(R.id.route_colour_group) as RadioGroup).check(R.id.orangeButton)
-//            "yellow" -> (findViewById<View>(R.id.route_colour_group) as RadioGroup).check(R.id.yellowButton)
-//        }
-//    }
+    fun getRadioBox(selectedRadioBox : RadioGroup, color: String?) {
+        val newColourStr = color!!.toLowerCase()
+        when (newColourStr) {
+            "blue" -> selectedRadioBox.check(R.id.blueButton)
+            "pink" -> selectedRadioBox.check(R.id.pinkButton)
+            "orange" -> selectedRadioBox.check(R.id.orangeButton)
+            "yellow" -> selectedRadioBox.check(R.id.yellowButton)
+        }
+    }
 //
 //    private fun dispatchTakePictureIntent() {
 //        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
