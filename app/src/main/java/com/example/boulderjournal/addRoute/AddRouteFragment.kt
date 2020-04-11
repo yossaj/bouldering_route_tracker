@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.boulderjournal.AppExecutors
 import com.example.boulderjournal.AppExecutors.Companion.instance
+import com.example.boulderjournal.BuildConfig
 import com.example.boulderjournal.R
 import com.example.boulderjournal.Utils.Utilities
 import com.example.boulderjournal.Utils.hideKeyboard
