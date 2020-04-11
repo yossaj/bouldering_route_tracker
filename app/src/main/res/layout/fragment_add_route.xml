@@ -245,7 +245,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@color/colorPrimary"
-                    android:onClick="dispatchTakePictureIntent"
                     android:text="Take Photo"
                     android:textColor="@android:color/primary_text_dark"
                     android:visibility="visible" />

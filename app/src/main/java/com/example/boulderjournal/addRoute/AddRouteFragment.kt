@@ -49,7 +49,6 @@ class AddRouteFragment : Fragment() {
     private var mDb: AppDatabase? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-//        setTheme(R.style.AppTheme)
         setHasOptionsMenu(true);
         val binding: FragmentAddRouteBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_add_route, container, false)
@@ -67,11 +66,11 @@ class AddRouteFragment : Fragment() {
                 if (Looper.myLooper() == null) { Looper.prepare() }
                 populateStaticUI(binding, route)
             }
-//            delaySetImage()
+            delaySetImage()
         }else{
             setDate(binding)
         }
-        binding.capturedPhoto.setOnClickListener(dispatchTakePictureIntent() )
+        binding.updateButton.setOnClickListener{dispatchTakePictureIntent()}
 //        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         return binding.root
     }
@@ -215,7 +214,7 @@ class AddRouteFragment : Fragment() {
         editMenuCheck = false
         readyUpdateCheck = true
         editMenuItem!!.setTitle(R.string.update)
-//        mPhotoIntentButton!!.visibility = View.VISIBLE
+        binding.capturedPhoto.visibility = View.VISIBLE
     }
 
 
@@ -240,7 +239,7 @@ class AddRouteFragment : Fragment() {
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
+        if (takePictureIntent.resolveActivity(context!!.packageManager) != null) {
             // Create the File where the photo should go
             var photoFile: File? = null
             photoFile = try {
@@ -293,7 +292,7 @@ class AddRouteFragment : Fragment() {
     private fun createImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName = "JPEG_" + timeStamp + "_"
-        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir = context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",  /* suffix */
