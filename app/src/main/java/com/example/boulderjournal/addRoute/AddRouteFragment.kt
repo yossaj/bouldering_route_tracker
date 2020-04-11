@@ -2,19 +2,24 @@ package com.example.boulderjournal.addRoute
 
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings.System.DATE_FORMAT
 import android.view.*
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.boulderjournal.AppExecutors
 import com.example.boulderjournal.R
+import com.example.boulderjournal.Utils.Utilities
 import com.example.boulderjournal.data.AppDatabase
 import com.example.boulderjournal.data.AppDatabase.Companion.getInstance
 import com.example.boulderjournal.data.RouteEntry
 import com.example.boulderjournal.databinding.FragmentAddRouteBinding
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddRouteFragment : Fragment() {
-//    private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+
+    private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
     private var mRouteName: EditText? = null
     private var mRoom: EditText? = null
     private var mWall: EditText? = null
@@ -63,8 +68,9 @@ class AddRouteFragment : Fragment() {
         if (routeId != 0) {
             editMenuCheck = true
             initStaticViews(binding)
-//            instance!!.diskIO().execute {
-//                route = mDb!!.routeDao().loadRouteById(routeID)
+//
+//            AppExecutors.instance!!.diskIO().execute {
+//                route = mDb!!.routeDao().loadRouteById(routeId)
 //                populateStaticUI(route)
 //            }
 //            delaySetImage()
@@ -175,31 +181,31 @@ class AddRouteFragment : Fragment() {
         mNotesTV = binding.viewRouteNotes
     }
 //
-//    fun populateStaticUI(routeEntry: RouteEntry?) {
+    fun populateStaticUI(routeEntry: RouteEntry?) {
 //        val formattedDate = dateFormat.format(routeEntry!!.updatedAt)
 //        mDateTV!!.text = formattedDate
-//        mRouteNameTV!!.text = routeEntry.routeName
-//        mRouteNameTV!!.visibility = View.VISIBLE
-//        mRouteName!!.visibility = View.GONE
-//        val setRouteColor = routeEntry.routeColour
-//        mRouteColourTV!!.visibility = View.VISIBLE
-//        mRouteColourTV!!.text = setRouteColor
-//        mRouteColourGroup!!.visibility = View.GONE
-//        mColorSwatch!!.visibility = View.VISIBLE
-//        val getRouteColourInt = Utilities.getColor(setRouteColor, this)
-//        mColorSwatch!!.setBackgroundColor(getRouteColourInt)
-//        mRoomTV!!.text = routeEntry.room
-//        mRoomTV!!.visibility = View.VISIBLE
-//        mRoom!!.visibility = View.GONE
-//        mWallTV!!.text = routeEntry.wall
-//        mWallTV!!.visibility = View.VISIBLE
-//        mWall!!.visibility = View.GONE
-//        mNotesTV!!.text = routeEntry.note
-//        mNotesTV!!.visibility = View.VISIBLE
-//        mNotes!!.visibility = View.GONE
-//        mPhotoIntentButton!!.visibility = View.GONE
+        mRouteNameTV!!.text = routeEntry?.routeName
+        mRouteNameTV!!.visibility = View.VISIBLE
+        mRouteName!!.visibility = View.GONE
+        val setRouteColor = routeEntry?.routeColour
+        mRouteColourTV!!.visibility = View.VISIBLE
+        mRouteColourTV!!.text = setRouteColor
+        mRouteColourGroup!!.visibility = View.GONE
+        mColorSwatch!!.visibility = View.VISIBLE
+        val getRouteColourInt = Utilities.getColor(setRouteColor, context)
+        mColorSwatch!!.setBackgroundColor(getRouteColourInt)
+        mRoomTV!!.text = routeEntry?.room
+        mRoomTV!!.visibility = View.VISIBLE
+        mRoom!!.visibility = View.GONE
+        mWallTV!!.text = routeEntry?.wall
+        mWallTV!!.visibility = View.VISIBLE
+        mWall!!.visibility = View.GONE
+        mNotesTV!!.text = routeEntry?.note
+        mNotesTV!!.visibility = View.VISIBLE
+        mNotes!!.visibility = View.GONE
+        mPhotoIntentButton!!.visibility = View.GONE
 //        setSavedImageIfPresent()
-//    }
+    }
 //
 //    fun populateEditableUI(routeEntry: RouteEntry?) {
 //        mRouteName!!.setText(routeEntry!!.routeName)
