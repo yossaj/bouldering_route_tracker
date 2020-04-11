@@ -63,9 +63,12 @@ class HomeFragment : Fragment(){
     }
 
     private fun navigateToRoute(routeId: Int) {
-        val intent = Intent(getActivity(), AddRouteFragment::class.java)
-        intent.putExtra(AddRouteFragment.EXTRA_ROUTE_ID, routeId)
-        startActivity(intent)
+//        val intent = Intent(getActivity(), AddRouteFragment::class.java)
+//        intent.putExtra(AddRouteFragment.EXTRA_ROUTE_ID, routeId)
+//        startActivity(intent)
+        this.findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToAddRouteFragment()
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -76,9 +79,11 @@ class HomeFragment : Fragment(){
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.add) {
-            val addNewRoute = Intent(activity, AddRouteFragment::class.java)
-            startActivity(addNewRoute)
-            return true
+//            val addNewRoute = Intent(activity, AddRouteFragment::class.java)
+//            startActivity(addNewRoute)
+//            return true
+            this.findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToAddRouteFragment())
         } else if (id == R.id.preferences) {
             this.findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToAppPreferencesFragment()

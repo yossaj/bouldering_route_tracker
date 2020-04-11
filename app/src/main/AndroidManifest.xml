@@ -20,6 +20,7 @@
         <activity
             android:name=".apppreferences.AppPreferencesFragment"
             android:parentActivityName=".MainActivity" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".addRoute.AddRouteFragment"
             android:label="Add a New Route"

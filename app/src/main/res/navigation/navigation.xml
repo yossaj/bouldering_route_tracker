@@ -16,5 +16,12 @@
         <action
             android:id="@+id/action_homeFragment_to_appPreferencesFragment"
             app:destination="@+id/appPreferencesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addRouteFragment"
+            app:destination="@+id/addRouteFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addRouteFragment"
+        android:name="com.example.boulderjournal.addRoute.AddRouteFragment"
+        android:label="AddRouteFragment" />
 </navigation>
