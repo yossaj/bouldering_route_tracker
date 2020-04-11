@@ -1,10 +1,15 @@
 package com.example.boulderjournal.addRoute
 
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.os.Looper
+import android.provider.MediaStore
 import android.view.*
 import android.widget.*
+import androidx.core.content.FileProvider
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -19,8 +24,11 @@ import com.example.boulderjournal.data.AppDatabase.Companion.getInstance
 import com.example.boulderjournal.data.RouteEntry
 import com.example.boulderjournal.databinding.FragmentAddRouteBinding
 import com.squareup.picasso.Picasso
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class AddRouteFragment : Fragment() {
 
@@ -62,7 +70,7 @@ class AddRouteFragment : Fragment() {
         }else{
             setDate(binding)
         }
-//        mPhotoIntentButton!!.setOnClickListener { dispatchTakePictureIntent() }
+        binding.capturedPhoto.setOnClickListener(dispatchTakePictureIntent() )
 //        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         return binding.root
     }
@@ -228,71 +236,71 @@ class AddRouteFragment : Fragment() {
         }
     }
 //
-//    private fun dispatchTakePictureIntent() {
-//        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//        // Ensure that there's a camera activity to handle the intent
-//        if (takePictureIntent.resolveActivity(packageManager) != null) {
-//            // Create the File where the photo should go
-//            var photoFile: File? = null
-//            photoFile = try {
-//                createImageFile()
-//            } catch (ex: IOException) {
-//                return
-//            }
-//            if (photoFile != null) {
-//                val photoURI = FileProvider.getUriForFile(Objects.requireNonNull(applicationContext),
-//                        BuildConfig.APPLICATION_ID + ".fileprovider", photoFile)
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-//                climbWallUri = photoURI
-//            }
-//        }
-//    }
-//
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            // Create the File where the photo should go
+            var photoFile: File? = null
+            photoFile = try {
+                createImageFile()
+            } catch (ex: IOException) {
+                return
+            }
+            if (photoFile != null) {
+                val photoURI = FileProvider.getUriForFile(Objects.requireNonNull(context!!),
+                        BuildConfig.APPLICATION_ID + ".fileprovider", photoFile)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                climbWallUri = photoURI
+            }
+        }
+    }
+
     private fun setSavedImageIfPresent() {
         if (route!!.getmImageLocation() != null) {
             climbWallUri = Uri.parse(route!!.getmImageLocation())
         }
     }
 
-//    private fun setImage() {
-//        if (climbWallUri != null) {
-//            Picasso.get().load(climbWallUri).into(wallPhotoImageView)
-//        } else {
-//            val url = "https://p2.piqsels.com/preview/385/249/229/rock-climber-rope-mounatin.jpg"
-//            Picasso.get().load(url).into(wallPhotoImageView)
-//        }
-//    }
+    private fun setImage() {
+        if (climbWallUri != null) {
+            Picasso.get().load(climbWallUri).into(bind.capturedPhoto)
+        } else {
+            val url = "https://p2.piqsels.com/preview/385/249/229/rock-climber-rope-mounatin.jpg"
+            Picasso.get().load(url).into(bind.capturedPhoto)
+        }
+    }
 //
-//    private fun delaySetImage() {
-//        try {
-//            TimeUnit.SECONDS.sleep(1)
-//            setImage()
-//        } catch (e: InterruptedException) {
-//            e.printStackTrace()
-//        }
-//    }
+    private fun delaySetImage() {
+        try {
+            TimeUnit.SECONDS.sleep(1)
+            setImage()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            setImage()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 //
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-//            setImage()
-//        }
-//        super.onActivityResult(requestCode, resultCode, data)
-//    }
-//
-//    @Throws(IOException::class)
-//    private fun createImageFile(): File {
-//        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-//        val imageFileName = "JPEG_" + timeStamp + "_"
-//        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-//        val image = File.createTempFile(
-//                imageFileName,  /* prefix */
-//                ".jpg",  /* suffix */
-//                storageDir /* directory */
-//        )
-//        currentPhotoPath = image.absolutePath
-//        return image
-//    }
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_" + timeStamp + "_"
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",  /* suffix */
+                storageDir /* directory */
+        )
+        currentPhotoPath = image.absolutePath
+        return image
+    }
 //
     companion object {
         const val EXTRA_ROUTE_ID = "extraTaskId"
