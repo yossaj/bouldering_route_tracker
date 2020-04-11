@@ -20,19 +20,6 @@ import java.util.*
 class AddRouteFragment : Fragment() {
 
     private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
-    private var mRouteName: EditText? = null
-    private var mRoom: EditText? = null
-    private var mWall: EditText? = null
-    private var mNotes: EditText? = null
-    private var mRouteColourGroup: RadioGroup? = null
-    private var mRouteColourButtom: RadioButton? = null
-    private var mColorSwatch: View? = null
-    private var mDateTV: TextView? = null
-    private var mRouteNameTV: TextView? = null
-    private var mRouteColourTV: TextView? = null
-    private var mRoomTV: TextView? = null
-    private var mWallTV: TextView? = null
-    private var mNotesTV: TextView? = null
     private var wallPhotoImageView: ImageView? = null
     private var routeName: String? = null
     private var routeColour: String? = null
@@ -58,7 +45,6 @@ class AddRouteFragment : Fragment() {
         setHasOptionsMenu(true);
         val binding: FragmentAddRouteBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_add_route, container, false)
-        initViews(binding)
         val application = requireNotNull(this.activity).application
         val arguments = AddRouteFragmentArgs.fromBundle(arguments!!)
 
@@ -67,23 +53,21 @@ class AddRouteFragment : Fragment() {
         val routeId = arguments.routeEntryKey
         if (routeId != 0) {
             editMenuCheck = true
-            initStaticViews(binding)
-//
             AppExecutors.instance!!.diskIO().execute {
                 route = mDb!!.routeDao().loadRouteById(routeId)
-                if (Looper.myLooper() == null) {
-                    Looper.prepare()
-                }
-                populateStaticUI(route)
-
+                if (Looper.myLooper() == null) { Looper.prepare() }
+                populateStaticUI(binding, route)
             }
 //            delaySetImage()
+        }else{
+            setDate(binding)
         }
 //        mPhotoIntentButton!!.setOnClickListener { dispatchTakePictureIntent() }
 //        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         return binding.root
     }
-//
+
+    //
 //    fun setValues() {
 //        routeName = mRouteName!!.text.toString()
 //        val selectedId = mRouteColourGroup!!.checkedRadioButtonId
@@ -143,11 +127,11 @@ class AddRouteFragment : Fragment() {
 //        return super.onPrepareOptionsMenu(menu)
 //    }
 //
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        val inflater = menuInflater
-//        inflater.inflate(R.menu.add_route_menu_button, menu)
-//        return super.onCreateOptionsMenu(menu)
-//    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.add_route_menu_button, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 //
 //    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 //        val id = item.itemId
@@ -163,54 +147,39 @@ class AddRouteFragment : Fragment() {
 //        return super.onOptionsItemSelected(item)
 //    }
 //
-    fun initViews(binding: FragmentAddRouteBinding) {
-        val newFormattedDate = dateFormat.format(Date())
-        mDateTV = binding.dateAdded
-        mDateTV!!.text = newFormattedDate
-        mRouteName = binding.inputRouteName
-        mRouteColourGroup = binding.routeColourGroup
-        mRoom = binding.inputRoom
-        mWall = binding.inputWall
-        mNotes = binding.inputWall
-        wallPhotoImageView = binding.capturedPhoto
-        mPhotoIntentButton = binding.updateButton
+    fun setDate(binding: FragmentAddRouteBinding) {
+        binding.dateAdded.text = dateFormat.format(Date())
     }
-//
-    fun initStaticViews(binding: FragmentAddRouteBinding) {
-        mRouteNameTV = binding.viewRouteName
-        mRouteColourTV = binding.viewRouteColour
-        mColorSwatch = binding.colorSwatch
-        mRoomTV = binding.viewRoom
-        mWallTV = binding.viewWall
-        mNotesTV = binding.viewRouteNotes
-    }
-//
-    fun populateStaticUI(routeEntry: RouteEntry?) {
-//        val formattedDate = dateFormat.format(routeEntry?.updatedAt)
-//        mDateTV?.text = formattedDate
-        mRouteNameTV?.text = routeEntry?.routeName
-        mRouteNameTV?.visibility = View.VISIBLE
-        mRouteName?.visibility = View.GONE
+
+    //
+    //
+    fun populateStaticUI(binding: FragmentAddRouteBinding, routeEntry: RouteEntry?) {
+        val formattedDate = dateFormat.format(routeEntry?.updatedAt)
+        binding.dateAdded.text = formattedDate
+        binding.viewRouteName.text = routeEntry?.routeName
+        binding.viewRouteName.visibility = View.VISIBLE
+        binding.inputRouteName.visibility = View.GONE
         val setRouteColor = routeEntry?.routeColour
-        mRouteColourTV!!.visibility = View.VISIBLE
-        mRouteColourTV!!.text = setRouteColor
-        mRouteColourGroup!!.visibility = View.GONE
-        mColorSwatch!!.visibility = View.VISIBLE
+        binding.viewRouteColour.text = setRouteColor
+        binding.viewRouteColour.visibility = View.VISIBLE
+        binding.routeColourGroup.visibility = View.GONE
         val getRouteColourInt = Utilities.getColor(setRouteColor, context)
-        mColorSwatch!!.setBackgroundColor(getRouteColourInt)
-        mRoomTV!!.text = routeEntry?.room
-        mRoomTV!!.visibility = View.VISIBLE
-        mRoom!!.visibility = View.GONE
-        mWallTV!!.text = routeEntry?.wall
-        mWallTV!!.visibility = View.VISIBLE
-        mWall!!.visibility = View.GONE
-        mNotesTV!!.text = routeEntry?.note
-        mNotesTV!!.visibility = View.VISIBLE
-        mNotes!!.visibility = View.GONE
-        mPhotoIntentButton!!.visibility = View.GONE
+        binding.colorSwatch.setBackgroundColor(getRouteColourInt)
+        binding.colorSwatch.visibility = View.VISIBLE
+        binding.viewRoom.text = routeEntry?.room
+        binding.viewRoom.visibility = View.VISIBLE
+        binding.inputRoom.visibility = View.GONE
+        binding.viewWall.text = routeEntry?.wall
+        binding.viewWall.visibility = View.VISIBLE
+        binding.inputWall.visibility = View.GONE
+        binding.viewRouteNotes.text = routeEntry?.note
+        binding.viewRouteNotes.visibility = View.VISIBLE
+        binding.routeNote.visibility = View.GONE
+        binding.updateButton.visibility = View.GONE
 ////        setSavedImageIfPresent()
     }
-//
+
+    //
 //    fun populateEditableUI(routeEntry: RouteEntry?) {
 //        mRouteName!!.setText(routeEntry!!.routeName)
 //        mRouteName!!.visibility = View.VISIBLE
