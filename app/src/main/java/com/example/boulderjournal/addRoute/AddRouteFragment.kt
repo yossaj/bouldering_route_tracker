@@ -2,7 +2,7 @@ package com.example.boulderjournal.addRoute
 
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings.System.DATE_FORMAT
+import android.os.Looper
 import android.view.*
 import android.widget.*
 import androidx.databinding.DataBindingUtil
@@ -58,7 +58,7 @@ class AddRouteFragment : Fragment() {
         setHasOptionsMenu(true);
         val binding: FragmentAddRouteBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_add_route, container, false)
-//        initViews()
+        initViews(binding)
         val application = requireNotNull(this.activity).application
         val arguments = AddRouteFragmentArgs.fromBundle(arguments!!)
 
@@ -69,10 +69,14 @@ class AddRouteFragment : Fragment() {
             editMenuCheck = true
             initStaticViews(binding)
 //
-//            AppExecutors.instance!!.diskIO().execute {
-//                route = mDb!!.routeDao().loadRouteById(routeId)
-//                populateStaticUI(route)
-//            }
+            AppExecutors.instance!!.diskIO().execute {
+                route = mDb!!.routeDao().loadRouteById(routeId)
+                if (Looper.myLooper() == null) {
+                    Looper.prepare()
+                }
+                populateStaticUI(route)
+
+            }
 //            delaySetImage()
         }
 //        mPhotoIntentButton!!.setOnClickListener { dispatchTakePictureIntent() }
@@ -159,18 +163,18 @@ class AddRouteFragment : Fragment() {
 //        return super.onOptionsItemSelected(item)
 //    }
 //
-//    fun initViews() {
-//        val newFormattedDate = dateFormat.format(Date())
-//        mDateTV = findViewById<View>(R.id.date_added) as TextView
-//        mDateTV!!.text = newFormattedDate
-//        mRouteName = findViewById<View>(R.id.input_route_name) as EditText
-//        mRouteColourGroup = findViewById<View>(R.id.route_colour_group) as RadioGroup
-//        mRoom = findViewById<View>(R.id.input_room) as EditText
-//        mWall = findViewById<View>(R.id.input_wall) as EditText
-//        mNotes = findViewById<View>(R.id.route_note) as EditText
-//        wallPhotoImageView = findViewById<View>(R.id.capturedPhoto) as ImageView
-//        mPhotoIntentButton = findViewById<View>(R.id.updateButton) as Button
-//    }
+    fun initViews(binding: FragmentAddRouteBinding) {
+        val newFormattedDate = dateFormat.format(Date())
+        mDateTV = binding.dateAdded
+        mDateTV!!.text = newFormattedDate
+        mRouteName = binding.inputRouteName
+        mRouteColourGroup = binding.routeColourGroup
+        mRoom = binding.inputRoom
+        mWall = binding.inputWall
+        mNotes = binding.inputWall
+        wallPhotoImageView = binding.capturedPhoto
+        mPhotoIntentButton = binding.updateButton
+    }
 //
     fun initStaticViews(binding: FragmentAddRouteBinding) {
         mRouteNameTV = binding.viewRouteName
@@ -182,11 +186,11 @@ class AddRouteFragment : Fragment() {
     }
 //
     fun populateStaticUI(routeEntry: RouteEntry?) {
-//        val formattedDate = dateFormat.format(routeEntry!!.updatedAt)
-//        mDateTV!!.text = formattedDate
-        mRouteNameTV!!.text = routeEntry?.routeName
-        mRouteNameTV!!.visibility = View.VISIBLE
-        mRouteName!!.visibility = View.GONE
+//        val formattedDate = dateFormat.format(routeEntry?.updatedAt)
+//        mDateTV?.text = formattedDate
+        mRouteNameTV?.text = routeEntry?.routeName
+        mRouteNameTV?.visibility = View.VISIBLE
+        mRouteName?.visibility = View.GONE
         val setRouteColor = routeEntry?.routeColour
         mRouteColourTV!!.visibility = View.VISIBLE
         mRouteColourTV!!.text = setRouteColor
@@ -204,7 +208,7 @@ class AddRouteFragment : Fragment() {
         mNotesTV!!.visibility = View.VISIBLE
         mNotes!!.visibility = View.GONE
         mPhotoIntentButton!!.visibility = View.GONE
-//        setSavedImageIfPresent()
+////        setSavedImageIfPresent()
     }
 //
 //    fun populateEditableUI(routeEntry: RouteEntry?) {
@@ -314,11 +318,11 @@ class AddRouteFragment : Fragment() {
 //        return image
 //    }
 //
-//    companion object {
-//        const val EXTRA_ROUTE_ID = "extraTaskId"
-//        const val INSTANCE_ROUTE_ID = "instanceTaskId"
-//        private const val DEFAULT_ROUTE_ID = -1
-//        private const val DATE_FORMAT = "dd/MM/yyy"
-//        const val REQUEST_IMAGE_CAPTURE = 1
-//    }
+    companion object {
+        const val EXTRA_ROUTE_ID = "extraTaskId"
+        const val INSTANCE_ROUTE_ID = "instanceTaskId"
+        private const val DEFAULT_ROUTE_ID = -1
+        private const val DATE_FORMAT = "dd/MM/yyy"
+        const val REQUEST_IMAGE_CAPTURE = 1
+    }
 }
