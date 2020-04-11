@@ -8,25 +8,23 @@ import android.widget.*
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.boulderjournal.AppExecutors
+import com.example.boulderjournal.AppExecutors.Companion.instance
 import com.example.boulderjournal.R
 import com.example.boulderjournal.Utils.Utilities
+import com.example.boulderjournal.Utils.hideKeyboard
 import com.example.boulderjournal.data.AppDatabase
 import com.example.boulderjournal.data.AppDatabase.Companion.getInstance
 import com.example.boulderjournal.data.RouteEntry
 import com.example.boulderjournal.databinding.FragmentAddRouteBinding
+import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddRouteFragment : Fragment() {
 
     private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
-    private var wallPhotoImageView: ImageView? = null
-    private var routeName: String? = null
-    private var routeColour: String? = null
-    private var room: String? = null
-    private var wall: String? = null
-    private var notes: String? = null
     private var imageURIstr: String? = null
     private var date: Date? = null
     private val completed = false
@@ -37,7 +35,6 @@ class AddRouteFragment : Fragment() {
     private var editMenuItem: MenuItem? = null
     private var addMenuItem: MenuItem? = null
     private var route: RouteEntry? = null
-    private var mPhotoIntentButton: Button? = null
     private var currentPhotoPath: String? = null
     private var climbWallUri: Uri? = null
     private var mDb: AppDatabase? = null
@@ -52,7 +49,6 @@ class AddRouteFragment : Fragment() {
         val arguments = AddRouteFragmentArgs.fromBundle(arguments!!)
 
         mDb = getInstance(application)
-
 
         val routeId = arguments.routeEntryKey
         if (routeId != 0) {
@@ -73,54 +69,62 @@ class AddRouteFragment : Fragment() {
 
     //
     fun setValues(binding: FragmentAddRouteBinding) {
-        routeName = binding.inputRouteName.text.toString()
+        val routeName = binding.inputRouteName.text.toString()
         val selectedId = binding.routeColourGroup.checkedRadioButtonId
 
-        val mRouteColourButtom = binding.routeColourGroup
-//        if (mRouteColourButtom != null) {
-//            routeColour = mRouteColourButtom.toString()
-//        }
-//        room = mRoom!!.text.toString()
-//        wall = mWall!!.text.toString()
-//        notes = mNotes!!.text.toString()
-//        val completedStr = completed.toString()
-//        if (climbWallUri != null) {
-//            imageURIstr = climbWallUri.toString()
-//        }
-//        if (date == null) {
-//            date = Date()
-//        }
-//        if (routeName!!.length == 0 || routeColour!!.length == 0 || room!!.length == 0 || wall!!.length == 0 || notes!!.length == 0) {
-//            Toast.makeText(baseContext, "Please fill in all fields", Toast.LENGTH_LONG).show()
-//            return
-//        } else if (route == null) {
-//            route = RouteEntry(0, routeName, routeColour, room, wall, notes, imageURIstr, completedStr, date)
-//            readyAddDb = true
-//        } else {
-//            route!!.routeName = routeName
-//            route!!.routeColour = routeColour
-//            route!!.room = room
-//            route!!.wall = wall
-//            route!!.note = notes
-//            route!!.setmImageLocation(imageURIstr)
-//            readyAddDb = true
-//        }
+        val mRouteColourButtom = when(selectedId){
+            R.id.blueButton ->binding.blueButton
+            R.id.yellowButton -> binding.yellowButton
+            R.id.orangeButton -> binding.orangeButton
+            R.id.pinkButton -> binding.pinkButton
+            else -> null
+        }
+        val routeColour = mRouteColourButtom?.text.toString()
+        val room = binding.inputRoom.text.toString()
+        val wall = binding.inputWall.text.toString()
+        val notes = binding.routeNote.text.toString()
+        val completedStr = completed.toString()
+        if (climbWallUri != null) {
+            imageURIstr = climbWallUri.toString()
+        }
+        if (date == null) {
+            date = Date()
+        }
+        if (routeName!!.length == 0 || routeColour!!.length == 0 || room!!.length == 0 || wall!!.length == 0 || notes!!.length == 0) {
+            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_LONG).show()
+            return
+        } else if (route == null) {
+            route = RouteEntry(0, routeName, routeColour, room, wall, notes, imageURIstr, completedStr, date)
+            readyAddDb = true
+        } else {
+            route!!.routeName = routeName
+            route!!.routeColour = routeColour
+            route!!.room = room
+            route!!.wall = wall
+            route!!.note = notes
+            route!!.setmImageLocation(imageURIstr)
+            readyAddDb = true
+        }
     }
 //
     fun onAddRoute() {
         setValues(bind)
-//        if (readyAddDb) {
-//            instance!!.diskIO().execute {
-//                mDb!!.routeDao().insertRoute(route!!)
-//                finish()
-//            }
-//        }
+        if (readyAddDb) {
+            instance!!.diskIO().execute {
+                mDb!!.routeDao().insertRoute(route!!)
+                this.findNavController().navigate(
+                        AddRouteFragmentDirections.actionAddRouteFragmentToHomeFragment()
+                )
+                hideKeyboard(activity!!)
+            }
+        }
     }
 //
     fun onUpdateRoute() {
         setValues(bind)
-//        instance!!.diskIO().execute { mDb!!.routeDao().updateRoute(route!!) }
-    }
+        instance!!.diskIO().execute { mDb!!.routeDao().updateRoute(route!!) }
+        hideKeyboard(activity!!)
+}
 
     override fun onPrepareOptionsMenu(menu: Menu){
         editMenuItem = menu.findItem(R.id.edit_menu_item)
@@ -146,18 +150,16 @@ class AddRouteFragment : Fragment() {
         } else if (id == R.id.edit_menu_item && editMenuCheck) {
             populateEditableUI(bind ,route)
         } else if (id == R.id.edit_menu_item && readyUpdateCheck) {
-//            onUpdateRoute()
+            onUpdateRoute()
             refactorUIonUpdateRoute()
         }
         return super.onOptionsItemSelected(item)
     }
-//
+
     fun setDate(binding: FragmentAddRouteBinding) {
         binding.dateAdded.text = dateFormat.format(Date())
     }
 
-    //
-    //
     fun populateStaticUI(binding: FragmentAddRouteBinding, routeEntry: RouteEntry?) {
         val formattedDate = dateFormat.format(routeEntry?.updatedAt)
         binding.dateAdded.text = formattedDate
@@ -181,7 +183,7 @@ class AddRouteFragment : Fragment() {
         binding.viewRouteNotes.visibility = View.VISIBLE
         binding.routeNote.visibility = View.GONE
         binding.updateButton.visibility = View.GONE
-////        setSavedImageIfPresent()
+        setSavedImageIfPresent()
     }
 
     fun populateEditableUI(binding: FragmentAddRouteBinding, routeEntry: RouteEntry?) {
@@ -206,7 +208,8 @@ class AddRouteFragment : Fragment() {
         editMenuItem!!.setTitle(R.string.update)
 //        mPhotoIntentButton!!.visibility = View.VISIBLE
     }
-//
+
+
     fun refactorUIonUpdateRoute() {
         Toast.makeText(context, "Your note has been updated", Toast.LENGTH_LONG).show()
         populateStaticUI(bind ,route)
@@ -246,12 +249,12 @@ class AddRouteFragment : Fragment() {
 //        }
 //    }
 //
-//    private fun setSavedImageIfPresent() {
-//        if (route!!.getmImageLocation() != null) {
-//            climbWallUri = Uri.parse(route!!.getmImageLocation())
-//        }
-//    }
-//
+    private fun setSavedImageIfPresent() {
+        if (route!!.getmImageLocation() != null) {
+            climbWallUri = Uri.parse(route!!.getmImageLocation())
+        }
+    }
+
 //    private fun setImage() {
 //        if (climbWallUri != null) {
 //            Picasso.get().load(climbWallUri).into(wallPhotoImageView)

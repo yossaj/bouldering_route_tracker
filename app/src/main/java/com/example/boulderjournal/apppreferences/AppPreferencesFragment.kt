@@ -1,15 +1,14 @@
 package com.example.boulderjournal.apppreferences
 
-import androidx.appcompat.app.AppCompatActivity
-
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import ca.antonious.materialdaypicker.MaterialDayPicker
 import com.example.boulderjournal.R
 import com.example.boulderjournal.databinding.FragmentAppPreferencesBinding
@@ -55,4 +54,5 @@ class AppPreferencesFragment :  Fragment() {
         val day = MaterialDayPicker.Weekday.valueOf(preferedDay)
         dayPicker?.selectDay(day)
     }
+
 }
