@@ -6,12 +6,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import com.example.boulderjournal.AppExecutors.Companion.instance
 import com.example.boulderjournal.BuildConfig
 import com.example.boulderjournal.R
@@ -26,7 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class AddRouteActivity : AppCompatActivity() {
+class AddRouteFragment : Fragment() {
     private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
     private var mRouteName: EditText? = null
     private var mRoom: EditText? = null
@@ -62,12 +60,12 @@ class AddRouteActivity : AppCompatActivity() {
     private var mRouteId = DEFAULT_ROUTE_ID
     private var mDb: AppDatabase? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setTheme(R.style.AppTheme)
-        setContentView(R.layout.activity_add_route)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+//        setTheme(R.style.AppTheme)
+        setHasOptionsMenu(true);
         initViews()
-        mDb = getInstance(applicationContext)
+        val application = requireNotNull(this.activity).application
+        mDb = getInstance(application)
         if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_ROUTE_ID)) {
             mRouteId = savedInstanceState.getInt(INSTANCE_ROUTE_ID, DEFAULT_ROUTE_ID)
         }
@@ -84,6 +82,7 @@ class AddRouteActivity : AppCompatActivity() {
         }
         mPhotoIntentButton!!.setOnClickListener { dispatchTakePictureIntent() }
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     fun setValues() {

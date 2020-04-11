@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".addRoute.AddRouteActivity"
+            android:name=".addRoute.AddRouteFragment"
             android:label="Add a New Route"
             android:parentActivityName=".MainActivity" />
 

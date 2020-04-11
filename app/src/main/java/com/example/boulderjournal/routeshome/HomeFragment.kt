@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boulderjournal.*
-import com.example.boulderjournal.addRoute.AddRouteActivity
+import com.example.boulderjournal.addRoute.AddRouteFragment
 import com.example.boulderjournal.data.AppDatabase
 import com.example.boulderjournal.data.RouteDao
 import com.example.boulderjournal.databinding.FragmentHomeBinding
@@ -63,8 +63,8 @@ class HomeFragment : Fragment(){
     }
 
     private fun navigateToRoute(routeId: Int) {
-        val intent = Intent(getActivity(), AddRouteActivity::class.java)
-        intent.putExtra(AddRouteActivity.EXTRA_ROUTE_ID, routeId)
+        val intent = Intent(getActivity(), AddRouteFragment::class.java)
+        intent.putExtra(AddRouteFragment.EXTRA_ROUTE_ID, routeId)
         startActivity(intent)
     }
 
@@ -76,7 +76,7 @@ class HomeFragment : Fragment(){
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.add) {
-            val addNewRoute = Intent(activity, AddRouteActivity::class.java)
+            val addNewRoute = Intent(activity, AddRouteFragment::class.java)
             startActivity(addNewRoute)
             return true
         } else if (id == R.id.preferences) {
