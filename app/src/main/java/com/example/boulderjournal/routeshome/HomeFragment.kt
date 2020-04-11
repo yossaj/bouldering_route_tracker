@@ -41,15 +41,13 @@ class HomeFragment : Fragment(){
 
         binding.homeViewModel = viewModel
 
-        unfinishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener{
-            routeId ->
+        unfinishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener { routeId ->
             navigateToRoute(routeId)
         })
         binding.recyclerRoutesToDo.adapter = unfinishedAdapter
 
 
-        finishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener{
-            routeId ->
+        finishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener { routeId ->
             navigateToRoute(routeId)
         })
         binding.recyclerRoutesDone.adapter = finishedAdapter

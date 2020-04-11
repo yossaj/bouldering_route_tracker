@@ -9,7 +9,7 @@
 
         <variable
             name="clickListener"
-            type="com.example.boulderjournal.RouteAdapter.ItemClickListener" />
+            type="com.example.boulderjournal.routeshome.RouteAdapter.ItemClickListener" />
 
     </data>
 
