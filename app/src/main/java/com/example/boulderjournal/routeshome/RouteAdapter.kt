@@ -1,4 +1,4 @@
-package com.example.boulderjournal
+package com.example.boulderjournal.routeshome
 
 import android.content.Context
 import android.view.LayoutInflater

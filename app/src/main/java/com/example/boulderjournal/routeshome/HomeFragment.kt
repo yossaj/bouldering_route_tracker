@@ -3,7 +3,6 @@ package com.example.boulderjournal.routeshome
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -42,15 +41,13 @@ class HomeFragment : Fragment(){
 
         binding.homeViewModel = viewModel
 
-        unfinishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener{
-            routeId ->
+        unfinishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener { routeId ->
             navigateToRoute(routeId)
         })
         binding.recyclerRoutesToDo.adapter = unfinishedAdapter
 
 
-        finishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener{
-            routeId ->
+        finishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener { routeId ->
             navigateToRoute(routeId)
         })
         binding.recyclerRoutesDone.adapter = finishedAdapter
