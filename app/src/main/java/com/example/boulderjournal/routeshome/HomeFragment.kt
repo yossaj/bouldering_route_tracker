@@ -52,13 +52,11 @@ class HomeFragment : Fragment(){
         })
         binding.recyclerRoutesDone.adapter = finishedAdapter
 
-        moveToDoneWhenSwiped(binding.recyclerRoutesToDo, unfinishedAdapter)
-        deleteWhenSwiped(binding.recyclerRoutesDone, finishedAdapter)
-        returnToWorkingOn(binding.recyclerRoutesDone, finishedAdapter)
+        swipeTo("MoveToDone", binding.recyclerRoutesToDo, unfinishedAdapter)
+        swipeTo("Delete", binding.recyclerRoutesDone, finishedAdapter)
+        swipeTo("MoveToWorkingOn", binding.recyclerRoutesDone, finishedAdapter)
 
-        retrieveUnfinishedRoutes()
-        retrieveFinishedRoutes()
-
+        retrieveRoutes()
         return binding.root
     }
 
@@ -93,38 +91,22 @@ class HomeFragment : Fragment(){
         return super.onOptionsItemSelected(item)
     }
 
-    private fun retrieveUnfinishedRoutes() {
+    private fun retrieveRoutes() {
         viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> unfinishedAdapter!!.submitList(routeEntries) })
-    }
-
-
-    private fun retrieveFinishedRoutes() {
         viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries) })
     }
 
+    fun swipeTo(action : String , recyclerView: RecyclerView?, adapter: RouteAdapter?) {
 
-    fun moveToDoneWhenSwiped(recyclerView: RecyclerView?, adapter: RouteAdapter?) {
-
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-                AppExecutors.instance!!.diskIO().execute {
-                    val position = viewHolder.adapterPosition
-                    val route = adapter!!.getRouteByPosition(position)
-                    val status = "true"
-                    route.setmComplete(status)
-                    mDb!!.updateRoute(route)
+        val direction =
+                when(action){
+                    "Delete" -> ItemTouchHelper.LEFT
+                    "MoveToDone" -> ItemTouchHelper.LEFT
+                    "MoveToWorkingOn" -> ItemTouchHelper.RIGHT
+                    else -> ItemTouchHelper.DOWN
                 }
-            }
-        }).attachToRecyclerView(recyclerView)
-    }
 
-    fun deleteWhenSwiped(recyclerView: RecyclerView?, adapter: RouteAdapter?) {
-
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, direction) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 return false
             }
@@ -133,26 +115,17 @@ class HomeFragment : Fragment(){
                 AppExecutors.instance!!.diskIO().execute {
                     val position = viewHolder.adapterPosition
                     val route = adapter!!.getRouteByPosition(position)
-                    mDb!!.deleteRoute(route)
-                }
-            }
-        }).attachToRecyclerView(recyclerView)
-    }
-
-    fun returnToWorkingOn(recyclerView: RecyclerView?, adapter: RouteAdapter?) {
-
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.UP) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-                AppExecutors.instance!!.diskIO().execute {
-                    val position = viewHolder.adapterPosition
-                    val route = adapter!!.getRouteByPosition(position)
-                    val status = "false"
-                    route.setmComplete(status)
-                    mDb!!.updateRoute(route)
+                    when(action){
+                        "Delete" -> mDb!!.deleteRoute(route)
+                        "MoveToDone" -> {
+                            route.setmComplete("true")
+                            mDb!!.updateRoute(route)
+                        }
+                        "MoveToWorkingOn" -> {
+                            route.setmComplete("false")
+                            mDb!!.updateRoute(route)
+                        }
+                    }
                 }
             }
         }).attachToRecyclerView(recyclerView)
