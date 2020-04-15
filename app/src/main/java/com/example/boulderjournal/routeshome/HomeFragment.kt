@@ -90,9 +90,6 @@ class HomeFragment : Fragment(){
         viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> unfinishedAdapter!!.submitList(routeEntries) })
         viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries) })
     }
-
-
-
 }
 
 //    fun signOut() {
