@@ -43,7 +43,6 @@ class HomeViewModel(
                     val position = viewHolder.adapterPosition
                     val route = adapter!!.getRouteByPosition(position)
                     when(action){
-
                         "Delete" -> mDb!!.routeDao.deleteRoute(route)
                         "MoveToDone" -> {
                             route.setmComplete("true")
