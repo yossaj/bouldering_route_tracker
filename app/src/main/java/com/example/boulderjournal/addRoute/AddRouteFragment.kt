@@ -62,7 +62,7 @@ class AddRouteFragment : Fragment() {
         if (routeId != 0) {
             editMenuCheck = true
             AppExecutors.instance!!.diskIO().execute {
-                route = mDb!!.routeDao().loadRouteById(routeId)
+                route = mDb!!.routeDao.loadRouteById(routeId)
                 if (Looper.myLooper() == null) { Looper.prepare() }
                 populateStaticUI(binding, route)
             }
@@ -119,7 +119,7 @@ class AddRouteFragment : Fragment() {
         setValues(bind)
         if (readyAddDb) {
             instance!!.diskIO().execute {
-                mDb!!.routeDao().insertRoute(route!!)
+                mDb!!.routeDao.insertRoute(route!!)
                 this.findNavController().navigate(
                         AddRouteFragmentDirections.actionAddRouteFragmentToHomeFragment()
                 )
@@ -130,7 +130,7 @@ class AddRouteFragment : Fragment() {
 //
     fun onUpdateRoute() {
         setValues(bind)
-        instance!!.diskIO().execute { mDb!!.routeDao().updateRoute(route!!) }
+        instance!!.diskIO().execute { mDb!!.routeDao.updateRoute(route!!) }
         hideKeyboard(activity!!)
 }
 

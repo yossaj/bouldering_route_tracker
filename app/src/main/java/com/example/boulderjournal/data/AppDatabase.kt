@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun routeDao(): RouteDao
+    abstract val routeDao : RouteDao
 
     companion object {
 

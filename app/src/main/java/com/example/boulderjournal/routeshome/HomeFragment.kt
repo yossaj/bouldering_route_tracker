@@ -35,8 +35,9 @@ class HomeFragment : Fragment(){
 
         val application = requireNotNull(this.activity).application
 
-        mDb = AppDatabase.getInstance(application)?.routeDao()
-        val viewModelFactory = HomeViewModelFactory(mDb, application)
+        mDb = AppDatabase.getInstance(application)?.routeDao
+        val datasource = AppDatabase.getInstance(application)
+        val viewModelFactory = HomeViewModelFactory(datasource, application)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
 
         binding.homeViewModel = viewModel
@@ -52,18 +53,15 @@ class HomeFragment : Fragment(){
         })
         binding.recyclerRoutesDone.adapter = finishedAdapter
 
-        swipeTo("MoveToDone", binding.recyclerRoutesToDo, unfinishedAdapter)
-        swipeTo("Delete", binding.recyclerRoutesDone, finishedAdapter)
-        swipeTo("MoveToWorkingOn", binding.recyclerRoutesDone, finishedAdapter)
+        viewModel!!.swipeTo("MoveToDone", binding.recyclerRoutesToDo, unfinishedAdapter)
+        viewModel!!.swipeTo("Delete", binding.recyclerRoutesDone, finishedAdapter)
+        viewModel!!.swipeTo("MoveToWorkingOn", binding.recyclerRoutesDone, finishedAdapter)
 
         retrieveRoutes()
         return binding.root
     }
 
     private fun navigateToRoute(routeId: Int) {
-//        val intent = Intent(getActivity(), AddRouteFragment::class.java)
-//        intent.putExtra(AddRouteFragment.EXTRA_ROUTE_ID, routeId)
-//        startActivity(intent)
         this.findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToAddRouteFragment(routeId)
         )
@@ -77,9 +75,6 @@ class HomeFragment : Fragment(){
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.add) {
-//            val addNewRoute = Intent(activity, AddRouteFragment::class.java)
-//            startActivity(addNewRoute)
-//            return true
             this.findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToAddRouteFragment(0))
         } else if (id == R.id.preferences) {
@@ -96,40 +91,7 @@ class HomeFragment : Fragment(){
         viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries) })
     }
 
-    fun swipeTo(action : String , recyclerView: RecyclerView?, adapter: RouteAdapter?) {
 
-        val direction =
-                when(action){
-                    "Delete" -> ItemTouchHelper.LEFT
-                    "MoveToDone" -> ItemTouchHelper.LEFT
-                    "MoveToWorkingOn" -> ItemTouchHelper.RIGHT
-                    else -> ItemTouchHelper.DOWN
-                }
-
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, direction) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-                AppExecutors.instance!!.diskIO().execute {
-                    val position = viewHolder.adapterPosition
-                    val route = adapter!!.getRouteByPosition(position)
-                    when(action){
-                        "Delete" -> mDb!!.deleteRoute(route)
-                        "MoveToDone" -> {
-                            route.setmComplete("true")
-                            mDb!!.updateRoute(route)
-                        }
-                        "MoveToWorkingOn" -> {
-                            route.setmComplete("false")
-                            mDb!!.updateRoute(route)
-                        }
-                    }
-                }
-            }
-        }).attachToRecyclerView(recyclerView)
-    }
 
 }
 
