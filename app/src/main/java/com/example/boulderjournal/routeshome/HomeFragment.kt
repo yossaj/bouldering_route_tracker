@@ -1,21 +1,25 @@
 package com.example.boulderjournal.routeshome
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.example.boulderjournal.*
-import com.example.boulderjournal.addRoute.AddRouteFragment
+import com.example.boulderjournal.LoginActivty
+import com.example.boulderjournal.R
 import com.example.boulderjournal.data.AppDatabase
 import com.example.boulderjournal.data.RouteDao
 import com.example.boulderjournal.databinding.FragmentHomeBinding
 import com.example.boulderjournal.notifications.ScheduleReminderUtil
+import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment(){
 
@@ -23,17 +27,19 @@ class HomeFragment : Fragment(){
     private var finishedAdapter: RouteAdapter? = null
     private var mDb: RouteDao? = null
     private var viewModel: HomeViewModel? = null
+    private lateinit var mAuth : FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        ScheduleReminderUtil.scheduleReminder(context, getString(R.string.shared_preference_key), getString(R.string.climb_day_key))
-        //        mAuth = FirebaseAuth.getInstance();
-        //        currentUser = mAuth.getCurrentUser();
-        //        userName = currentUser.getDisplayName();
         setHasOptionsMenu(true);
+        createChannel(
+                getString(R.string.note_notification),
+                getString(R.string.note_channel_id)
+        )
+        mAuth = FirebaseAuth.getInstance();
         val binding: FragmentHomeBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_home, container, false)
-
         val application = requireNotNull(this.activity).application
+        ScheduleReminderUtil.scheduleReminder(context, getString(R.string.shared_preference_key), getString(R.string.climb_day_key))
 
         mDb = AppDatabase.getInstance(application)?.routeDao
         val datasource = AppDatabase.getInstance(application)
@@ -82,6 +88,7 @@ class HomeFragment : Fragment(){
                     HomeFragmentDirections.actionHomeFragmentToAppPreferencesFragment()
             )
         } else if (id == R.id.sign_out_menu) {
+            signOut()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -90,17 +97,34 @@ class HomeFragment : Fragment(){
         viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> unfinishedAdapter!!.submitList(routeEntries) })
         viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries) })
     }
+
+    private fun signOut() {
+        val currentUser = mAuth.getCurrentUser();
+        val userName = currentUser!!.getDisplayName();
+        if (mAuth!!.currentUser != null) {
+            Toast.makeText(context, userName!! + " : Signed Out", Toast.LENGTH_LONG).show()
+            mAuth.signOut()
+            val returnToSignIn = Intent(context, LoginActivty::class.java)
+            startActivity(returnToSignIn)
+        } else {
+            Toast.makeText(context, "Already signed out", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun createChannel(channelId: String, channelName: String){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val takeNoteReminderChannel = NotificationChannel(
+                    channelId,
+                    channelName,
+                    NotificationManager.IMPORTANCE_HIGH)
+            takeNoteReminderChannel.enableLights(true)
+            takeNoteReminderChannel.lightColor = Color.YELLOW
+
+            val notificationManager = requireActivity().getSystemService(
+                    NotificationManager::class.java
+            )
+            notificationManager.createNotificationChannel(takeNoteReminderChannel)
+        }
+    }
 }
-
-//    fun signOut() {
-//        if (mAuth!!.currentUser != null) {
-//            Toast.makeText(baseContext, userName!! + " : Signed Out", Toast.LENGTH_LONG).show()
-//            mAuth.signOut()
-//            val returnToSignIn = Intent(this@HomeFragment, LoginActivty::class.java)
-//            startActivity(returnToSignIn)
-//        } else {
-//            Toast.makeText(baseContext, "Already signed out", Toast.LENGTH_LONG).show()
-//        }
-//    }
-
-//}
