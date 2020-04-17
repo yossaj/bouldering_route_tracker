@@ -3,6 +3,7 @@ package com.example.boulderjournal.routeshome
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,6 +17,7 @@ import com.example.boulderjournal.data.AppDatabase
 import com.example.boulderjournal.data.RouteDao
 import com.example.boulderjournal.databinding.FragmentHomeBinding
 import com.example.boulderjournal.notifications.ScheduleReminderUtil
+import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment(){
 
@@ -23,12 +25,11 @@ class HomeFragment : Fragment(){
     private var finishedAdapter: RouteAdapter? = null
     private var mDb: RouteDao? = null
     private var viewModel: HomeViewModel? = null
+    private lateinit var mAuth : FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         ScheduleReminderUtil.scheduleReminder(context, getString(R.string.shared_preference_key), getString(R.string.climb_day_key))
-        //        mAuth = FirebaseAuth.getInstance();
-        //        currentUser = mAuth.getCurrentUser();
-        //        userName = currentUser.getDisplayName();
+        mAuth = FirebaseAuth.getInstance();
         setHasOptionsMenu(true);
         val binding: FragmentHomeBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_home, container, false)
@@ -82,6 +83,7 @@ class HomeFragment : Fragment(){
                     HomeFragmentDirections.actionHomeFragmentToAppPreferencesFragment()
             )
         } else if (id == R.id.sign_out_menu) {
+            signOut()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -90,17 +92,17 @@ class HomeFragment : Fragment(){
         viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> unfinishedAdapter!!.submitList(routeEntries) })
         viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries) })
     }
+
+    fun signOut() {
+        val currentUser = mAuth.getCurrentUser();
+        val userName = currentUser!!.getDisplayName();
+        if (mAuth!!.currentUser != null) {
+            Toast.makeText(context, userName!! + " : Signed Out", Toast.LENGTH_LONG).show()
+            mAuth.signOut()
+            val returnToSignIn = Intent(context, LoginActivty::class.java)
+            startActivity(returnToSignIn)
+        } else {
+            Toast.makeText(context, "Already signed out", Toast.LENGTH_LONG).show()
+        }
+    }
 }
-
-//    fun signOut() {
-//        if (mAuth!!.currentUser != null) {
-//            Toast.makeText(baseContext, userName!! + " : Signed Out", Toast.LENGTH_LONG).show()
-//            mAuth.signOut()
-//            val returnToSignIn = Intent(this@HomeFragment, LoginActivty::class.java)
-//            startActivity(returnToSignIn)
-//        } else {
-//            Toast.makeText(baseContext, "Already signed out", Toast.LENGTH_LONG).show()
-//        }
-//    }
-
-//}
