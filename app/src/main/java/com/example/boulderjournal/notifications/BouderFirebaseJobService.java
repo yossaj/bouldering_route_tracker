@@ -32,8 +32,6 @@ public class BouderFirebaseJobService extends JobService {
         return true;
     }
 
-
-
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
         if (mBackgroundTask != null) mBackgroundTask.cancel(true);

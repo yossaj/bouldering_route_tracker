@@ -1,38 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="left"
-    tools:context="com.example.boulderjournal.MainActivity"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout android:layout_width="match_parent"
+    <data>
+        <variable
+            name="route"
+            type="com.example.boulderjournal.data.RouteEntry" />
+
+        <variable
+            name="clickListener"
+            type="com.example.boulderjournal.routeshome.RouteAdapter.ItemClickListener" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/item"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/main_list_items_light"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="60dp">
+        android:layout_gravity="left"
+        tools:context="com.example.boulderjournal.MainActivity"
+        android:onClick="@{()->clickListener.onItemClick(route)}">
 
-        <View
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:id="@+id/color_swatch_main"
-            android:background="@color/colorAccent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/main_list_items_light"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="60dp">
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:id="@+id/color_swatch_main"
+                android:background="@color/colorAccent" />
 
 
-    <TextView
-        android:id="@+id/route_name_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:padding="8dp"
-        />
+            <TextView
+                android:id="@+id/route_name_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:padding="8dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</layout>

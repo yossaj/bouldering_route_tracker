@@ -1,0 +1,106 @@
+package com.example.boulderjournal.routeshome
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.*
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.example.boulderjournal.*
+import com.example.boulderjournal.addRoute.AddRouteFragment
+import com.example.boulderjournal.data.AppDatabase
+import com.example.boulderjournal.data.RouteDao
+import com.example.boulderjournal.databinding.FragmentHomeBinding
+import com.example.boulderjournal.notifications.ScheduleReminderUtil
+
+class HomeFragment : Fragment(){
+
+    private var unfinishedAdapter: RouteAdapter? = null
+    private var finishedAdapter: RouteAdapter? = null
+    private var mDb: RouteDao? = null
+    private var viewModel: HomeViewModel? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        ScheduleReminderUtil.scheduleReminder(context, getString(R.string.shared_preference_key), getString(R.string.climb_day_key))
+        //        mAuth = FirebaseAuth.getInstance();
+        //        currentUser = mAuth.getCurrentUser();
+        //        userName = currentUser.getDisplayName();
+        setHasOptionsMenu(true);
+        val binding: FragmentHomeBinding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_home, container, false)
+
+        val application = requireNotNull(this.activity).application
+
+        mDb = AppDatabase.getInstance(application)?.routeDao
+        val datasource = AppDatabase.getInstance(application)
+        val viewModelFactory = HomeViewModelFactory(datasource, application)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
+
+        binding.homeViewModel = viewModel
+
+        unfinishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener { routeId ->
+            navigateToRoute(routeId)
+        })
+        binding.recyclerRoutesToDo.adapter = unfinishedAdapter
+
+
+        finishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener { routeId ->
+            navigateToRoute(routeId)
+        })
+        binding.recyclerRoutesDone.adapter = finishedAdapter
+
+        viewModel!!.swipeTo("MoveToDone", binding.recyclerRoutesToDo, unfinishedAdapter)
+        viewModel!!.swipeTo("Delete", binding.recyclerRoutesDone, finishedAdapter)
+        viewModel!!.swipeTo("MoveToWorkingOn", binding.recyclerRoutesDone, finishedAdapter)
+
+        retrieveRoutes()
+        return binding.root
+    }
+
+    private fun navigateToRoute(routeId: Int) {
+        this.findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToAddRouteFragment(routeId)
+        )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.add_route_menu_button, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.add) {
+            this.findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToAddRouteFragment(0))
+        } else if (id == R.id.preferences) {
+            this.findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToAppPreferencesFragment()
+            )
+        } else if (id == R.id.sign_out_menu) {
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun retrieveRoutes() {
+        viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> unfinishedAdapter!!.submitList(routeEntries) })
+        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries) })
+    }
+}
+
+//    fun signOut() {
+//        if (mAuth!!.currentUser != null) {
+//            Toast.makeText(baseContext, userName!! + " : Signed Out", Toast.LENGTH_LONG).show()
+//            mAuth.signOut()
+//            val returnToSignIn = Intent(this@HomeFragment, LoginActivty::class.java)
+//            startActivity(returnToSignIn)
+//        } else {
+//            Toast.makeText(baseContext, "Already signed out", Toast.LENGTH_LONG).show()
+//        }
+//    }
+
+//}

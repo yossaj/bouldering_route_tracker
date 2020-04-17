@@ -22,15 +22,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AppPreferences"
+            android:name=".apppreferences.AppPreferencesFragment"
             android:parentActivityName=".MainActivity" />
+
         <activity android:name=".MainActivity">
 
         </activity>
+
         <activity
-            android:name=".AddRouteActivity"
+            android:name=".addRoute.AddRouteFragment"
             android:label="Add a New Route"
             android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".routeshome.HomeFragment"
+            android:parentActivityName=".MainActivity"
+            />
 
         <service
             android:name=".notifications.BouderFirebaseJobService"

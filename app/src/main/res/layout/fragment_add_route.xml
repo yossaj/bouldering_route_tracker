@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="addRouteViewModel"
+            type="com.example.boulderjournal.addRoute.AddRouteViewModel" />
+    </data>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="Date" />
+
+                <TextView
+                    android:id="@+id/date_added"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="Route Name" />
+
+                <EditText
+                    android:id="@+id/input_route_name"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+
+                <TextView
+                    android:id="@+id/view_route_name"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="Route Colour" />
+
+
+                <RadioGroup
+                    android:id="@+id/route_colour_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/blueButton"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/routeBlue"
+                        android:checked="false"
+                        android:padding="8dp"
+                        android:text="Blue"
+                        android:textColor="@color/white" />
+
+                    <RadioButton
+                        android:id="@+id/pinkButton"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/routePink"
+                        android:padding="8dp"
+                        android:text="Pink"
+                        android:textColor="@color/white"
+                        android:theme="@style/WhiteRadioButton" />
+
+                    <RadioButton
+                        android:id="@+id/orangeButton"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/routeOrange"
+                        android:padding="8dp"
+                        android:text="Orange"
+                        android:textColor="@color/white"
+                        android:theme="@style/WhiteRadioButton" />
+
+                    <RadioButton
+                        android:id="@+id/yellowButton"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/routeYellow"
+                        android:padding="8dp"
+                        android:text="Yellow"
+                        android:textColor="@color/white"
+                        android:theme="@style/WhiteRadioButton" />
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/view_route_colour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="18sp"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/color_swatch"
+                        android:layout_width="20dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="8dp"
+                        android:background="@color/colorAccent"
+                        android:visibility="gone" />
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="Room" />
+
+
+                <EditText
+                    android:id="@+id/input_room"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+
+                <TextView
+                    android:id="@+id/view_room"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="Wall" />
+
+                <EditText
+                    android:id="@+id/input_wall"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+
+                <TextView
+                    android:id="@+id/view_wall"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="Notes on Route | Where am I getting stuck?"
+                    android:textColor="@color/white" />
+
+
+                <EditText
+                    android:id="@+id/route_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:background="@color/colorPrimary"
+                    android:gravity="top"
+                    android:inputType="text|textMultiLine"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/view_route_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:background="@color/colorPrimary"
+                    android:gravity="top"
+                    android:padding="16dp"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
+
+
+                <ImageView
+                    android:id="@+id/capturedPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY" />
+
+                <Button
+                    android:id="@+id/updateButton"
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimary"
+                    android:text="Take Photo"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:visibility="visible" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</layout>
