@@ -6,7 +6,7 @@ import com.firebase.jobdispatcher.*
 import java.util.concurrent.TimeUnit
 
 object ScheduleReminderUtil {
-    private const val REMINDER_SYNC_FLEX_MINUTES = 10
+    private const val REMINDER_SYNC_FLEX_MINUTES = 1
     private val REMINDER_SYNC_FLEX_SECONDS = TimeUnit.MINUTES.toSeconds(REMINDER_SYNC_FLEX_MINUTES.toLong()).toInt()
     private const val REMINDER_JOB_TAG = "notes_reminder_tag"
     private var sInitialized = false
