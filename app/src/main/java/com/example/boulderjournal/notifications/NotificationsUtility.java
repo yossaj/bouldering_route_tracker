@@ -18,7 +18,6 @@ public class NotificationsUtility {
     private static final int NOTES_REMINDER_NOTIFICATION_ID = 3345;
     private static final int NOTES_REMINDER_PENDING_INTENT_ID = 4456;
 
-
     public static void makeNotesReminder(Context context){
 
         NotificationManager notificationManager = (NotificationManager)
