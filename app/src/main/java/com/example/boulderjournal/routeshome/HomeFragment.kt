@@ -19,6 +19,7 @@ import com.example.boulderjournal.data.AppDatabase
 import com.example.boulderjournal.data.RouteDao
 import com.example.boulderjournal.databinding.FragmentHomeBinding
 import com.example.boulderjournal.notifications.ScheduleReminderUtil
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment(){
@@ -26,7 +27,6 @@ class HomeFragment : Fragment(){
     private var unfinishedAdapter: RouteAdapter? = null
     private var finishedAdapter: RouteAdapter? = null
     private var mDb: RouteDao? = null
-    private var viewModel: HomeViewModel? = null
     private lateinit var mAuth : FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,26 +44,23 @@ class HomeFragment : Fragment(){
         mDb = AppDatabase.getInstance(application)?.routeDao
         val datasource = AppDatabase.getInstance(application)
         val viewModelFactory = HomeViewModelFactory(datasource, application)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-
+        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         binding.homeViewModel = viewModel
-
         unfinishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener { routeId ->
             navigateToRoute(routeId)
         })
         binding.recyclerRoutesToDo.adapter = unfinishedAdapter
-
 
         finishedAdapter = RouteAdapter(RouteAdapter.ItemClickListener { routeId ->
             navigateToRoute(routeId)
         })
         binding.recyclerRoutesDone.adapter = finishedAdapter
 
-        viewModel!!.swipeTo("MoveToDone", binding.recyclerRoutesToDo, unfinishedAdapter)
-        viewModel!!.swipeTo("Delete", binding.recyclerRoutesDone, finishedAdapter)
-        viewModel!!.swipeTo("MoveToWorkingOn", binding.recyclerRoutesDone, finishedAdapter)
+        binding.homeViewModel!!.swipeTo("MoveToDone", binding.recyclerRoutesToDo, unfinishedAdapter)
+        binding.homeViewModel!!.swipeTo("Delete", binding.recyclerRoutesDone, finishedAdapter)
+        binding.homeViewModel!!.swipeTo("MoveToWorkingOn", binding.recyclerRoutesDone, finishedAdapter)
 
-        retrieveRoutes()
+        retrieveRoutes(binding)
         return binding.root
     }
 
@@ -93,9 +90,9 @@ class HomeFragment : Fragment(){
         return super.onOptionsItemSelected(item)
     }
 
-    private fun retrieveRoutes() {
-        viewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> unfinishedAdapter!!.submitList(routeEntries) })
-        viewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries) })
+    private fun retrieveRoutes(binding: FragmentHomeBinding) {
+        binding.homeViewModel!!.unFinishedRoutes!!.observe(this, Observer { routeEntries -> unfinishedAdapter!!.submitList(routeEntries) })
+        binding.homeViewModel!!.finishedRoutes!!.observe(this, Observer { routeEntries -> finishedAdapter!!.submitList(routeEntries) })
     }
 
     private fun signOut() {
@@ -107,7 +104,7 @@ class HomeFragment : Fragment(){
             val returnToSignIn = Intent(context, LoginActivty::class.java)
             startActivity(returnToSignIn)
         } else {
-            Toast.makeText(context, "Already signed out", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Already signed out", Toast.LENGTH_SHORT).show()
         }
     }
 
