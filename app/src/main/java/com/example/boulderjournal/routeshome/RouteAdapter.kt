@@ -30,7 +30,6 @@ class RouteAdapter(private val mItemClickListener: ItemClickListener) : ListAdap
 
     class RouteViewHolder(val binding: RouteInputLayoutBinding, val context: Context) : RecyclerView.ViewHolder(binding.root) {
 
-
         fun bindRoute(clickListener: ItemClickListener, routeEntry: RouteEntry) {
             binding.route = routeEntry
             binding.clickListener = clickListener

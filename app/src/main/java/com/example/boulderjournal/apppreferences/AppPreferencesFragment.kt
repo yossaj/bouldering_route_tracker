@@ -6,26 +6,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import ca.antonious.materialdaypicker.MaterialDayPicker
 import com.example.boulderjournal.R
 import com.example.boulderjournal.databinding.FragmentAppPreferencesBinding
 
-
 class AppPreferencesFragment :  Fragment() {
 
-    private  var dayPicker: MaterialDayPicker? = null
-    private var climbDay: String? = null
-    private var editor: SharedPreferences.Editor? = null
-    private var sharedPreferences: SharedPreferences? = null
-
+    private lateinit var dayPicker: MaterialDayPicker
+    private lateinit var editor: SharedPreferences.Editor
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var context = getContext();
-        sharedPreferences = context?.getSharedPreferences(getString(R.string.shared_preference_key), Context.MODE_PRIVATE)
-        editor = sharedPreferences?.edit()
+        sharedPreferences = context!!.getSharedPreferences(getString(R.string.shared_preference_key), Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
 
         val binding : FragmentAppPreferencesBinding   = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_app_preferences , container, false)
@@ -38,21 +34,22 @@ class AppPreferencesFragment :  Fragment() {
     }
 
     fun setDayPickerListener() {
-        dayPicker?.daySelectionChangedListener = object : MaterialDayPicker.DaySelectionChangedListener {
+        dayPicker.daySelectionChangedListener = object : MaterialDayPicker.DaySelectionChangedListener {
             override fun onDaySelectionChanged(selectedDay: List<MaterialDayPicker.Weekday>) {
-                climbDay = selectedDay[0].toString()
-                editor?.putString(getString(R.string.climb_day_key), climbDay)
-                editor?.commit()
+                if(selectedDay.size != 0){
+                    val climbDay = selectedDay[0].toString()
+                    editor.putString(getString(R.string.climb_day_key), climbDay)
+                    editor.commit()
+                }
             }
         }
     }
 
     fun getClimbDayPreference() {
         val defaultValue = "MONDAY"
-        var preferedDay = sharedPreferences?.getString(getString(R.string.climb_day_key), defaultValue)
+        var preferedDay = sharedPreferences.getString(getString(R.string.climb_day_key), defaultValue)
         if(preferedDay == null){ preferedDay = defaultValue}
         val day = MaterialDayPicker.Weekday.valueOf(preferedDay)
-        dayPicker?.selectDay(day)
+        dayPicker.selectDay(day)
     }
-
 }

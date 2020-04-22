@@ -17,21 +17,13 @@ public class NotificationsUtility {
 
     private static final int NOTES_REMINDER_NOTIFICATION_ID = 3345;
     private static final int NOTES_REMINDER_PENDING_INTENT_ID = 4456;
-    private static final String CHANNEL_ID = "BOULDER_NOTES";
 
     public static void makeNotesReminder(Context context){
 
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel mChannel = new NotificationChannel(
-                    CHANNEL_ID,
-                    context.getString(R.string.main_notification_channel_name),
-                    NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(mChannel);
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, context.getString(R.string.note_notification))
                     .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                     .setContentTitle(context.getString(R.string.reminder_title))
                     .setContentText(context.getString(R.string.reminder_content))
@@ -42,10 +34,7 @@ public class NotificationsUtility {
                     .setDefaults(Notification.DEFAULT_VIBRATE)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
-
             notificationManager.notify(NOTES_REMINDER_NOTIFICATION_ID, builder.build());
-
-        }
     }
 
     private static PendingIntent contentIntent(Context context) {

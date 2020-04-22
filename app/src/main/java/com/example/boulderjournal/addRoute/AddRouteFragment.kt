@@ -24,6 +24,7 @@ import com.example.boulderjournal.data.AppDatabase
 import com.example.boulderjournal.data.AppDatabase.Companion.getInstance
 import com.example.boulderjournal.data.RouteEntry
 import com.example.boulderjournal.databinding.FragmentAddRouteBinding
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import java.io.File
 import java.io.IOException
@@ -99,7 +100,7 @@ class AddRouteFragment : Fragment() {
             date = Date()
         }
         if (routeName!!.length == 0 || routeColour!!.length == 0 || room!!.length == 0 || wall!!.length == 0 || notes!!.length == 0) {
-            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_LONG).show()
+            Snackbar.make(bind.routeParent,"Please fill in all fields", Snackbar.LENGTH_SHORT).show()
             return
         } else if (route == null) {
             route = RouteEntry(0, routeName, routeColour, room, wall, notes, imageURIstr, completedStr, date)
@@ -219,7 +220,8 @@ class AddRouteFragment : Fragment() {
 
 
     fun refactorUIonUpdateRoute() {
-        Toast.makeText(context, "Your note has been updated", Toast.LENGTH_LONG).show()
+        Snackbar.make(bind.routeParent,"Your note has been updated", Snackbar.LENGTH_LONG).show()
+
         populateStaticUI(bind ,route)
         editMenuItem!!.title = "Edit"
         editMenuCheck = true
