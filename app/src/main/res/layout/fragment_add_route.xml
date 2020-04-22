@@ -34,33 +34,33 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/medium_spacing"
                     android:text="Date" />
 
                 <TextView
                     android:id="@+id/date_added"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+                    android:layout_marginLeft="@dimen/medium_spacing" />
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/medium_spacing"
                     android:text="Route Name" />
 
                 <EditText
                     android:id="@+id/input_route_name"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+                    android:layout_marginLeft="@dimen/medium_spacing" />
 
                 <TextView
                     android:id="@+id/view_route_name"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/medium_spacing"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
                     android:visibility="gone" />
@@ -68,7 +68,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/medium_spacing"
                     android:text="Route Colour" />
 
 
@@ -76,7 +76,7 @@
                     android:id="@+id/route_colour_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/medium_spacing"
                     android:orientation="vertical">
 
                     <RadioButton
@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:background="@color/routeBlue"
                         android:checked="false"
-                        android:padding="8dp"
+                        android:padding="@dimen/small_spacing"
                         android:text="Blue"
                         android:textColor="@color/white" />
 
@@ -94,7 +94,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:background="@color/routePink"
-                        android:padding="8dp"
+                        android:padding="@dimen/small_spacing"
                         android:text="Pink"
                         android:textColor="@color/white"
                         android:theme="@style/WhiteRadioButton" />
@@ -104,7 +104,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:background="@color/routeOrange"
-                        android:padding="8dp"
+                        android:padding="@dimen/small_spacing"
                         android:text="Orange"
                         android:textColor="@color/white"
                         android:theme="@style/WhiteRadioButton" />
@@ -114,7 +114,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:background="@color/routeYellow"
-                        android:padding="8dp"
+                        android:padding="@dimen/small_spacing"
                         android:text="Yellow"
                         android:textColor="@color/white"
                         android:theme="@style/WhiteRadioButton" />
@@ -131,7 +131,7 @@
                         android:id="@+id/view_route_colour"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginLeft="@dimen/medium_spacing"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp"
                         android:visibility="gone" />
@@ -141,7 +141,7 @@
                         android:layout_width="20dp"
                         android:layout_height="10dp"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginLeft="@dimen/small_spacing"
                         android:background="@color/colorAccent"
                         android:visibility="gone" />
 
@@ -152,7 +152,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/medium_spacing"
                     android:text="Room" />
 
 
@@ -160,13 +160,13 @@
                     android:id="@+id/input_room"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+                    android:layout_marginLeft="@dimen/medium_spacing" />
 
                 <TextView
                     android:id="@+id/view_room"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/medium_spacing"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
                     android:visibility="gone" />
@@ -175,21 +175,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/medium_spacing"
                     android:text="Wall" />
 
                 <EditText
                     android:id="@+id/input_wall"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+                    android:layout_marginLeft="@dimen/medium_spacing" />
 
                 <TextView
                     android:id="@+id/view_wall"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/medium_spacing"
+                    android:layout_marginBottom="@dimen/medium_spacing"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
                     android:visibility="gone" />
@@ -206,7 +206,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/medium_spacing"
                     android:text="Notes on Route | Where am I getting stuck?"
                     android:textColor="@color/white" />
 
@@ -218,7 +218,7 @@
                     android:background="@color/colorPrimary"
                     android:gravity="top"
                     android:inputType="text|textMultiLine"
-                    android:padding="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/medium_spacing"
                     android:textColor="@color/white" />
 
                 <TextView
@@ -227,7 +227,7 @@
                     android:layout_height="300dp"
                     android:background="@color/colorPrimary"
                     android:gravity="top"
-                    android:padding="16dp"
+                    android:padding="@dimen/medium_spacing"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:visibility="gone" />
@@ -249,7 +249,6 @@
                     android:text="Take Photo"
                     android:textColor="@android:color/primary_text_dark"
                     android:visibility="visible" />
-
 
             </LinearLayout>
 

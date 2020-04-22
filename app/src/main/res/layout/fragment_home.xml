@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/working_on"
                 android:textColor="@color/white"
-                android:paddingTop="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/medium_spacing"
                 android:layout_marginLeft="60dp"/>
 
             <FrameLayout
@@ -43,7 +43,7 @@
                     android:id="@+id/recyclerRoutesToDo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/medium_spacing"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/done"
                 android:textColor="@color/main_list_items_light"
-                android:paddingTop="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/medium_spacing"
                 android:layout_marginLeft="60dp"/>
 
             <FrameLayout
@@ -77,7 +77,7 @@
                     android:id="@+id/recyclerRoutesDone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/medium_spacing"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             </FrameLayout>
